@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http'; 
 import { MegaMenuModule } from 'primeng/megamenu';
 
@@ -17,6 +18,7 @@ import { PgaModule } from './pga/pga.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     MegaMenuModule,
     HttpClientModule,
     AppRoutingModule,

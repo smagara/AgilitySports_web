@@ -1,4 +1,10 @@
-<p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }"
+    dataKey="name"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="team">Team <p-sortIcon field="team"></p-sortIcon></th>
