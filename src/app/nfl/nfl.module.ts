@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TableModule } from 'primeng/table';
 
 import { NflRoutingModule } from './nfl-routing.module';
 import { NflComponent } from './nfl.component';
@@ -19,6 +20,7 @@ import { PlayerComponent } from './components/player/player.component';
   ],
   imports: [
     CommonModule,
+    TableModule,
     NflRoutingModule
   ]
 })

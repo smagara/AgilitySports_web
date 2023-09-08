@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'; 
 import { MegaMenuModule } from 'primeng/megamenu';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +18,7 @@ import { PgaModule } from './pga/pga.module';
   imports: [
     BrowserModule,
     MegaMenuModule,
+    HttpClientModule,
     AppRoutingModule,
     NflModule,
     NbaModule,

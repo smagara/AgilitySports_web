@@ -1,1 +1,26 @@
-<p>roster works!</p>
+<p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="team">Team <p-sortIcon field="team"></p-sortIcon></th>
+            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="position">Position <p-sortIcon field="position"></p-sortIcon></th>
+            <th pSortableColumn="number">Number <p-sortIcon field="number"></p-sortIcon></th>
+            <th pSortableColumn="height">Height <p-sortIcon field="height"></p-sortIcon></th>
+            <th pSortableColumn="weight">Weight <p-sortIcon field="weight"></p-sortIcon></th>
+            <th pSortableColumn="ageExact">Age <p-sortIcon field="ageExact"></p-sortIcon></th>
+            <th pSortableColumn="college">College <p-sortIcon field="college"></p-sortIcon></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-roster>
+        <tr>
+            <td>{{ roster.team }}</td>
+            <td>{{ roster.name }}</td>
+            <td>{{ roster.position }}</td>
+            <td>{{ roster.number }}</td>
+            <td>{{ roster.height }}</td>
+            <td>{{ roster.weight }}</td>
+            <td>{{ roster.ageExact }}</td>
+            <td>{{ roster.college }}</td>
+        </tr>
+    </ng-template>
+</p-table>
