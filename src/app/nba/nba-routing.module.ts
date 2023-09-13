@@ -1,12 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NbaComponent } from './nba.component';
+import { RosterComponent } from './components/roster/roster.component';
 
-const routes: Routes = [{
-  path: "nba",
-  component: NbaComponent,
-  pathMatch: 'full'
-}];
+const routes: Routes = [
+  {
+    path: "nba",
+    children: [
+      {
+        path: 'roster',
+        component: RosterComponent
+      },
+      {
+        path: '',
+        component: NbaComponent,
+        pathMatch: 'full'
+      }
+    ]
+  }
+
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

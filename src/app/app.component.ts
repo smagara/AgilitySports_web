@@ -42,7 +42,19 @@ export class AppComponent implements OnInit {
       },
       {
         label: 'NBA',
-        url: 'nba'
+        items: [
+          [
+            {
+              label: 'National Basketball Association',
+              items: [
+                {
+                  label: 'Roster',
+                  url: 'nba/roster',
+                }
+              ]
+            }
+          ]
+        ],
       },
       {
         label: 'NHL',
