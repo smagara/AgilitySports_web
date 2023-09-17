@@ -28,7 +28,7 @@
             <td>{{ roster.position }}</td>
              <td>{{ roster.bats }}</td>
             <td>{{ roster.throws }}</td>
-            <td>{{ roster.dateOfBirth }}</td>
+            <td>{{ roster.dateOfBirth | date:'MM/dd/yyyy' }}</td>
              <td>{{ roster.birthCountry }}</td>
             <td>{{ roster.birthPlace }}</td>
         </tr>

@@ -28,7 +28,7 @@
             <td>{{ roster.number }}</td>
             <td>{{ roster.height }}</td>
             <td>{{ roster.weight }}</td>
-            <td>{{ roster.dateOfBirth }}</td>
+            <td>{{ roster.dateOfBirth | date:'MM/dd/yyyy' }}</td>
             <td>{{ roster.college }}</td>
             <td>{{ roster.playerID }}</td>
         </tr>
