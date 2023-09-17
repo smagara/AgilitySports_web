@@ -7,7 +7,7 @@ import { NhlService } from '../../services/nhl.service';
   styles: [
   ]
 })
-export class RosterComponent {
+export class RosterComponent implements OnInit {
   roster: any = [
     {
       "playerID": 1,
