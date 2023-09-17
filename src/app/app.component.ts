@@ -36,10 +36,24 @@ export class AppComponent implements OnInit {
           ],
         ]
       },
+      
       {
         label: 'MLB',
-        url: 'mlb'
+        items: [
+          [
+            {
+              label: 'Major League Baseball',
+              items: [
+                {
+                  label: 'Roster',
+                  url: 'mlb/roster',
+                }
+              ]
+            }
+          ]
+        ],
       },
+
       {
         label: 'NBA',
         items: [

@@ -1,0 +1,37 @@
+<p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }"
+    dataKey="name"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="teamName">Team <p-sortIcon field="teamName"></p-sortIcon></th>
+            <th pSortableColumn="league">League <p-sortIcon field="league"></p-sortIcon></th>
+            <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+            <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+            <th pSortableColumn="position">Position <p-sortIcon field="position"></p-sortIcon></th>
+            <th pSortableColumn="bats">Bats <p-sortIcon field="bats"></p-sortIcon></th>
+            <th pSortableColumn="throws">Throws <p-sortIcon field="throws"></p-sortIcon></th>
+            <th pSortableColumn="dateOfBirth">Birth Date <p-sortIcon field="dateOfBirth"></p-sortIcon></th>
+            <th pSortableColumn="birthCountry">Birth Country <p-sortIcon field="birthCountry"></p-sortIcon></th>
+            <th pSortableColumn="birthPlace">Birthplace <p-sortIcon field="birthPlace"></p-sortIcon></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-roster>
+        <tr>
+            <td>{{ roster.teamName }}</td>
+            <td>{{ roster.league }}</td>
+            <td>{{ roster.firstName }}</td>
+            <td>{{ roster.lastName }}</td>
+            <td>{{ roster.position }}</td>
+             <td>{{ roster.bats }}</td>
+            <td>{{ roster.throws }}</td>
+            <td>{{ roster.dateOfBirth }}</td>
+             <td>{{ roster.birthCountry }}</td>
+            <td>{{ roster.birthPlace }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
