@@ -2,7 +2,7 @@ export interface mlb {
 }
 
 export interface MLBRosterDto {
-    playerID: number;
+    playerID: string;
     teamName: string;
     firstName: string;
     lastName: string;
@@ -12,7 +12,16 @@ export interface MLBRosterDto {
     weight: string;
     bats: string;
     throws: string;
-    dateOfBirth: number;
+    dateOfBirth: Date;
     birthCountry: string;
     birthPlace: string;
 }
+
+export interface MLBAttendanceDto {
+    yearId: number;
+    teamId: string;
+    teamName: string;
+    parkName: string;
+    attendance: number;
+}
+

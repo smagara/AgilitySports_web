@@ -1,0 +1,25 @@
+<p-table [value]="attendstats" [tableStyle]="{ 'min-width': '50rem' }"
+    dataKey="name"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="yearId">Year <p-sortIcon field="yearId"></p-sortIcon></th>
+            <th pSortableColumn="teamName">Team Name <p-sortIcon field="teamName"></p-sortIcon></th>
+            <th pSortableColumn="parkName">Park Name <p-sortIcon field="parkName"></p-sortIcon></th>
+            <th pSortableColumn="attendance">Attendance <p-sortIcon field="attendance"></p-sortIcon></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-roster>
+        <tr>
+            <td>{{ roster.yearId }}</td>
+            <td>{{ roster.teamName }}</td>
+            <td>{{ roster.parkName }}</td>
+            <td>{{ roster.attendance | number }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+

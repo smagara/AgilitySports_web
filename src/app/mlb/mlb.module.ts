@@ -5,12 +5,14 @@ import { MlbRoutingModule } from './mlb-routing.module';
 import { MlbComponent } from './mlb.component';
 import { TableModule } from 'primeng/table';
 import { RosterComponent } from './components/roster/roster.component';
+import { AttendanceComponent } from './components/attendance/attendance.component';
 
 
 @NgModule({
   declarations: [
     MlbComponent,
-    RosterComponent
+    RosterComponent,
+    AttendanceComponent
   ],
   imports: [
     CommonModule,

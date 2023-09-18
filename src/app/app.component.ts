@@ -47,8 +47,11 @@ export class AppComponent implements OnInit {
                 {
                   label: 'Roster',
                   url: 'mlb/roster',
-                }
-              ]
+                },
+                {
+                  label: 'Attendance',
+                  url: 'mlb/attendance',
+                }              ]
             }
           ]
         ],
