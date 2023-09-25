@@ -7,10 +7,32 @@
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="teamName">Team <p-sortIcon field="teamName"></p-sortIcon></th>
-            <th pSortableColumn="league">League <p-sortIcon field="league"></p-sortIcon></th>
+            <th pSortableColumn="teamName">Team 
+                <p-sortIcon field="teamName"></p-sortIcon>
+                <p-columnFilter
+                    type="text"
+                    field="teamName"
+                    display="menu"
+                    class="ml-auto">
+                </p-columnFilter>
+            </th>
+            <th pSortableColumn="league">League <p-sortIcon field="league"></p-sortIcon>
+                <p-columnFilter
+                    type="text"
+                    field="league"
+                    display="menu"
+                    class="ml-auto">
+                </p-columnFilter>                
+            </th>
             <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
-            <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+            <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon>
+                <p-columnFilter
+                    type="text"
+                    field="lastName"
+                    display="menu"
+                    class="ml-auto">
+                </p-columnFilter>  
+            </th>
             <th pSortableColumn="position">Position <p-sortIcon field="position"></p-sortIcon></th>
             <th pSortableColumn="bats">Bats <p-sortIcon field="bats"></p-sortIcon></th>
             <th pSortableColumn="throws">Throws <p-sortIcon field="throws"></p-sortIcon></th>

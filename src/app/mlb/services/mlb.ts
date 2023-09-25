@@ -18,7 +18,7 @@ export interface MLBRosterDto {
 }
 
 export interface MLBAttendanceDto {
-    yearId: number;
+    yearId: string;
     teamId: string;
     teamName: string;
     parkName: string;

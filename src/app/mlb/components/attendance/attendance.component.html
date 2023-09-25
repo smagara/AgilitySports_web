@@ -7,9 +7,33 @@
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="yearId">Year <p-sortIcon field="yearId"></p-sortIcon></th>
-            <th pSortableColumn="teamName">Team Name <p-sortIcon field="teamName"></p-sortIcon></th>
-            <th pSortableColumn="parkName">Park Name <p-sortIcon field="parkName"></p-sortIcon></th>
+            <th pSortableColumn="yearId">Year 
+                <p-sortIcon field="yearId"></p-sortIcon>
+                <p-columnFilter
+                    type="text"
+                    field="yearId"
+                    display="menu"
+                    class="ml-auto">
+                </p-columnFilter>
+            </th>
+            <th pSortableColumn="teamName">Team Name 
+                <p-sortIcon field="teamName"></p-sortIcon>
+                <p-columnFilter
+                    type="text"
+                    field="teamName"
+                    display="menu"
+                    class="ml-auto">
+                </p-columnFilter>
+            </th>
+            <th pSortableColumn="parkName">Park Name 
+                <p-sortIcon field="parkName"></p-sortIcon>
+                <p-columnFilter
+                    type="text"
+                    field="parkName"
+                    display="menu"
+                    class="ml-auto">
+                </p-columnFilter>            
+            </th>
             <th pSortableColumn="attendance">Attendance <p-sortIcon field="attendance"></p-sortIcon></th>
         </tr>
     </ng-template>
