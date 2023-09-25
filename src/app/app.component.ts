@@ -1,10 +1,12 @@
 import { Component, OnInit} from '@angular/core';
 import { MegaMenuItem } from 'primeng/api/megamenuitem';
+import { slideInAnimation } from './app.animations'
 
 @Component({
   selector: 'sports-root',
   templateUrl: './app.component.html',
-  styles: []
+  styles: [],
+  animations: [slideInAnimation]
 })
 export class AppComponent implements OnInit {
   title = 'AgilitySports';

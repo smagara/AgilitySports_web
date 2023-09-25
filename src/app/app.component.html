@@ -1,5 +1,8 @@
 <h1 class="flex gap-4 bg-primary p-3">
     <p-megaMenu [model]="items"></p-megaMenu>
     <span>Agility Sports</span>
-  </h1>
-  <router-outlet></router-outlet>
+</h1>
+<div class="col-md-10"
+  [@slideInAnimation]="o.isActivated ? o.activatedRoute : '' ">
+  <router-outlet #o="outlet"></router-outlet>
+</div>
