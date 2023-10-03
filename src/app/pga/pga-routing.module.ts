@@ -18,7 +18,7 @@ const routes: Routes = [{
     {
       path: '',
       component: PgaComponent,
-      pathMatch: 'full'
+      pathMatch: 'full',
     },
   ]
 }

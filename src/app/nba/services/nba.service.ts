@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NBARosterDto } from './nba';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NbaService {
-  baseURL = 'http://localhost:1106/api/'
+  baseURL = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

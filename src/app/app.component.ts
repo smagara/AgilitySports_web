@@ -23,15 +23,18 @@ export class AppComponent implements OnInit {
               items: [
                 {
                   label: 'Roster',
-                  url: 'nfl/roster'
+                  url: 'nfl/roster',
+                  disabled: false
                 },
                 {
                   label: 'Team',
-                  url: 'nfl/team'
+                  url: 'nfl/team',
+                  disabled: true
                 },
                 {
                   label: 'Schedule',
-                  url: 'nfl/schedule'
+                  url: 'nfl/schedule',
+                  disabled: true
                 }
               ]
             }
@@ -49,10 +52,12 @@ export class AppComponent implements OnInit {
                 {
                   label: 'Roster',
                   url: 'mlb/roster',
+                  disabled: false
                 },
                 {
                   label: 'Attendance',
                   url: 'mlb/attendance',
+                  disabled: false
                 }              ]
             }
           ]
@@ -102,10 +107,12 @@ export class AppComponent implements OnInit {
                 {
                   label: 'Season',
                   url: 'pga/season',
+                  disabled: true
                 },
                 {
                   label: 'Tournament',
-                  url: 'pga/tournament'
+                  url: 'pga/tournament',
+                  disabled: true
                 }
               ]
             }
