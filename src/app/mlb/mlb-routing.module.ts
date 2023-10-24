@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { MlbComponent } from './mlb.component';
 import { RosterComponent } from './components/roster/roster.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
+import { AttendChartComponent } from './components/attend-chart/attend-chart.component';
 
 const routes: Routes = [
   {
@@ -14,7 +16,11 @@ const routes: Routes = [
       },
       {
         path: 'attendance',
-        component: AttendanceComponent
+        component: AttendanceComponent,
+      },
+      {
+        path: 'attend-chart',
+        component: AttendChartComponent,
       },
       {
         path: '',
@@ -28,6 +34,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule, FormsModule]
 })
 export class MlbRoutingModule { }
