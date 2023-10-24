@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { MLBAttendanceDto, MLBRosterDto } from './mlb';
+import { MLBAttendChartDTO, MLBAttendanceDto, MLBRosterDto } from './mlb';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -19,4 +19,12 @@ export class MlbService {
   GetAttendance(): Observable<MLBAttendanceDto[]> {
       return this.http.get<MLBAttendanceDto[]>(this.baseURL + 'mlb/attendance')
   }
+
+  GetAttendanceChart(yearFilter?: number): Observable<MLBAttendChartDTO[]> {
+    var url: string = this.baseURL +
+      'mlb/chart' + (yearFilter ? '?yearId=' + yearFilter : '');
+    console.info("Url: " + url);
+    return this.http.get<MLBAttendChartDTO[]>(url);
+  }
+
 }

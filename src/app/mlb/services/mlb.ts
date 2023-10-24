@@ -25,3 +25,29 @@ export interface MLBAttendanceDto {
     attendance: number;
 }
 
+// export interface Dataset
+// {
+//     label: string;
+//     backgroundColor : string;
+//     data: string[];
+// }
+
+// export interface MLBAttendChartDTO
+// {
+//     labels: string[];
+//     datasets: {
+//       [key: string] : Dataset
+//     }
+// }
+
+export interface MLBAttendChartDTO {
+  labels: string[]
+  datasets: Dataset[]
+}
+
+export interface Dataset {
+  label: string
+  backgroundColor: any
+  data: string[]
+}
+
