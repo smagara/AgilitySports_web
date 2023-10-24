@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http'; 
-import { MegaMenuModule } from 'primeng/megamenu';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,17 +12,22 @@ import { NbaModule } from './nba/nba.module';
 import { NhlModule } from './nhl/nhl.module';
 import { MlbModule } from './mlb/mlb.module';
 import { PgaModule } from './pga/pga.module';
+import { ChartModule } from 'primeng/chart';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MegaMenuModule,
+    TieredMenuModule,
+    ChartModule,
+    ButtonModule,
     HttpClientModule,
     AppRoutingModule,
+    FormsModule,
     NflModule,
     NbaModule,
     NhlModule,
