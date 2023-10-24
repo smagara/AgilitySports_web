@@ -1,6 +1,7 @@
-import { Component, OnInit} from '@angular/core';
-import { MegaMenuItem } from 'primeng/api/megamenuitem';
+import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api/menuitem';
 import { slideInAnimation } from './app.animations'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sports-root',
@@ -10,114 +11,103 @@ import { slideInAnimation } from './app.animations'
 })
 export class AppComponent implements OnInit {
   title = 'AgilitySports';
-  items: MegaMenuItem[] | undefined
+  items: MenuItem[] | undefined;
+
+  constructor(private router: Router) { }
+
+  navigate(pageName: string) {
+    // fix for child routes opening in another new browser tab
+    this.router.navigate([`/${pageName}`], { skipLocationChange: true });
+  }
 
   ngOnInit() {
     this.items = [
       {
-        label: 'NFL',
+        label: 'Baseball',
         items: [
-          [
-            {
-              label: 'National Football League',
-              items: [
-                {
-                  label: 'Roster',
-                  url: 'nfl/roster',
-                  disabled: false
-                },
-                {
-                  label: 'Team',
-                  url: 'nfl/team',
-                  disabled: true
-                },
-                {
-                  label: 'Schedule',
-                  url: 'nfl/schedule',
-                  disabled: true
-                }
-              ]
-            }
-          ],
+          {
+            label: 'Roster',
+            url: 'mlb/roster',
+            disabled: false
+          },
+          {
+            label: 'Attendance',
+            //url: 'mlb/attendance',
+            disabled: false,
+            items: [
+              {
+                label: "Table",
+                url: 'mlb/attendance'
+              },
+              {
+                label: "Chart",
+                url: 'mlb/attend-chart'
+              }
+            ]
+          }
         ]
-      },
-      
-      {
-        label: 'MLB',
-        items: [
-          [
-            {
-              label: 'Major League Baseball',
-              items: [
-                {
-                  label: 'Roster',
-                  url: 'mlb/roster',
-                  disabled: false
-                },
-                {
-                  label: 'Attendance',
-                  url: 'mlb/attendance',
-                  disabled: false
-                }              ]
-            }
-          ]
-        ],
       },
 
       {
-        label: 'NBA',
-        items: [
+        label: 'Football',
+        items:
           [
             {
-              label: 'National Basketball Association',
-              items: [
-                {
-                  label: 'Roster',
-                  url: 'nba/roster',
-                }
-              ]
+              label: 'Roster',
+              url: 'nfl/roster',
+              disabled: false
+            },
+            {
+              label: 'Team',
+              url: 'nfl/team',
+              disabled: true
+            },
+            {
+              label: 'Schedule',
+              url: 'nfl/schedule',
+              disabled: true
             }
           ]
-        ],
+      },
+
+      {
+        label: 'Basketball',
+        items: [
+          {
+            label: 'Roster',
+            url: 'nba/roster',
+          }
+        ]
       },
       {
-        label: 'NHL',
+        label: 'Hockey',
         items: [
-          [
-            {
-              label: 'National Hockey League',
-              items: [
-                {
-                  label: 'Roster',
-                  url: 'nhl/roster',
-                }
-              ]
-            }
-          ]
-        ],
+          {
+            label: 'Roster',
+            url: 'nhl/roster',
+          }
+        ]
       },
 
       {
         label: 'PGA',
         items: [
-          [
-            {
-              label: 'Professional Golf',
-              items: [
-                {
-                  label: 'Season',
-                  url: 'pga/season',
-                  disabled: true
-                },
-                {
-                  label: 'Tournament',
-                  url: 'pga/tournament',
-                  disabled: true
-                }
-              ]
-            }
-          ]
-        ],
+          {
+            label: 'Professional Golf',
+            items: [
+              {
+                label: 'Season',
+                url: 'pga/season',
+                disabled: true
+              },
+              {
+                label: 'Tournament',
+                url: 'pga/tournament',
+                disabled: true
+              }
+            ]
+          }
+        ]
       },
     ];
   }
