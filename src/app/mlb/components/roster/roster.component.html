@@ -1,3 +1,5 @@
+<h2 class="MLB">Major League Baseball - Team Rosters</h2>
+
 <p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }"
     dataKey="name"
     [rows]="10"
@@ -7,7 +9,7 @@
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="teamName">Team 
+            <th pSortableColumn="teamName">Team
                 <p-sortIcon field="teamName"></p-sortIcon>
                 <p-columnFilter
                     type="text"
@@ -22,7 +24,7 @@
                     field="league"
                     display="menu"
                     class="ml-auto">
-                </p-columnFilter>                
+                </p-columnFilter>
             </th>
             <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
             <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon>
@@ -31,7 +33,7 @@
                     field="lastName"
                     display="menu"
                     class="ml-auto">
-                </p-columnFilter>  
+                </p-columnFilter>
             </th>
             <th pSortableColumn="position">Position <p-sortIcon field="position"></p-sortIcon></th>
             <th pSortableColumn="bats">Bats <p-sortIcon field="bats"></p-sortIcon></th>

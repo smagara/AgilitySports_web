@@ -8,3 +8,38 @@
 body {
     font-family: var(--font-family);
 }
+
+
+ui-dropdown-panel .ui-dropdown-items-wrapper {
+  overflow: auto;
+  max-height: 10px;
+}
+
+.my-dropdown {
+  height: 5rem;
+  padding-top: 0rem important!;
+}
+
+.MLB {
+  background-color: #092668;
+  color: #ffffff;
+  padding: .5em;
+}
+
+.NFL {
+  background-color: #526914;
+  color: #ffffff;
+  padding: .5em;
+}
+
+.NBA {
+  background-color: #01579B;
+  color: #ffffff;
+  padding: .5em;
+}
+
+.NHL {
+  background-color: #31450c;
+  color: #000000;
+  padding: .5em;
+}

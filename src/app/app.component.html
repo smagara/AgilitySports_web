@@ -1,6 +1,6 @@
 <h1 class="flex gap-4 bg-primary p-3">
     <button #btn type="button" pButton icon="pi pi-bars" label="Sports Menu" (click)="menu.toggle($event)" title="menu"></button>
-    <p-tieredMenu #menu [model]="items" [popup]="true"></p-tieredMenu>
+    <p-tieredMenu #menu [model]="items" [popup]="true" styleClass="my-dropdown "></p-tieredMenu>
 
     <span>Agility Sports</span>
 </h1>

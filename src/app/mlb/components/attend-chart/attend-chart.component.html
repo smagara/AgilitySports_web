@@ -1,10 +1,11 @@
-<H3>Major League Baseball fan attendance for the year {{ this.yearFilter | json }}. </H3>
+<h2 class="MLB">Major League Baseball</h2>
+<h3>Major League Baseball fan attendance for the year {{ this.yearFilter | json }}. </h3>
 
 <p>
   Hover over a bar for detail. &nbsp;&nbsp;  Change Year:
   <p-dropdown [options]="yearChoices" [(ngModel)]="yearFilter" optionLabel="label" optionValue="theYear"></p-dropdown>
 </p>
 
-<p-chart type="bar" [data]=chartData >
+<p-chart id="mlbChart" type="bar" [data]=chartData >
 
 </p-chart>

@@ -102,4 +102,9 @@ export class AttendChartComponent implements OnInit {
         next: newstats => { this.chartData = newstats}
       })
   }
+
+  setType(type: string)
+  {
+    this
+  }
 }
