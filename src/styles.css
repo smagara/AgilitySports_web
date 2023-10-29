@@ -9,6 +9,10 @@ body {
     font-family: var(--font-family);
 }
 
+:host ::ng-deep .agilitymenu {
+  background-color: #d6e8f6;
+  font-size: small;
+}
 
 ui-dropdown-panel .ui-dropdown-items-wrapper {
   overflow: auto;
