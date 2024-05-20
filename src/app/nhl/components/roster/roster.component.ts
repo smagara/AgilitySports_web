@@ -8,41 +8,23 @@ import { NhlService } from '../../services/nhl.service';
   ]
 })
 export class RosterComponent implements OnInit {
-  roster: any = [
-    {
-      "playerID": 1,
-      "name": "Micky Mouse",
-      "team": "Bruins",
-      "number": "77",
-      "position": "C",
-      "handed": "L",
-      "age": 124,
-      "drafted": 1940,
-      "birthPlace": "Orlando, Florida",
-      "birthCountry": "USA"
-    },
-    {
-      "playerID": 2,
-      "name": "Minnie Mouse",
-      "team": "Flyers",
-      "number": "79",
-      "position": "C",
-      "handed": "R",
-      "age": 121,
-      "drafted": 1942,
-      "birthPlace": "Orlando, Florida",
-      "birthCountry": "USA"
-    }
-  ];
+  roster: any = [];
+  isLoading: boolean = false;
 
   constructor(
     private nhlService: NhlService
   ) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.nhlService.GetRoster().subscribe({
       next: data => {
         this.roster = data;
+        this.isLoading = false;
+      },
+      error: error => {
+        console.error('There was an error fetching NHL data from the service!', error);
+        this.isLoading = false;
       }
     })
   }
