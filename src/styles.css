@@ -9,6 +9,10 @@ body {
     font-family: var(--font-family);
 }
 
+.my-dropdown .p-menuitem-link {
+  background-color: whitesmoke;
+  opacity: 1;
+}
 
 ui-dropdown-panel .ui-dropdown-items-wrapper {
   overflow: auto;
