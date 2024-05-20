@@ -27,21 +27,20 @@ export class AppComponent implements OnInit {
         items: [
           {
             label: 'Roster',
-            url: 'mlb/roster',
+            routerLink: 'mlb/roster',
             disabled: false
           },
           {
             label: 'Attendance',
-            //url: 'mlb/attendance',
             disabled: false,
             items: [
               {
                 label: "Table",
-                url: 'mlb/attendance'
+                routerLink: 'mlb/attendance'
               },
               {
                 label: "Chart",
-                url: 'mlb/attend-chart'
+                routerLink: 'mlb/attend-chart'
               }
             ]
           }
@@ -54,17 +53,17 @@ export class AppComponent implements OnInit {
           [
             {
               label: 'Roster',
-              url: 'nfl/roster',
+              routerLink: 'nfl/roster',
               disabled: false
             },
             {
               label: 'Team',
-              url: 'nfl/team',
+              routerLink: 'nfl/team',
               disabled: true
             },
             {
               label: 'Schedule',
-              url: 'nfl/schedule',
+              routerLink: 'nfl/schedule',
               disabled: true
             }
           ]
@@ -75,7 +74,7 @@ export class AppComponent implements OnInit {
         items: [
           {
             label: 'Roster',
-            url: 'nba/roster',
+            routerLink: 'nba/roster',
           }
         ]
       },
@@ -84,7 +83,7 @@ export class AppComponent implements OnInit {
         items: [
           {
             label: 'Roster',
-            url: 'nhl/roster',
+            routerLink: 'nhl/roster',
           }
         ]
       },
@@ -97,12 +96,12 @@ export class AppComponent implements OnInit {
             items: [
               {
                 label: 'Season',
-                url: 'pga/season',
+                routerLink: 'pga/season',
                 disabled: true
               },
               {
                 label: 'Tournament',
-                url: 'pga/tournament',
+                routerLink: 'pga/tournament',
                 disabled: true
               }
             ]
