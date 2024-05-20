@@ -9,26 +9,22 @@ import { MlbService } from '../../services/mlb.service';
 })
 export class RosterComponent implements OnInit {
 
-  roster: any = [
-    {
-      "playerID": 1,
-      "firstName": "Shoeless",
-      "lastName" : "Joe",
-      "team": "Nickerbockers",
-      "position": "SS",
-      "bats": "L",
-      "dateOfBirth": "12/01/19",
-      "birthPlace": "Test Data, Washington",
-      "birthCountry": "USA"
-    }
-  ];
+  roster: any = [];
+  isLoading: boolean = false;
 
   constructor (private mlbService: MlbService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.mlbService.GetRoster().subscribe({
-      next: newdata => {this.roster = newdata;}
+      next: data => {
+        this.roster = data;
+        this.isLoading = false;
+      },
+      error: error => {
+        console.error('There was an error fetching Baseball data from the service!', error);
+        this.isLoading = false;
+      }
     })
-    
   }
 }

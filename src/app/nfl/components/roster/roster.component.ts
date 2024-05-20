@@ -8,29 +8,23 @@ import { NflService } from '../../services/nfl.service';
   ]
 })
 export class RosterComponent {
-  roster: any = [
-    {
-      team: 'PHL',
-      name: 'Jalen Hurts',
-      position: 'QB',
-      number: '1'
-    },
-    {
-      team: 'PHL',
-      name: 'AJ Brown',
-      position: 'WR',
-      number: '11'
-    }
-  ];
+  roster: any = [];
+  isLoading: boolean = false;
 
   constructor(
     private nflService: NflService
   ) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.nflService.GetRoster().subscribe({
       next: data => {
         this.roster = data;
+        this.isLoading = false;
+      },
+      error: error => {
+        console.error('There was an error fetching NFL data from the service!', error);
+        this.isLoading = false;
       }
     })
   }

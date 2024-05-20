@@ -1,5 +1,11 @@
 <h2 class="MLB">Major League Baseball - Tabular historical attendance</h2>
 
+<div *ngIf="isLoading">Loading...</div>
+<div *ngIf="!isLoading && !attendstats.length">
+  No data available.
+</div>
+
+<div *ngIf="!isLoading && attendstats.length">
 <p-table [value]="attendstats" [tableStyle]="{ 'min-width': '50rem' }"
     dataKey="name"
     [rows]="10"
@@ -48,4 +54,5 @@
         </tr>
     </ng-template>
 </p-table>
+</div>
 
