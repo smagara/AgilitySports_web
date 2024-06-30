@@ -6,12 +6,12 @@
 
 
 body {
-    font-family: var(--font-family);
+  font-family: var(--font-family);
 }
 
-:host ::ng-deep .agilitymenu {
-  background-color: #d6e8f6;
-  font-size: small;
+.my-dropdown .p-menuitem-link {
+  background-color: whitesmoke;
+  opacity: 1;
 }
 
 ui-dropdown-panel .ui-dropdown-items-wrapper {
@@ -21,7 +21,7 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
 
 .my-dropdown {
   height: 5rem;
-  padding-top: 0rem important!;
+  padding-top: 0rem important !;
 }
 
 .MLB {
@@ -46,4 +46,59 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   background-color: #31450c;
   color: #000000;
   padding: .5em;
+}
+
+.inputs {
+  padding: 5px 0 0 5px;
+  margin-bottom: 25px;
+  width: 15%;
+  border: 3px solid #ccc;
+  border-bottom-color: rgba(0, 0, 139, 0.931) darkblue;
+  border-right-color: grey;
+  font-weight: bold;
+  vertical-align: middle;
+  min-width: 13em;
+  font-size: 1em;
+}
+
+.year {
+  max-width: 15em;
+  min-width: 8em;
+  padding: 1px 0 0 1px;
+  max-height: 2em;
+  margin: 3px 0 0 3px;
+}
+
+.divider {
+  width: 98%;
+  color: lightgrey;
+}
+
+.flexContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.flexPrompt {
+  flex: 1 0 25%;
+  box-sizing: border-box;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.flexDropdown {
+  flex: 1 0 75%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.flexDropdown span {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.inputTitle {
+  text-align: center;
 }

@@ -1,0 +1,36 @@
+<div *ngIf="isLoading">Loading...</div>
+<div *ngIf="!isLoading && !chartData">
+  No data available.
+</div>
+
+<div *ngIf="!isLoading && chartData">
+
+  <h3>Major League Baseball fan attendance by Decade</h3>
+
+  <div class="inputs">
+    <div class="inputTitle">Range</div>
+    <hr class="divider" />
+    <div class="flexContainer">
+      <div class="flexPrompt prompt">
+        <label for="beginDecade">Start: </label>
+      </div>
+      <div class="flexDropdown">
+        <p-dropdown id="beginDecade" name="beginDecade" [options]="yearChoices" [(ngModel)]="this.beginYear"
+          optionLabel="label" optionValue="theYear" dataKey="theYear" styleClass="year"></p-dropdown>
+      </div>
+      <div class="flexPrompt prompt">
+        <label for="endDecade">End: </label>
+      </div>
+      <div class="flexDropdown">
+        <p-dropdown id="endDecade" name="endDecade" [options]="yearChoices" [(ngModel)]="this.endYear"
+          optionLabel="label" optionValue="theYear" dataKey="theYear" styleClass="year"></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <i>Hover over a bar for detail. </i>
+  <p-chart id="mlbChart" type="bar" [data]=chartData>
+  </p-chart>
+
+
+</div>

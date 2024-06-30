@@ -5,6 +5,7 @@ import { MlbComponent } from './mlb.component';
 import { RosterComponent } from './components/roster/roster.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { AttendChartComponent } from './components/attend-chart/attend-chart.component';
+import { AttendDecadesComponent } from './components/attend-decades/attend-decades.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'attend-chart',
         component: AttendChartComponent,
+      },
+      {
+        path: 'attend-decades',
+        component: AttendDecadesComponent,
       },
       {
         path: '',
