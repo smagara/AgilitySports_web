@@ -10,15 +10,8 @@ import { MLBAttendanceDto } from '../../services/mlb';
   ]
 })
 export class AttendanceComponent implements OnInit {
-  attendstats: MLBAttendanceDto[] = [
-    {
-      "yearId": '1980',
-      "teamName": "The Testers",
-      "parkName" : "TestCtr",
-      "attendance": 33889,
-      "teamId": "foo"
-    }
-  ];
+  attendstats: MLBAttendanceDto[] = [];
+  isLoading: boolean = false;
   private _yearFilter: string = '';
   public get yearFilter(): string {
     return this._yearFilter;
@@ -30,8 +23,16 @@ export class AttendanceComponent implements OnInit {
   constructor(private mlbService: MlbService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.mlbService.GetAttendance().subscribe({
-      next: newstats => { this.attendstats = newstats}
+      next: newstats => {
+        this.attendstats = newstats;
+        this.isLoading = false;
+      },
+      error: error => {
+        console.error('There was an error fetching Baseball data from the service!', error);
+        this.isLoading = false;
+      }
     })
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MlbService } from '../../services/mlb.service';
+import { tap, catchError, finalize } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'sports-attend-chart',
@@ -7,79 +9,23 @@ import { MlbService } from '../../services/mlb.service';
 })
 export class AttendChartComponent implements OnInit {
   type = 'pie';
-  title = 'Baseball Attendance Testing';
-  yearChoices: { label: string, theYear: string } [] = [];
+  title = 'Baseball Attendance';
+  yearChoices: { label: string, theYear: string }[] = [];
 
-  chartColors: string[] = ["#1c9ea6",
-    "#31e3c4",
-    "#72a7a8",
-    "#ffa700",
-    "#7fffd4",
-    "#af6f09",
-    "#4d7071",
-    "#722f37",
-    "#f4a460",
-    "#ab6819",
-    "#c7c10c"]
+  chartColors: string[] = [];
+  chartData: any;
+  isLoading: boolean = false;
 
-  chartData : any = {
-    "type" : "pie",
-    "borderColor": "black",
-    "borderWidth" : "1",
-    "labels": [
-      this.title
-    ],
-    "datasets": [
-      {
-        "label": "Philadelphia Athletics",
-        "backgroundColor": this.chartColors[0],
-        "borderColor": "black",
-        "borderWidth" : "1",
-        "data": [
-          "869703"
-        ]
-      },
-      {
-        "label": "Detroit Tigers",
-        "backgroundColor": this.chartColors[1],
-        "borderColor": "black",
-        "borderWidth" : "1",
-        "data": [
-          "820766"
-        ]
-      },
-      {
-        "label": "Pittsburgh Pirates",
-        "backgroundColor": this.chartColors[2],
-        "data": [
-          "804354"
-        ]
-      },
-      {
-        "label": "New York Giants",
-        "backgroundColor": this.chartColors[3],
-        "data": [
-          "778993"
-        ]
-      },
-      {
-        "label": "Brooklyn Robins",
-        "backgroundColor": this.chartColors[4],
-        "data": [
-          "659435"
-        ]
-      }
-    ]
-  };
-
-  private _yearFilter: number = 2022;
-  public get yearFilter(): number {
+  private _yearFilter: String = "2022";
+  public get yearFilter(): String {
     return this._yearFilter;
   }
-  public set yearFilter(value: number) {
-    this._yearFilter = value;
-    console.info("Year filter: " + this._yearFilter);
-    this.getTheData();
+  public set yearFilter(value: String) {
+    if (value !== this._yearFilter) {
+      this._yearFilter = value;
+      console.info("Year filter: " + this._yearFilter);
+      this.getTheData();
+    }
   }
 
   constructor(private mlbService: MlbService) {
@@ -96,11 +42,22 @@ export class AttendChartComponent implements OnInit {
     this.getTheData();
   }
 
-  getTheData() : void {
-    this.mlbService.GetAttendanceChart(this._yearFilter).subscribe(
-      {
-        next: newstats => { this.chartData = newstats}
+  getTheData(): void {
+    this.isLoading = true;
+    this.mlbService.GetAttendanceChart(Number(this._yearFilter)).pipe(
+      tap((newstats: any) => {
+        this.chartData = newstats;
+        this.isLoading = false;
+      }),
+      catchError((err: string) => {
+        this.isLoading = false;
+        console.error('Error fetching baseball attendance from the service: ' + err);
+        return throwError(() => err);
+      }),
+      finalize(() => {
+        this.isLoading = false;
       })
+    ).subscribe();
   }
 
   setType(type: string)

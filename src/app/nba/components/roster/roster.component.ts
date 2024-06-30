@@ -9,31 +9,22 @@ import { NbaService } from '../../services/nba.service';
 })
 export class RosterComponent implements OnInit{
 
-  roster: any = [
-    {
-      team: '76ers',
-      firstName: 'Donald',
-      lastName: 'Duck',
-      position: 'F',
-      number: '1'
-    },
-    {
-      team: '76ers',
-      firstName: 'Yosemite',
-      lastName: 'Sam',
-      position: 'WB',
-      number: '11'
-    }
-  ];
-  
+  roster: any = [];
+  isLoading: boolean = false;
+
   constructor(private nbaService:NbaService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.nbaService.GetRoster().subscribe({
       next: data => {
         this.roster = data;
+        this.isLoading = false;
+      },
+      error: error => {
+        console.error('There was an error fetching NBA data from the service!', error);
+        this.isLoading = false;
       }
     })
   }
-
 }
