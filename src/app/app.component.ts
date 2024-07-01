@@ -41,6 +41,10 @@ export class AppComponent implements OnInit {
               {
                 label: "Chart",
                 routerLink: 'mlb/attend-chart'
+              },
+              {
+                label: "By Decade",
+                routerLink: 'mlb/attend-decades'
               }
             ]
           }

@@ -27,4 +27,11 @@ export class MlbService {
     return this.http.get<MLBAttendChartDTO[]>(url);
   }
 
+  GetAttendanceDecades(beginYear?: number, endYear?: number): Observable<MLBAttendChartDTO[]> {
+    var url: string = this.baseURL +
+    'mlb/decades' + (beginYear ? '?beginDecade=' + beginYear : '1950') + (endYear ? '&endDecade=' + endYear : '1980');
+    console.info("Url: " + url);
+    return this.http.get<MLBAttendChartDTO[]>(url);
+  }
+
 }

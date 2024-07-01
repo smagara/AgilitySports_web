@@ -11,13 +11,15 @@ import { ChartModule } from 'primeng/chart';
 import { RosterComponent } from './components/roster/roster.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { AttendChartComponent } from './components/attend-chart/attend-chart.component';
+import { AttendDecadesComponent } from './components/attend-decades/attend-decades.component';
 
 @NgModule({
   declarations: [
     MlbComponent,
     RosterComponent,
     AttendanceComponent,
-    AttendChartComponent
+    AttendChartComponent,
+    AttendDecadesComponent
   ],
   imports: [
     CommonModule,
