@@ -15,15 +15,17 @@
         <label for="beginDecade">Start: </label>
       </div>
       <div class="flexDropdown">
-        <p-dropdown id="beginDecade" name="beginDecade" [options]="yearChoices" [(ngModel)]="this.beginYear"
-          optionLabel="label" optionValue="theYear" dataKey="theYear" styleClass="year"></p-dropdown>
+        <select id="beginDecade" name="beginDecade" [(ngModel)]="beginYear" class="year">
+          <option *ngFor="let year of yearChoices" [value]="year.theYear">{{ year.label }}</option>
+        </select>
       </div>
       <div class="flexPrompt prompt">
         <label for="endDecade">End: </label>
       </div>
       <div class="flexDropdown">
-        <p-dropdown id="endDecade" name="endDecade" [options]="yearChoices" [(ngModel)]="this.endYear"
-          optionLabel="label" optionValue="theYear" dataKey="theYear" styleClass="year"></p-dropdown>
+        <select id="endDecade" name="endDecade" [(ngModel)]="endYear" class="year">
+          <option *ngFor="let year of yearChoices" [value]="year.theYear">{{ year.label }}</option>
+        </select>
       </div>
     </div>
   </div>

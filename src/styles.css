@@ -65,7 +65,7 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   max-width: 15em;
   min-width: 8em;
   padding: 1px 0 0 1px;
-  max-height: 2em;
+  max-height: 3em;
   margin: 3px 0 0 3px;
 }
 
@@ -85,16 +85,13 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   flex: 1 0 25%;
   box-sizing: border-box;
   text-align: left;
-  margin-top: 10px;
+  margin-top: 3px;
 }
 
 .flexDropdown {
   flex: 1 0 75%;
   box-sizing: border-box;
   text-align: left;
-}
-
-.flexDropdown span {
   padding-top: 3px;
   padding-bottom: 3px;
 }

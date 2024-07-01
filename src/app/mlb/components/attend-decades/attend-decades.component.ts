@@ -41,8 +41,9 @@ export class AttendDecadesComponent implements OnInit {
   }
 
   constructor(private mlbService: MlbService) {
-    this._beginYear = "1920";
-    this._endYear = "2020";
+  }
+
+  populateYearChoices(): void {
     // populate Year (decade) options
     for (let year: number = 1920; year <= 2020; year += 10) {
       var option = { label: year.toString(), theYear: year.toString() };
@@ -51,6 +52,10 @@ export class AttendDecadesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.populateYearChoices();
+    this._beginYear = "1920";
+    this._endYear = "2020";
+
     this.getTheData();
   }
 
