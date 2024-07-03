@@ -36,7 +36,7 @@ jobs:
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/**
       # Debugging: List the contents of the directory where the build artifacts are supposed to be
       - name: List contents of the build directory
-        run: ls -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: ls -d -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
       # Set up an archive full path for the deployment
       - name: Concatenate environment variables
         run: echo "ARCHIVE_PATH=${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/${{ env.UPLOAD_ARCHIVE_NAME }}" >> $GITHUB_ENV
@@ -53,6 +53,11 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     steps:
+      # Debugging: List the contents of the directory where the build artifacts are supposed to be
+      - name: List contents of the build directory
+        run: ls -d -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: Where are we
+        run: echo $(pwd)
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
