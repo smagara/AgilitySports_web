@@ -34,6 +34,9 @@ jobs:
         with:
           name: ${{ env.UPLOAD_ARCHIVE_NAME }} # This name must match in the download step
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/**
+      # Debugging: List the contents of the directory where the build artifacts are supposed to be
+      - name: List contents of the build directory
+        run: ls -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   deploy:
     needs: build
