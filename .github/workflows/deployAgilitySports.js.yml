@@ -12,6 +12,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: './dist'
   NODE_VERSION: '20.x'
   UPLOAD_ARCHIVE_NAME: 'agility-sports'
+  ARCHIVE_PATH: ${{ AZURE_WEBAPP_PACKAGE_PATH }} + "/" + ${{ UPLOAD_ARCHIVE_NAME }}
 
 jobs:
   build:
@@ -37,6 +38,12 @@ jobs:
       # Debugging: List the contents of the directory where the build artifacts are supposed to be
       - name: List contents of the build directory
         run: ls -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      # Set up an archive full path for the deployment
+      - name: Concatenate environment variables
+        run: echo "ARCHIVE_PATH=${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/${{ env.UPLOAD_ARCHIVE_NAME }}" >> $GITHUB_ENV
+      # Now ARCHIVE_PATH can be used in subsequent steps
+      - name: Use ARCHIVE_PATH
+        run: echo $ARCHIVE_PATH
 
   deploy:
     needs: build
@@ -57,4 +64,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/${{ env.UPLOAD_ARCHIVE_NAME }}
+          package: ${{ env.ARCHIVE_PATH }}
