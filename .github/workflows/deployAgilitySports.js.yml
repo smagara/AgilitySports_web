@@ -9,9 +9,9 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: AgilitySportsTest41
-  AZURE_WEBAPP_PACKAGE_PATH: './dist'
+  AZURE_WEBAPP_PACKAGE_PATH: './dist/agility-sports'
   NODE_VERSION: '20.x'
-  UPLOAD_ARCHIVE_NAME: 'the-node app'
+  UPLOAD_ARCHIVE_NAME: 'the-node-app'
 
 jobs:
   build:
