@@ -36,8 +36,9 @@ jobs:
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/**
       # Debugging: List the contents of the directory where the build artifacts are supposed to be
       - name: List contents of the build directory
-        run: ls -d -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-      # Set up an archive full path for the deployment
+        run: ls -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: dump full directory tree
+        run: find .
       - name: Concatenate environment variables
         run: echo "ARCHIVE_PATH=${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/${{ env.UPLOAD_ARCHIVE_NAME }}" >> $GITHUB_ENV
       # Now ARCHIVE_PATH can be used in subsequent steps
@@ -54,8 +55,8 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     steps:
       # Debugging: List the contents of the directory where the build artifacts are supposed to be
-      #- name: List contents of the build directory
-        #run: ls -d -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: dump full deployment tree
+        run: find .
       - name: Where are we
         run: echo $(pwd)
       - name: Where is GitHub
