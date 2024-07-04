@@ -1,5 +1,5 @@
 # Build and deploy Angular web application AgilitySports_web, with pruning to keep the filecount minimal
-name: Build and Deploy to Azure Web App
+name: Build and Deploy AgilitySports_web
 
 on:
   push:
@@ -32,18 +32,11 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.UPLOAD_ARCHIVE_NAME }} # This name must match in the download step
+          name: ${{ env.UPLOAD_ARCHIVE_NAME }}
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/**
-      # Debugging: List the contents of the directory where the build artifacts are supposed to be
+      # Debugging: List the contents of the directory where the build artifacts are
       - name: List contents of the build directory
         run: ls -R ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-      - name: dump full directory tree
-        run: find "dist"
-      - name: Concatenate environment variables
-        run: echo "ARCHIVE_PATH=${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/${{ env.UPLOAD_ARCHIVE_NAME }}" >> $GITHUB_ENV
-      # Now ARCHIVE_PATH can be used in subsequent steps
-      - name: Use ARCHIVE_PATH
-        run: echo $ARCHIVE_PATH
 
   deploy:
     needs: build
@@ -54,14 +47,11 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     steps:
-      # Debugging: List the contents of the directory where the build artifacts are supposed to be
-      - name: dump full deployment tree
-        run: find .
       - name: Where are we
         run: echo $(pwd)
-      - name: Where is GitHub
+      - name: Where is GitHub's agent running
         run: echo ${{ github.workspace }}
-      - name: Download artifact from build job
+      - name: Download artifact from build job "dist" folder to this workspace
         uses: actions/download-artifact@v3
         with:
           name: ${{ env.UPLOAD_ARCHIVE_NAME }}
