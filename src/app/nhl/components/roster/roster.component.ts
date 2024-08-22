@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NhlService } from '../../services/nhl.service';
 import { NHLRosterDto } from '../../services/nhl';
+import { yearRangeValidator } from 'src/app/common/validators/year-range';
 
 @Component({
   selector: 'sports-roster',
@@ -9,6 +11,7 @@ import { NHLRosterDto } from '../../services/nhl';
   ]
 })
 export class RosterComponent implements OnInit {
+  nhlForm!: FormGroup;
   roster: NHLRosterDto[] = [];
   isLoading: boolean = false;
   errMessage: string = "";
@@ -21,6 +24,24 @@ export class RosterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const currentYear = new Date().getFullYear();
+    this.nhlForm = new FormGroup({
+      team: new FormControl(''),
+      name: new FormControl(''),
+      position: new FormControl(''),
+      number: new FormControl(''),
+      handed: new FormControl(''),
+      drafted: new FormControl(null,
+        [Validators.required,
+        yearRangeValidator(1900, currentYear), // Use the custom validator
+        Validators.pattern('^[0-9]{4}$')]
+      ),
+      birthCountry: new FormControl(''),
+      birthPlace: new FormControl(''),
+      age: new FormControl(''),
+      playerID: new FormControl({ value: '', disabled: true })
+    });
+
     this.isLoading = true;
     this.loadRoster();
     this.isLoading = false;
@@ -29,6 +50,7 @@ export class RosterComponent implements OnInit {
   resetAction() {
     this.errMessage = "";
     this.isAdding = false;
+    this.nhlForm.reset();
   }
 
   loadRoster() {
@@ -51,6 +73,7 @@ export class RosterComponent implements OnInit {
   editRow(row: any) {
     this.resetAction();
     this.selectedRow = { ...row }; // Create a copy of the row to edit
+    this.setFormValues(row);
     this.display = true;
   }
 
@@ -61,33 +84,42 @@ export class RosterComponent implements OnInit {
   }
 
   save() {
-    this.nhlService.SaveRoster(this.selectedRow).subscribe({
-      next: data => {
-        console.log('Player saved successfully', data);
-        this.loadRoster(); // reload the grid
-        this.display = false;
-      },
-      error: error => {
-        console.error('There was an error saving the player!', error);
-        this.errMessage = "There was an error saving the player. Please try again.";
-        this.display = true;
-      }
-    })
+    if (this.nhlForm.valid) {
+      // Update the selectedRow with the form values
+      this.refreshSelectedRow();
+
+      this.nhlService.SaveRoster(this.selectedRow).subscribe({
+        next: data => {
+          console.log('Player saved successfully', data);
+          this.loadRoster(); // reload the grid
+          this.display = false;
+        },
+        error: error => {
+          console.error('There was an error saving the player!', error);
+          this.errMessage = "There was an error saving the player. Please try again.";
+          this.display = true;
+        }
+      });
+    }
   }
 
   add() {
-    this.nhlService.AddRoster(this.selectedRow).subscribe({
-      next: data => {
-        console.log('Player added successfully', data);
-        this.loadRoster(); // reload the grid
-        this.display = false;
-      },
-      error: error => {
-        console.error('There was an error adding the player!', error);
-        this.errMessage = "There was an error adding the player. Please try again.";
-        this.display = true;
-      }
-    })
+
+    if (this.nhlForm.valid) {
+
+      this.nhlService.AddRoster(this.nhlForm.value).subscribe({
+        next: data => {
+          console.log('Player added successfully', data);
+          this.loadRoster(); // reload the grid
+          this.display = false;
+        },
+        error: error => {
+          console.error('There was an error adding the player!', error);
+          this.errMessage = "There was an error adding the player. Please try again.";
+          this.display = true;
+        }
+      });
+    }
   }
 
   delete(playerID: string) {
@@ -118,5 +150,30 @@ export class RosterComponent implements OnInit {
   onDialogHide() {
     this.selectedRow = {}
   };
+
+  setFormValues(row: any) {
+
+    this.nhlForm.setValue({
+      team: row.team || '',
+      name: row.name || '',
+      position: row.position || '',
+      number: row.number || '',
+      handed: row.handed || '',
+      drafted: row.drafted || '',
+      birthCountry: row.birthCountry || '',
+      birthPlace: row.birthPlace || '',
+      age: row.age || '',
+      playerID: row.playerID || ''
+    });
+
+  }
+
+  refreshSelectedRow() {
+    this.selectedRow = {
+      ...this.nhlForm.value, // Get all the current form values
+      playerID: this.selectedRow.playerID
+    };
+  }
 }
+
 

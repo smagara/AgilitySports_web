@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +19,7 @@ import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +31,7 @@ import { DialogModule } from 'primeng/dialog';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     NflModule,
     NbaModule,
     NhlModule,

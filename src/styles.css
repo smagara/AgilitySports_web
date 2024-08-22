@@ -141,3 +141,10 @@ td.actions {
   align-items: center;
   justify-content: center;
 }
+
+/* Styling for field-specific errors */
+.field-error {
+  color: #d9534f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
