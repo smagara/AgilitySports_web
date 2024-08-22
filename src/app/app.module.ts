@@ -14,6 +14,7 @@ import { MlbModule } from './mlb/mlb.module';
 import { PgaModule } from './pga/pga.module';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ButtonModule } from 'primeng/button';
     TieredMenuModule,
     ChartModule,
     ButtonModule,
+    DialogModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
