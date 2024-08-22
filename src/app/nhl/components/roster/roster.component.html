@@ -49,53 +49,61 @@
     </ng-template>
   </p-table>
 
-  <p-dialog header="NHL Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}" [responsive]="true"
-    (onHide)="onDialogHide()">
-    <form (ngSubmit)="isAdding ? add() : save()">
+  <p-dialog header="NHL Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}"
+    [responsive]="true" (onHide)="onDialogHide()">
+    <form [formGroup]="nhlForm" (ngSubmit)="isAdding ? add() : save()">
       <div class="p-fluid">
         <div class="p-field">
           <label for="team">Team</label>
-          <input id="team" pInputText [(ngModel)]="selectedRow.team" name="team" />
+          <input id="team" pInputText formControlName="team" />
         </div>
         <div class="p-field">
           <label for="name">Name</label>
-          <input id="name" pInputText [(ngModel)]="selectedRow.name" name="name" />
+          <input id="name" pInputText formControlName="name" />
         </div>
         <div class="p-field">
           <label for="position">Position</label>
-          <input id="position" pInputText [(ngModel)]="selectedRow.position" name="position" />
+          <input id="position" pInputText formControlName="position" />
         </div>
         <div class="p-field">
           <label for="number">Number</label>
-          <input id="number" pInputText [(ngModel)]="selectedRow.number" name="number" />
+          <input id="number" pInputText formControlName="number" />
         </div>
         <div class="p-field">
           <label for="handed">Handed</label>
-          <input id="handed" pInputText [(ngModel)]="selectedRow.handed" name="handed" />
+          <input id="handed" pInputText formControlName="handed" />
         </div>
         <div class="p-field">
-          <label for="drafted">Drafted</label>
-          <input id="drafted" pInputText [(ngModel)]="selectedRow.drafted" name="drafted" />
+          <label for="drafted">Drafted Year</label>
+          <input id="drafted" pInputText formControlName="drafted" maxlength="4" />
+          <div *ngIf="nhlForm.get('drafted')?.invalid && nhlForm.get('drafted')?.touched">
+            <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['required']">Drafted Year is required.
+            </div>
+            <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['pattern']">Drafted Year must be a 4-digit
+              year.</div>
+            <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['yearRange']">Drafted Year must be between
+              1900 - Current Year.</div>
+          </div>
         </div>
         <div class="p-field">
           <label for="birthCountry">Birth Country</label>
-          <input id="birthCountry" pInputText [(ngModel)]="selectedRow.birthCountry" name="birthCountry" />
+          <input id="birthCountry" pInputText formControlName="birthCountry" />
         </div>
         <div class="p-field">
           <label for="birthPlace">Birth Place</label>
-          <input id="birthPlace" pInputText [(ngModel)]="selectedRow.birthPlace" name="birthPlace" />
+          <input id="birthPlace" pInputText formControlName="birthPlace" />
         </div>
         <div class="p-field">
           <label for="age">Age</label>
-          <input id="age" pInputText [(ngModel)]="selectedRow.age" name="age" />
+          <input id="age" pInputText formControlName="age" />
         </div>
         <div class="p-field">
           <label for="playerID">PlayerID</label>
-          <input id="playerID" readonly pInputText [(ngModel)]="selectedRow.playerID" name="playerID" />
+          <input id="playerID" readonly pInputText formControlName="playerID" />
         </div>
 
-        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add" (click)="add()">Add</button>
-        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save" (click)="save()">Save</button>
+        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
+        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
         <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="hideDialog()"
           label="Cancel">Cancel</button>
       </div>
