@@ -99,3 +99,45 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
 .inputTitle {
   text-align: center;
 }
+
+.p-dialog .p-fluid {
+  padding: 20px;
+}
+
+.p-dialog .p-field {
+  margin-bottom: 1rem;
+}
+
+.errMessage {
+  color: darkred;
+  font-weight: bold;
+  margin: 2px 2px 2px 2px;
+}
+
+td.actions {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.instruction {
+  margin-left: 20px;
+  padding-left: 10px;
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.pageActions {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 3px;
+  background-color: #f9f9f9;
+  box-shadow: inset -3px -3px 5px #ffffff, /* Light from top right */
+              inset 3px 3px 5px #000000; /* Internal shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

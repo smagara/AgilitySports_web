@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 
 import { NhlRoutingModule } from './nhl-routing.module';
@@ -16,6 +18,8 @@ import { RosterComponent } from './components/roster/roster.component';
   imports: [
     CommonModule,
     TableModule,
+    DialogModule,
+    FormsModule,
     NhlRoutingModule
   ]
 })
