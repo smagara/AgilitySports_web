@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NhlService } from '../../services/nhl.service';
 import { NHLRosterDto } from '../../services/nhl';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'sports-roster',
@@ -42,9 +43,7 @@ export class RosterComponent implements OnInit {
       playerID: new FormControl({ value: '', disabled: true })
     });
 
-    this.isLoading = true;
     this.loadRoster();
-    this.isLoading = false;
   }
 
   resetAction() {
@@ -54,14 +53,17 @@ export class RosterComponent implements OnInit {
   }
 
   loadRoster() {
+    this.isLoading = true;
     this.nhlService.GetRoster().subscribe({
       next: data => {
         this.roster = data;
+        this.isLoading = false;
       },
       error: error => {
         console.error('There was an error fetching NHL roster data from the service!', error);
+        this.isLoading = false;
       }
-    })
+    });
   }
 
   addRow() {
