@@ -39,7 +39,12 @@ export class RosterComponent implements OnInit {
       ),
       birthCountry: new FormControl(''),
       birthPlace: new FormControl(''),
-      age: new FormControl(''),
+      age: new FormControl('',
+        [Validators.required,
+        Validators.min(18),
+        Validators.max(55),
+        Validators.pattern('^[0-9]+$')] // numbers only
+      ),
       playerID: new FormControl({ value: '', disabled: true })
     });
 
