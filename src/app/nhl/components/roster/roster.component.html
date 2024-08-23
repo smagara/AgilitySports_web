@@ -95,7 +95,13 @@
         </div>
         <div class="p-field">
           <label for="age">Age</label>
-          <input id="age" pInputText formControlName="age" />
+          <input id="age" pInputText formControlName="age" maxlength="3" />
+          <div *ngIf="nhlForm.get('age')?.invalid && nhlForm.get('age')?.touched">
+            <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['required']">Age is required.</div>
+            <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['min']">Age must be at least 18.</div>
+            <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['max']">Age can be up to 55.</div>
+            <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['pattern']">Age must a number.</div>
+          </div>
         </div>
         <div class="p-field">
           <label for="playerID">PlayerID</label>
