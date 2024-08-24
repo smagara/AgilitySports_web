@@ -49,34 +49,40 @@
     </ng-template>
   </p-table>
 
-  <p-dialog header="NHL Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}"
-    [responsive]="true" (onHide)="onDialogHide()">
-    <form [formGroup]="nhlForm" (ngSubmit)="isAdding ? add() : save()">
+  <p-dialog id="detailPopup" header="NHL Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '30vw'}"
+    [responsive]="true" class="custom-dialog" (onHide)="onDialogHide()">
+    <form [formGroup]="nhlForm" (ngSubmit)="isAdding ? add() : save(); isSubmitted = true">
       <div class="p-fluid">
-        <div class="p-field">
+        <hr class="divider" />
+        <div class="detailField">
           <label for="team">Team</label>
           <input id="team" pInputText formControlName="team" maxlength="50" />
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="name">Name</label>
-          <input id="name" pInputText formControlName="name" maxlength="50" />
+          <input id="name" pInputText formControlName="name" maxlength="50" placeholder="First Last..."/>
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="position">Position</label>
           <input id="position" pInputText formControlName="position" />
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="number">Number</label>
           <input id="number" pInputText formControlName="number" />
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="handed">Handed</label>
-          <input id="handed" pInputText formControlName="handed" />
+          <select id="handed" formControlName="handed" class="handed" title="handed" placeholder="Select Right, Left, Both...">
+            <option *ngFor="let theHand of handedList" [value]="theHand.hand">{{ theHand.label }}</option>
+          </select>
+          <div *ngIf="nhlForm.get('handed')?.invalid && (nhlForm.get('handed')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nhlForm.get('handed')?.errors?.['required']">Handed is required.</div>
+          </div>
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="drafted">Drafted Year</label>
-          <input id="drafted" pInputText formControlName="drafted" maxlength="4" />
-          <div *ngIf="nhlForm.get('drafted')?.invalid && nhlForm.get('drafted')?.touched">
+          <input id="drafted" pInputText formControlName="drafted" maxlength="4" placeholder="YYYY..." />
+          <div *ngIf="nhlForm.get('drafted')?.invalid && (nhlForm.get('drafted')?.touched || isSubmitted)">
             <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['required']">Drafted Year is required.
             </div>
             <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['pattern']">Drafted Year must be a 4-digit
@@ -85,33 +91,35 @@
               1900 - Current Year.</div>
           </div>
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="birthCountry">Birth Country</label>
           <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" />
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="birthPlace">Birth Place</label>
           <input id="birthPlace" pInputText formControlName="birthPlace" maxlength="50" />
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="age">Age</label>
           <input id="age" pInputText formControlName="age" maxlength="3" />
-          <div *ngIf="nhlForm.get('age')?.invalid && nhlForm.get('age')?.touched">
+          <div *ngIf="nhlForm.get('age')?.invalid && (nhlForm.get('age')?.touched || isSubmitted)">
             <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['required']">Age is required.</div>
             <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['min']">Age must be at least 18.</div>
             <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['max']">Age can be up to 55.</div>
             <div class="field-error" *ngIf="nhlForm.get('age')?.errors?.['pattern']">Age must a number.</div>
           </div>
         </div>
-        <div class="p-field">
+        <div class="detailField">
           <label for="playerID">PlayerID</label>
           <input id="playerID" readonly pInputText formControlName="playerID" />
         </div>
 
-        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
-        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
-        <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="hideDialog()"
-          label="Cancel">Cancel</button>
+        <div class="detailButton">
+          <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
+          <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
+          <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="hideDialog()"
+            label="Cancel">Cancel</button>
+        </div>
       </div>
       <div *ngIf="errMessage.length" class="errMessage">
         {{errMessage}}

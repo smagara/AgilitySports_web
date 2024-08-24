@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NhlService } from '../../services/nhl.service';
 import { NHLRosterDto } from '../../services/nhl';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
-import { delay } from 'rxjs';
+import { delay, switchMap, timer } from 'rxjs';
 
 @Component({
   selector: 'sports-roster',
@@ -19,6 +19,12 @@ export class RosterComponent implements OnInit {
   display: boolean = false;
   selectedRow: any = {};
   isAdding: boolean = false;
+  isSubmitted: boolean = false;
+  handedList: { label: string, hand: string }[] = [
+    { label: '*** Please Select ***', hand: '' },
+    { label: 'Left', hand: 'L' },
+    { label: 'Right', hand: 'R' },
+    { label: 'Both', hand: 'B' }];
 
   constructor(
     private nhlService: NhlService
@@ -31,7 +37,7 @@ export class RosterComponent implements OnInit {
       name: new FormControl(''),
       position: new FormControl(''),
       number: new FormControl(''),
-      handed: new FormControl(''),
+      handed: new FormControl(null, [Validators.required]),
       drafted: new FormControl(null,
         [Validators.required,
         yearRangeValidator(1900, currentYear), // Use the custom validator
@@ -54,6 +60,7 @@ export class RosterComponent implements OnInit {
   resetAction() {
     this.errMessage = "";
     this.isAdding = false;
+    this.isSubmitted = false;
     this.nhlForm.reset();
   }
 
@@ -97,9 +104,16 @@ export class RosterComponent implements OnInit {
 
       this.nhlService.SaveRoster(this.selectedRow).subscribe({
         next: data => {
-          console.log('Player saved successfully', data);
-          this.loadRoster(); // reload the grid
-          this.display = false;
+          console.log('Player updated successfully', data);
+          this.errMessage = "Player updated successfully!";
+
+          timer(2000).pipe(
+            switchMap(() => {
+              this.loadRoster(); // reload the grid
+              this.display = false;
+              return [];
+            })
+          ).subscribe();
         },
         error: error => {
           console.error('There was an error saving the player!', error);
@@ -116,9 +130,17 @@ export class RosterComponent implements OnInit {
 
       this.nhlService.AddRoster(this.nhlForm.value).subscribe({
         next: data => {
+
           console.log('Player added successfully', data);
-          this.loadRoster(); // reload the grid
-          this.display = false;
+          this.errMessage = "Player added successfully!";
+
+          timer(2000).pipe(
+            switchMap(() => {
+              this.loadRoster(); // reload the grid
+              this.display = false;
+              return [];
+            })
+          ).subscribe();
         },
         error: error => {
           console.error('There was an error adding the player!', error);
@@ -181,6 +203,7 @@ export class RosterComponent implements OnInit {
       playerID: this.selectedRow.playerID
     };
   }
+
 }
 
 
