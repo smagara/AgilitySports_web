@@ -69,6 +69,14 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   margin: 3px 0 0 3px;
 }
 
+.handed {
+  max-width: 15em;
+  min-width: 8em;
+  padding: 1px 0 0 1px;
+  max-height: 3em;
+  margin: 3px 0 0 3px;
+}
+
 .divider {
   width: 98%;
   color: lightgrey;
@@ -147,4 +155,44 @@ td.actions {
   color: #d9534f;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+
+.divider {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  border-top: darkblue 4px solid;
+}
+
+.detailField label, .detailField input, .detailField select {
+  display: inline-block;
+}
+
+.detailField input, .detailField select {
+  width: 40%;
+  text-align: left;
+  min-width: 140px;
+  margin:0;
+}
+
+.detailField label {
+  width: 10%;
+  min-width: 140px;
+  text-align: left;
+  padding-right: 2em;
+  padding-top: 1em;
+  font-weight: bold;
+}
+
+.detailButton {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 2em;
+}
+
+.detailButton button {
+  width: 5em;
+  min-width: 5em;
+  text-align: center;
 }
