@@ -64,8 +64,12 @@
         </div>
         <div class="detailField">
           <label for="position">Position</label>
-          <input id="position" pInputText formControlName="position" />
-        </div>
+          <app-position-dropdown id="position" [sport]="'nhl'" formControlName="position" />
+          <div *ngIf="nhlForm.get('position')?.invalid && (nhlForm.get('position')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nhlForm.get('position')?.errors?.['required']">Position is required.</div>
+            <div class="field-error" *ngIf="nhlForm.get('position')?.errors?.['nonEmptyString']">Position cannot be empty.</div>
+          </div>
+        </div>        
         <div class="detailField">
           <label for="number">Number</label>
           <input id="number" pInputText formControlName="number" />

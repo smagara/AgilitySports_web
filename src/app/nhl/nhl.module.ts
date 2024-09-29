@@ -1,15 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import FormsModule
 import { DialogModule } from 'primeng/dialog';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
+import { TableModule } from 'primeng/table';
 
-
+import { StaticData } from '../staticdata/staticdata.module';
+import { RosterComponent } from './components/roster/roster.component';
 import { NhlRoutingModule } from './nhl-routing.module';
 import { NhlComponent } from './nhl.component';
-import { RosterComponent } from './components/roster/roster.component';
-
 
 @NgModule({
   declarations: [
@@ -22,6 +20,7 @@ import { RosterComponent } from './components/roster/roster.component';
     DialogModule,
     FormsModule,
     ReactiveFormsModule,
+    StaticData,
     NhlRoutingModule
   ]
 })
