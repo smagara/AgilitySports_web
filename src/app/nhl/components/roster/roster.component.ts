@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { NhlService } from '../../services/nhl.service';
-import { NHLRosterDto } from '../../services/nhl';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { switchMap, timer } from 'rxjs';
+import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
-import { delay, switchMap, timer } from 'rxjs';
+import { NHLRosterDto } from '../../services/nhl';
+import { NhlService } from '../../services/nhl.service';
 
 @Component({
   selector: 'sports-roster',
@@ -35,7 +36,7 @@ export class RosterComponent implements OnInit {
     this.nhlForm = new FormGroup({
       team: new FormControl(''),
       name: new FormControl(''),
-      position: new FormControl(''),
+      position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
       number: new FormControl(''),
       handed: new FormControl(null, [Validators.required]),
       drafted: new FormControl(null,
