@@ -72,7 +72,11 @@
         </div>        
         <div class="detailField">
           <label for="number">Number</label>
-          <input id="number" pInputText formControlName="number" />
+          <input id="number" pInputText formControlName="number" maxlength="5"/>
+          <div *ngIf="nhlForm.get('number')?.invalid && (nhlForm.get('number')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nhlForm.get('number')?.errors?.['required']">Player Number is required.</div>
+            <div class="field-error" *ngIf="nhlForm.get('number')?.errors?.['pattern']">Player Number must be numeric up to 5 digits.</div>
+          </div>
         </div>
         <div class="detailField">
           <label for="handed">Handed</label>

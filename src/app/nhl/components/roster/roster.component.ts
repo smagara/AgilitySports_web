@@ -37,7 +37,8 @@ export class RosterComponent implements OnInit {
       team: new FormControl(''),
       name: new FormControl(''),
       position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
-      number: new FormControl(''),
+      number: new FormControl('', [Validators.required, 
+        Validators.pattern('^[0-9]+$')]), // numbers only
       handed: new FormControl(null, [Validators.required]),
       drafted: new FormControl(null,
         [Validators.required,
