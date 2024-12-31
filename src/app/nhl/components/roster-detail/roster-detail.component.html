@@ -8,19 +8,22 @@
         <input id="team" pInputText formControlName="team" maxlength="50" />
         <div *ngIf="shouldValidate() && nhlForm.get('team')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('team')?.errors?.['required']">Team is required.</div>
-        </div>      </div>
+          <div class="field-error" *ngIf="nhlForm.get('team')?.errors?.['nonEmptyString']">Team cannot be empty.</div>
+        </div>
+      </div>
       <div class="detailField">
         <label for="name">Name</label>
         <input id="name" pInputText formControlName="name" maxlength="50" placeholder="First Last..." />
         <div *ngIf="shouldValidate() && nhlForm.get('name')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('name')?.errors?.['required']">Name is required.</div>
-        </div>      </div>
+          <div class="field-error" *ngIf="nhlForm.get('name')?.errors?.['nonEmptyString']">Name cannot be empty.</div>
+        </div>
+      </div>
       <div class="detailField">
         <label for="position">Position</label>
         <app-position-dropdown id="position" [sport]="'nhl'" formControlName="position" />
         <div *ngIf="shouldValidate() && nhlForm.get('position')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('position')?.errors?.['required']">Position is required.</div>
-          <div class="field-error" *ngIf="nhlForm.get('position')?.errors?.['nonEmptyString']">Position cannot be empty.</div>
         </div>
       </div>
       <div class="detailField">
@@ -33,7 +36,7 @@
       </div>
       <div class="detailField">
         <label for="handed">Handed</label>
-        <select id="handed" formControlName="handed" class="handed" title="handed" placeholder="Select Right, Left, Both...">
+        <select id="handed" formControlName="handed" class="handed" title="handed">
           <option *ngFor="let theHand of handedList" [value]="theHand.hand">{{ theHand.label }}</option>
         </select>
         <div *ngIf="shouldValidate() && nhlForm.get('handed')?.invalid">
@@ -45,8 +48,10 @@
         <input id="drafted" pInputText formControlName="drafted" maxlength="4" placeholder="YYYY..." />
         <div *ngIf="shouldValidate() && nhlForm.get('drafted')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['required']">Drafted Year is required.</div>
-          <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['pattern']">Drafted Year must be a 4-digit year.</div>
-          <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['yearRange']">Drafted Year must be between 1900 - Current Year.</div>
+          <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['pattern']">Drafted Year must be a 4-digit
+            year.</div>
+          <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['yearRange']">Drafted Year must be between
+            1900 - Current Year.</div>
         </div>
       </div>
       <div class="detailField">
@@ -75,7 +80,8 @@
       <div class="detailButton">
         <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
         <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
-        <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="onHideDialog()" label="Cancel">Cancel</button>
+        <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="onHideDialog()"
+          label="Cancel">Cancel</button>
       </div>
     </div>
     <div *ngIf="errMessage.length" class="errMessage">

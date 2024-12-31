@@ -34,7 +34,7 @@ export class RosterComponent implements OnInit {
     this.nhlForm = new FormGroup({
       team: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
       name: new FormControl('',  [Validators.required, nonEmptyStringValidator()]),
-      position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
+      position: new FormControl('', [Validators.required /*, nonEmptyStringValidator() not needed */]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
       handed: new FormControl(null, [Validators.required]),
       drafted: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
