@@ -27,46 +27,28 @@ export class RosterComponent implements OnInit {
     { label: 'Right', hand: 'R' },
     { label: 'Both', hand: 'B' }];
 
-  constructor(
-    private nhlService: NhlService
-  ) { }
+  constructor(private nhlService: NhlService) { }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
     this.nhlForm = new FormGroup({
-      team: new FormControl(''),
-      name: new FormControl(''),
+      team: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
+      name: new FormControl('',  [Validators.required, nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
-      number: new FormControl('', [Validators.required, 
-        Validators.pattern('^[0-9]+$')]), // numbers only
+      number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
       handed: new FormControl(null, [Validators.required]),
-      drafted: new FormControl(null,
-        [Validators.required,
-        yearRangeValidator(1900, currentYear), // Use the custom validator
-        Validators.pattern('^[0-9]{4}$')]
-      ),
+      drafted: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
       birthCountry: new FormControl(''),
       birthPlace: new FormControl(''),
-      age: new FormControl('',
-        [Validators.required,
-        Validators.min(18),
-        Validators.max(55),
-        Validators.pattern('^[0-9]+$')] // numbers only
-      ),
+      age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(55), Validators.pattern('^[0-9]+$')]),
       playerID: new FormControl({ value: '', disabled: true })
     });
 
     this.loadRoster();
   }
 
-  resetAction() {
-    this.errMessage = "";
-    this.isAdding = false;
-    this.isSubmitted = false;
-    this.nhlForm.reset();
-  }
-
   loadRoster() {
+    this.resetAction();
     this.isLoading = true;
     this.nhlService.GetRoster().subscribe({
       next: data => {
@@ -93,67 +75,7 @@ export class RosterComponent implements OnInit {
     this.display = true;
   }
 
-  deleteRow(row: any) {
-    this.resetAction();
-    this.display = false;
-    this.delete(row.playerID);
-  }
-
-  save() {
-    if (this.nhlForm.valid) {
-      // Update the selectedRow with the form values
-      this.refreshSelectedRow();
-
-      this.nhlService.SaveRoster(this.selectedRow).subscribe({
-        next: data => {
-          console.log('Player updated successfully', data);
-          this.errMessage = "Player updated successfully!";
-
-          timer(2000).pipe(
-            switchMap(() => {
-              this.loadRoster(); // reload the grid
-              this.display = false;
-              return [];
-            })
-          ).subscribe();
-        },
-        error: error => {
-          console.error('There was an error saving the player!', error);
-          this.errMessage = "There was an error saving the player. Please try again.";
-          this.display = true;
-        }
-      });
-    }
-  }
-
-  add() {
-
-    if (this.nhlForm.valid) {
-
-      this.nhlService.AddRoster(this.nhlForm.value).subscribe({
-        next: data => {
-
-          console.log('Player added successfully', data);
-          this.errMessage = "Player added successfully!";
-
-          timer(2000).pipe(
-            switchMap(() => {
-              this.loadRoster(); // reload the grid
-              this.display = false;
-              return [];
-            })
-          ).subscribe();
-        },
-        error: error => {
-          console.error('There was an error adding the player!', error);
-          this.errMessage = "There was an error adding the player. Please try again.";
-          this.display = true;
-        }
-      });
-    }
-  }
-
-  delete(playerID: string) {
+  deleteRow(playerID: string) {
     if (!playerID) {
       console.error('No player selected to delete!');
       this.errMessage = "No player selected to delete!";
@@ -180,10 +102,9 @@ export class RosterComponent implements OnInit {
 
   onDialogHide() {
     this.selectedRow = {}
-  };
+  }
 
   setFormValues(row: any) {
-
     this.nhlForm.setValue({
       team: row.team || '',
       name: row.name || '',
@@ -196,7 +117,6 @@ export class RosterComponent implements OnInit {
       age: row.age || '',
       playerID: row.playerID || ''
     });
-
   }
 
   refreshSelectedRow() {
@@ -206,6 +126,61 @@ export class RosterComponent implements OnInit {
     };
   }
 
+  save() {
+    this.isSubmitted = true;
+    if (this.nhlForm.valid) {
+      this.refreshSelectedRow();
+      this.nhlService.SaveRoster(this.selectedRow).subscribe({
+        next: data => {
+          console.log('Player updated successfully', data);
+          this.errMessage = "Player updated successfully!";
+          timer(2000).pipe(
+            switchMap(() => {
+              this.loadRoster();
+              this.display = false;
+              this.resetAction();
+              return [];
+            })
+          ).subscribe();
+        },
+        error: error => {
+          console.error('There was an error saving the player!', error);
+          this.errMessage = "There was an error saving the player. Please try again.";
+          this.display = true;
+        }
+      });
+    }
+  }
+
+  add() {
+    this.isSubmitted = true;
+    if (this.nhlForm.valid) {
+      this.nhlService.AddRoster(this.nhlForm.value).subscribe({
+        next: data => {
+          console.log('Player added successfully', data);
+          this.errMessage = "Player added successfully!";
+          timer(2000).pipe(
+            switchMap(() => {
+              this.loadRoster();
+              this.display = false;
+              this.resetAction();
+              return [];
+            })
+          ).subscribe();
+        },
+        error: error => {
+          console.error('There was an error adding the player!', error);
+          this.errMessage = "There was an error adding the player. Please try again.";
+          this.display = true;
+        }
+      });
+    }
+  }
+
+  resetAction() {
+    this.errMessage = "";
+    this.isAdding = false;
+    this.isSubmitted = false;
+    this.nhlForm.reset();
+  }
 }
-
-
