@@ -8,11 +8,15 @@ import { StaticData } from '../staticdata/staticdata.module';
 import { RosterComponent } from './components/roster/roster.component';
 import { NhlRoutingModule } from './nhl-routing.module';
 import { NhlComponent } from './nhl.component';
+import { RosterListComponent } from './components/roster-list/roster-list.component';
+import { RosterDetailComponent } from './components/roster-detail/roster-detail.component';
 
 @NgModule({
   declarations: [
     NhlComponent,
-    RosterComponent
+    RosterComponent,
+    RosterListComponent,
+    RosterDetailComponent
   ],
   imports: [
     CommonModule,
