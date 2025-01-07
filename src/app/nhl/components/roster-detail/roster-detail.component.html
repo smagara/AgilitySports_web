@@ -5,7 +5,7 @@
       <hr class="divider" />
       <div class="detailField">
         <label for="team">Team</label>
-        <input id="team" pInputText formControlName="team" maxlength="50" />
+        <input id="team" formControlName="team" maxlength="50" appTrim />
         <div *ngIf="shouldValidate() && nhlForm.get('team')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('team')?.errors?.['required']">Team is required.</div>
           <div class="field-error" *ngIf="nhlForm.get('team')?.errors?.['nonEmptyString']">Team cannot be empty.</div>
