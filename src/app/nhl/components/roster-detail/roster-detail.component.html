@@ -5,7 +5,7 @@
       <hr class="divider" />
       <div class="detailField">
         <label for="team">Team</label>
-        <input id="team" pInputText formControlName="team" maxlength="50" />
+        <input id="team" formControlName="team" maxlength="50" appTrim />
         <div *ngIf="shouldValidate() && nhlForm.get('team')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('team')?.errors?.['required']">Team is required.</div>
           <div class="field-error" *ngIf="nhlForm.get('team')?.errors?.['nonEmptyString']">Team cannot be empty.</div>
@@ -13,7 +13,7 @@
       </div>
       <div class="detailField">
         <label for="name">Name</label>
-        <input id="name" pInputText formControlName="name" maxlength="50" placeholder="First Last..." />
+        <input id="name" pInputText formControlName="name" maxlength="50" placeholder="First Last..." appTrim />
         <div *ngIf="shouldValidate() && nhlForm.get('name')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('name')?.errors?.['required']">Name is required.</div>
           <div class="field-error" *ngIf="nhlForm.get('name')?.errors?.['nonEmptyString']">Name cannot be empty.</div>
@@ -56,11 +56,11 @@
       </div>
       <div class="detailField">
         <label for="birthCountry">Birth Country</label>
-        <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" />
+        <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" appTrim />
       </div>
       <div class="detailField">
         <label for="birthPlace">Birth Place</label>
-        <input id="birthPlace" pInputText formControlName="birthPlace" maxlength="50" />
+        <input id="birthPlace" pInputText formControlName="birthPlace" maxlength="50" appTrim />
       </div>
       <div class="detailField">
         <label for="age">Age</label>
