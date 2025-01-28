@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import For
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 
-import { TrimDirective } from '../common/directives/trim.directive';
+import { SharedModule } from '../shared/shared.module';
 import { StaticData } from '../staticdata/staticdata.module';
 import { RosterDetailComponent } from './components/roster-detail/roster-detail.component';
 import { RosterListComponent } from './components/roster-list/roster-list.component';
@@ -17,8 +17,7 @@ import { NhlComponent } from './nhl.component';
     NhlComponent,
     RosterComponent,
     RosterListComponent,
-    RosterDetailComponent,
-    TrimDirective
+    RosterDetailComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +25,7 @@ import { NhlComponent } from './nhl.component';
     DialogModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     StaticData,
     NhlRoutingModule
   ]
