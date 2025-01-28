@@ -5,15 +5,15 @@
     <hr class="divider" />
     <div class="detailField">
       <label for="team">Team</label>
-      <input id="team" pInputText formControlName="team" maxlength="50" />
+      <input id="team" pInputText formControlName="team" maxlength="50" appTrim />
     </div>
     <div class="detailField">
       <label for="firstName">First Name</label>
-      <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First name..." />
+      <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First name..." appTrim />
     </div>
     <div class="detailField">
       <label for="lastName">Last Name</label>
-      <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last name..." />
+      <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last name..." appTrim />
     </div>
     <div class="detailField">
       <label for="position">Position</label>
@@ -26,7 +26,7 @@
     </div>
     <div class="detailField">
       <label for="number">Number</label>
-      <input id="number" pInputText formControlName="number" maxlength="5" />
+      <input id="number" pInputText formControlName="number" maxlength="5"  appTrim />
       <div *ngIf="nbaForm.get('number')?.invalid && (nbaForm.get('number')?.touched || isSubmitted)">
         <div class="field-error" *ngIf="nbaForm.get('number')?.errors?.['required']">Player Number is required.
         </div>
@@ -36,7 +36,7 @@
     </div>
     <div class="detailField">
       <label for="height">Height</label>
-      <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" />
+      <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
       <div *ngIf="nbaForm.get('height')?.invalid && (nbaForm.get('height')?.touched || isSubmitted)">
         <div class="field-error" *ngIf="nbaForm.get('height')?.errors?.['required']">Height is required.</div>
         <div class="field-error" *ngIf="nbaForm.get('height')?.errors?.['pattern']">Height must be in the format of
@@ -45,7 +45,7 @@
     </div>
     <div class="detailField">
       <label for="weight">Weight</label>
-      <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" />
+      <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
       <div *ngIf="nbaForm.get('weight')?.invalid && (nbaForm.get('weight')?.touched || isSubmitted)">
         <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['required']">Weight is required.</div>
         <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['min']">Weight must be at least 98.</div>
@@ -66,7 +66,7 @@
     </div>
     <div class="detailField">
       <label for="college">College</label>
-      <input id="college" pInputText formControlName="college" maxlength="50" />
+      <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
     </div>
     <div class="detailField">
       <label for="playerID">PlayerID</label>
