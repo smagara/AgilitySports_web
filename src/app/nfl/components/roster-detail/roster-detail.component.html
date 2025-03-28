@@ -1,0 +1,91 @@
+<p-dialog id="detailPopup" header="NFL Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '30vw'}"
+[responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
+<form [formGroup]="nflForm" (ngSubmit)="isAdding ? onAdd() : onSave(); isSubmitted = true">
+  <div class="p-fluid">
+    <hr class="divider" />
+    <div class="detailField">
+      <label for="team">Team</label>
+      <input id="team" pInputText formControlName="team" maxlength="50" appTrim />
+      <div *ngIf="nflForm.get('team')?.invalid && (nflForm.get('team')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('team')?.errors?.['required']">Team is required.
+        </div>
+      </div>
+    </div>
+    </div>    <div class="detailField">
+      <label for="name">Name</label>
+      <input id="name" pInputText formControlName="name" maxlength="50" placeholder="First Last..." appTrim readonly />
+      <div *ngIf="nflForm.get('name')?.invalid && (nflForm.get('name')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('name')?.errors?.['required']">Player Name is required.
+        </div>
+      </div>
+    </div>    
+    <div class="detailField">
+      <label for="position">Position</label>
+      <app-position-dropdown id="position" [sport]="'nfl'" formControlName="position" />
+      <div *ngIf="nflForm.get('position')?.invalid && (nflForm.get('position')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('position')?.errors?.['required']">Position is required.</div>
+        <div class="field-error" *ngIf="nflForm.get('position')?.errors?.['nonEmptyString']">Position cannot be
+          empty.</div>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="number">Number</label>
+      <input id="number" pInputText formControlName="number" maxlength="5"  appTrim />
+      <div *ngIf="nflForm.get('number')?.invalid && (nflForm.get('number')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('number')?.errors?.['required']">Player Number is required.
+        </div>
+        <div class="field-error" *ngIf="nflForm.get('number')?.errors?.['pattern']">Player Number must be numeric up
+          to 5 digits.</div>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="height">Height</label>
+      <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
+      <div *ngIf="nflForm.get('height')?.invalid && (nflForm.get('height')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('height')?.errors?.['required']">Height is required.</div>
+        <div class="field-error" *ngIf="nflForm.get('height')?.errors?.['pattern']">Height must be in the format of
+          Feet-Inches.</div>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="weight">Weight</label>
+      <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
+      <div *ngIf="nflForm.get('weight')?.invalid && (nflForm.get('weight')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('weight')?.errors?.['required']">Weight is required.</div>
+        <div class="field-error" *ngIf="nflForm.get('weight')?.errors?.['min']">Weight must be at least 98.</div>
+        <div class="field-error" *ngIf="nflForm.get('weight')?.errors?.['max']">Weight cannot exceed 500.</div>
+        <div class="field-error" *ngIf="nflForm.get('weight')?.errors?.['pattern']">Weight must be numeric up to 3
+          digits.</div>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="age">Age</label>
+      <input id="age" pInputText formControlName="age" maxlength="2"  appTrim />
+      <div *ngIf="nflForm.get('age')?.invalid && (nflForm.get('age')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('age')?.errors?.['required']">Player Age is required.
+        </div>
+        <div class="field-error" *ngIf="nflForm.get('age')?.errors?.['pattern']">Player Age must be numeric up
+          to 2 digits.</div>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="college">College</label>
+      <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
+    </div>
+    <div class="detailField">
+      <label for="playerID">PlayerID</label>
+      <input id="playerID" readonly pInputText formControlName="playerID" />
+    </div>
+
+    <div class="detailButton">
+      <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
+      <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
+      <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="onHideDialog()"
+        label="Cancel">Cancel</button>
+    </div>
+  </div>
+  <div *ngIf="errMessage.length" class="errMessage">
+    {{errMessage}}
+  </div>
+</form>
+</p-dialog>
