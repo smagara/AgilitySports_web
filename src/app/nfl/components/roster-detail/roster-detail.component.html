@@ -11,14 +11,22 @@
         </div>
       </div>
     </div>
-    </div>    <div class="detailField">
-      <label for="name">Name</label>
-      <input id="name" pInputText formControlName="name" maxlength="50" placeholder="First Last..." appTrim readonly />
-      <div *ngIf="nflForm.get('name')?.invalid && (nflForm.get('name')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nflForm.get('name')?.errors?.['required']">Player Name is required.
+    <div class="detailField">
+      <label for="firstName">First Name</label>
+      <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First ..." appTrim />
+      <div *ngIf="nflForm.get('firstName')?.invalid && (nflForm.get('firstName')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('firstName')?.errors?.['required']">Player First Name is required.
         </div>
       </div>
-    </div>    
+    </div>
+    <div class="detailField">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last ..." appTrim />
+      <div *ngIf="nflForm.get('lastName')?.invalid && (nflForm.get('lastName')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nflForm.get('lastName')?.errors?.['required']">Player Last Name is required.
+        </div>
+      </div>
+    </div>
     <div class="detailField">
       <label for="position">Position</label>
       <app-position-dropdown id="position" [sport]="'nfl'" formControlName="position" />

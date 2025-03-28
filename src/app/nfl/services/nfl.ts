@@ -4,7 +4,8 @@ export interface Nfl {
 export interface NFLRosterDto {
     playerID: number;
     team: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     position: string;
     number: string;
     height: string;

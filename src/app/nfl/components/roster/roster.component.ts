@@ -27,14 +27,16 @@ export class RosterComponent implements OnInit {
     this.nflForm = new FormGroup({
       team: new FormControl('', [Validators.required,
       nonEmptyStringValidator()]),
-      name: new FormControl('', [Validators.required,
+      firstName: new FormControl('', [Validators.required,
+      nonEmptyStringValidator()]),
+      lastName: new FormControl('', [Validators.required,
       nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required,
       nonEmptyStringValidator()]),
       number: new FormControl('', [Validators.required,
       Validators.pattern('^[0-9]+$')]), // numbers only
       height: new FormControl(null, [Validators.required,
-      Validators.pattern('^[0-9]+\' [0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
+      Validators.pattern('^[0-9]+\' ?[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
       weight: new FormControl(null, [Validators.required,
       Validators.min(98),
       Validators.max(500),
@@ -95,7 +97,8 @@ export class RosterComponent implements OnInit {
       const playerToSave: NFLRosterDto = {
         playerID: this.selectedRow.playerID,
         team: this.selectedRow.team || '',
-        name: this.selectedRow.name || '',
+        firstName: this.selectedRow.firstName || '',
+        lastName: this.selectedRow.lastName || '',
         position: this.selectedRow.position || '',
         number: this.selectedRow.number || '',
         height: this.selectedRow.height || '',
@@ -133,7 +136,8 @@ export class RosterComponent implements OnInit {
       const playerToAdd: NFLRosterDto = {
         playerID: -1, // Adds will generate a new ID
         team: this.nflForm.get('team')?.value || '',
-        name: this.nflForm.get('name')?.value || '',
+        firstName: this.nflForm.get('firstName')?.value || '',
+        lastName: this.nflForm.get('lastName')?.value || '',
         position: this.nflForm.get('position')?.value || '',
         number: this.nflForm.get('number')?.value || '',
         height: this.nflForm.get('height')?.value || '',
@@ -198,7 +202,8 @@ export class RosterComponent implements OnInit {
 
     this.nflForm.setValue({
       team: row.team || '',
-      name: row.name || '',
+      firstName: row.firstName || '',
+      lastName: row.lastName || '',
       position: row.position || '',
       number: row.number || '',
       height: row.height || '',
