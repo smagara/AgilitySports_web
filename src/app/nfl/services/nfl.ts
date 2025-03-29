@@ -10,6 +10,6 @@ export interface NFLRosterDto {
     number: string;
     height: string;
     weight: string;
-    ageExact: number;
+    age: number;
     college: string;
 }

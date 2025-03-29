@@ -83,12 +83,6 @@ export class RosterComponent implements OnInit {
     this.display = true;
   }
 
-  deleteRow(row: any) {
-    this.resetAction();
-    this.display = false;
-    this.delete(row.playerID);
-  }
-
   save() {
     if (this.nflForm.valid) {
       // Update the selectedRow with the form values
@@ -104,7 +98,7 @@ export class RosterComponent implements OnInit {
         height: this.selectedRow.height || '',
         weight: this.selectedRow.weight || '',
         college: this.selectedRow.college || '',
-        ageExact: this.selectedRow.ageExact || 0
+        age: this.selectedRow.age || 0
       };
 
       this.nflService.SaveRoster(playerToSave).subscribe({
@@ -143,7 +137,7 @@ export class RosterComponent implements OnInit {
         height: this.nflForm.get('height')?.value || '',
         weight: this.nflForm.get('weight')?.value || '',
         college: this.nflForm.get('college')?.value || '',
-        ageExact: this.nflForm.get('age')?.value || 0
+        age: this.nflForm.get('age')?.value || 0
       };
 
       this.nflService.AddRoster(playerToAdd).subscribe({
@@ -169,12 +163,12 @@ export class RosterComponent implements OnInit {
     }
   }
 
-  delete(playerID: string) {
+  deleteRow(playerID: string) {
     if (!playerID) {
       console.error('No player selected to delete!');
       this.errMessage = "No player selected to delete!";
       this.display = true;
-      return; ``
+      return;
     }
     this.nflService.DeleteRoster(playerID).subscribe({
       next: data => {
@@ -210,7 +204,7 @@ export class RosterComponent implements OnInit {
       weight: row.weight || '',
       college: row.college || '',
       playerID: row.playerID || '',
-      age: row.ageExact || 0
+      age: row.age || 0
     });
 
   }
