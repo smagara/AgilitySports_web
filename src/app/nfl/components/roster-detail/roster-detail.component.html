@@ -1,6 +1,6 @@
 <p-dialog id="detailPopup" header="NFL Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '30vw'}"
 [responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
-<form [formGroup]="nflForm" (ngSubmit)="isAdding ? onAdd() : onSave(); isSubmitted = true">
+<form [formGroup]="nflForm" (ngSubmit)="isAdding ? onAdd() : onSave();">
   <div class="p-fluid">
     <hr class="divider" />
     <div class="detailField">
