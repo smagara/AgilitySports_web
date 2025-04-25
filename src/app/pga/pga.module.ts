@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import { PgaRoutingModule } from './pga-routing.module';
-import { PgaComponent } from './pga.component';
+import { PgaComponent } from './components/pga.component';
 import { SeasonComponent } from './components/season/season.component';
 import { TournamentComponent } from './components/tournament/tournament.component';
-
+import { PgaRoutingModule } from './pga-routing.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,9 @@ import { TournamentComponent } from './components/tournament/tournament.componen
   ],
   imports: [
     CommonModule,
-    PgaRoutingModule
-  ]
+    PgaRoutingModule,
+    RouterModule
+  ],
+  exports: [PgaComponent]
 })
 export class PgaModule { }
