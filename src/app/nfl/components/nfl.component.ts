@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-mlb',
+  selector: 'app-nfl',
   template: '<router-outlet></router-outlet>'
 })
-export class MlbComponent {}
+export class NflComponent {} 

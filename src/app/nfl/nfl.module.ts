@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import FormsModule
+import { RouterModule } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 
+import { NflComponent } from './components/nfl.component';
 import { RosterComponent } from './components/roster/roster.component';
 import { NflRoutingModule } from './nfl-routing.module';
-import { NflComponent } from './nfl.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { StaticData } from '../staticdata/staticdata.module';
@@ -29,7 +30,9 @@ import { RosterListComponent } from './components/roster-list/roster-list.compon
     ReactiveFormsModule,
     SharedModule,
     StaticData,
-    NflRoutingModule
-  ]
+    NflRoutingModule,
+    RouterModule
+  ],
+  exports: [NflComponent]
 })
 export class NflModule { }
