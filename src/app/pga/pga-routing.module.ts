@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PgaComponent } from './components/pga.component';
 import { SeasonComponent } from './components/season/season.component';
 import { TournamentComponent } from './components/tournament/tournament.component';
-import { PgaComponent } from './pga.component';
 
 const routes: Routes = [{
   path: "pga",
