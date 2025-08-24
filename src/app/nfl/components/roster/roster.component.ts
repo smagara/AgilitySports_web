@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
+import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { NFLRosterDto } from '../../services/nfl';
 import { NflService } from '../../services/nfl.service';
@@ -25,25 +26,15 @@ export class RosterComponent implements OnInit {
 
   ngOnInit(): void {
     this.nflForm = new FormGroup({
-      team: new FormControl('', [Validators.required,
-      nonEmptyStringValidator()]),
-      firstName: new FormControl('', [Validators.required,
-      nonEmptyStringValidator()]),
-      lastName: new FormControl('', [Validators.required,
-      nonEmptyStringValidator()]),
-      position: new FormControl('', [Validators.required,
-      nonEmptyStringValidator()]),
-      number: new FormControl('', [Validators.required,
-      Validators.pattern('^[0-9]+$')]), // numbers only
-      height: new FormControl(null, [Validators.required,
-      Validators.pattern('^[0-9]+\' ?[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
-      weight: new FormControl(null, [Validators.required,
-      Validators.min(98),
-      Validators.max(500),
-      Validators.pattern('^[0-9]+$')]),
-      college: new FormControl(''),
-      age: new FormControl('', [Validators.required,
-      Validators.pattern('^[0-9]+$')]), // numbers only
+      team: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
+      firstName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
+      lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
+      position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
+      number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
+      height: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]+\' ?[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
+      weight: new FormControl(null, [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]+$')]),
+      college: new FormControl('', [noXssValidator()]),
+      age: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
       playerID: new FormControl({ value: '', disabled: true })
     });
     this.loadRoster();
@@ -54,6 +45,7 @@ export class RosterComponent implements OnInit {
     this.isAdding = false;
     this.isSubmitted = false;
     this.nflForm.reset();
+    this.nflForm.markAsUntouched();
   }
 
   loadRoster() {
@@ -84,6 +76,7 @@ export class RosterComponent implements OnInit {
   }
 
   save() {
+    this.isSubmitted = true;
     if (this.nflForm.valid) {
       // Update the selectedRow with the form values
       this.refreshSelectedRow();
@@ -124,7 +117,7 @@ export class RosterComponent implements OnInit {
   }
 
   add() {
-
+    this.isSubmitted = true;
     if (this.nflForm.valid) {
 
       const playerToAdd: NFLRosterDto = {
@@ -186,10 +179,12 @@ export class RosterComponent implements OnInit {
 
   hideDialog() {
     this.display = false;
+    this.resetAction(); // Reset form state when dialog is closed
   }
 
   onDialogHide() {
     this.selectedRow = {}
+    this.resetAction(); // Reset form state when dialog is hidden
   };
 
   setFormValues(row: any) {
