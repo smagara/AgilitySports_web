@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
+import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
+import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
 import { NBARosterDto } from '../../services/nba';
 import { NbaService } from '../../services/nba.service';
-import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
 
 @Component({
   selector: 'sports-roster',
@@ -27,25 +28,25 @@ export class RosterComponent implements OnInit {
 
   ngOnInit(): void {
     this.nbaForm = new FormGroup({
-      team: new FormControl(''),
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
+      team: new FormControl('', [noXssValidator()]),
+      firstName: new FormControl('', [noXssValidator()]),
+      lastName: new FormControl('', [noXssValidator()]),
       position: new FormControl('', [Validators.required,
-      nonEmptyStringValidator()]),
+        nonEmptyStringValidator()]),
       number: new FormControl('', [Validators.required,
-      Validators.pattern('^[0-9]+$')]), // numbers only
+        Validators.pattern('^[0-9]+$')]), // numbers only
       height: new FormControl(null, [Validators.required,
-      Validators.pattern('^[0-9]+\' [0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
+        Validators.pattern('^[0-9]+\' [0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
       weight: new FormControl(null, [Validators.required,
-      Validators.min(98),
-      Validators.max(500),
-      Validators.pattern('^[0-9]+$')]),
+        Validators.min(98),
+        Validators.max(500),
+        Validators.pattern('^[0-9]+$')]),
       dateOfBirth: new FormControl(null,
         [Validators.required,
-        yearRangeValidator(1900, new Date().getFullYear()), // Use the custom validator
-        Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]
+          yearRangeValidator(1900, new Date().getFullYear()), // Use the custom validator
+          Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]
       ),
-      college: new FormControl(''),
+      college: new FormControl('', [noXssValidator()]),
       playerID: new FormControl({ value: '', disabled: true })
     });
     this.loadRoster();
@@ -56,6 +57,7 @@ export class RosterComponent implements OnInit {
     this.isAdding = false;
     this.isSubmitted = false;
     this.nbaForm.reset();
+    this.nbaForm.markAsUntouched();
   }
 
   loadRoster() {
@@ -92,6 +94,7 @@ export class RosterComponent implements OnInit {
   }
 
   save() {
+    this.isSubmitted = true;
     if (this.nbaForm.valid) {
       // Update the selectedRow with the form values
       this.refreshSelectedRow();
@@ -132,7 +135,7 @@ export class RosterComponent implements OnInit {
   }
 
   add() {
-
+    this.isSubmitted = true;
     if (this.nbaForm.valid) {
 
       const playerToAdd: NBARosterDto = {
@@ -194,10 +197,12 @@ export class RosterComponent implements OnInit {
 
   hideDialog() {
     this.display = false;
+    this.resetAction(); // Reset form state when dialog is closed
   }
 
   onDialogHide() {
     this.selectedRow = {}
+    this.resetAction(); // Reset form state when dialog is hidden
   };
 
   setFormValues(row: any) {

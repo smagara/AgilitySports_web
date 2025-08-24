@@ -1,19 +1,28 @@
 <p-dialog id="detailPopup" header="NBA Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '30vw'}"
 [responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
-<form [formGroup]="nbaForm" (ngSubmit)="isAdding ? onAdd() : onSave(); isSubmitted = true">
+<form [formGroup]="nbaForm" (ngSubmit)="isAdding ? onAdd() : onSave()">
   <div class="p-fluid">
     <hr class="divider" />
     <div class="detailField">
       <label for="team">Team</label>
       <input id="team" pInputText formControlName="team" maxlength="50" appTrim />
+      <div *ngIf="nbaForm.get('team')?.hasError('xss') && (nbaForm.get('team')?.touched || isSubmitted)" class="field-error">
+        Input cannot contain &lt; or &gt; characters.
+      </div>
     </div>
     <div class="detailField">
       <label for="firstName">First Name</label>
       <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First name..." appTrim />
+      <div *ngIf="nbaForm.get('firstName')?.hasError('xss') && (nbaForm.get('firstName')?.touched || isSubmitted)" class="field-error">
+        Input cannot contain &lt; or &gt; characters.
+      </div>
     </div>
     <div class="detailField">
       <label for="lastName">Last Name</label>
       <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last name..." appTrim />
+      <div *ngIf="nbaForm.get('lastName')?.hasError('xss') && (nbaForm.get('lastName')?.touched || isSubmitted)" class="field-error">
+        Input cannot contain &lt; or &gt; characters.
+      </div>
     </div>
     <div class="detailField">
       <label for="position">Position</label>
@@ -67,6 +76,9 @@
     <div class="detailField">
       <label for="college">College</label>
       <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
+      <div *ngIf="nbaForm.get('college')?.hasError('xss') && (nbaForm.get('college')?.touched || isSubmitted)" class="field-error">
+        Input cannot contain &lt; or &gt; characters.
+      </div>
     </div>
     <div class="detailField">
       <label for="playerID">PlayerID</label>

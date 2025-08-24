@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
+import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
 import { NHLRosterDto } from '../../services/nhl';
@@ -32,14 +33,14 @@ export class RosterComponent implements OnInit {
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
     this.nhlForm = new FormGroup({
-      team: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
-      name: new FormControl('',  [Validators.required, nonEmptyStringValidator()]),
+      team: new FormControl('', [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
+      name: new FormControl('',  [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
       position: new FormControl('', [Validators.required /*, nonEmptyStringValidator() not needed */]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
       handed: new FormControl(null, [Validators.required]),
       drafted: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
-      birthCountry: new FormControl(''),
-      birthPlace: new FormControl(''),
+      birthCountry: new FormControl('', [noXssValidator()]),
+      birthPlace: new FormControl('', [noXssValidator()]),
       age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(55), Validators.pattern('^[0-9]+$')]),
       playerID: new FormControl({ value: '', disabled: true })
     });
@@ -98,10 +99,12 @@ export class RosterComponent implements OnInit {
 
   hideDialog() {
     this.display = false;
+    this.resetAction(); // Reset form state when dialog is closed
   }
 
   onDialogHide() {
     this.selectedRow = {}
+    this.resetAction(); // Reset form state when dialog is hidden
   }
 
   setFormValues(row: any) {
@@ -182,5 +185,6 @@ export class RosterComponent implements OnInit {
     this.isAdding = false;
     this.isSubmitted = false;
     this.nhlForm.reset();
+    this.nhlForm.markAsUntouched();
   }
 }
