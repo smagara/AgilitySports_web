@@ -1,5 +1,4 @@
-<div *ngIf="!isLoading && roster.length">
-  <sports-roster-list [roster]="roster"
+<sports-roster-list [roster]="roster"
   [isLoading]="isLoading"
   (addRow)="addRow()"
   (editRow)="editRow($event)"
