@@ -87,10 +87,10 @@ export class RosterComponent implements OnInit {
     this.display = true;
   }
 
-  deleteRow(row: any) {
+  deleteRow(playerID: string) {
     this.resetAction();
     this.display = false;
-    this.delete(row.playerID);
+    this.delete(playerID);
   }
 
   save() {

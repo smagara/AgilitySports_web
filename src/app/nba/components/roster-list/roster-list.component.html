@@ -1,4 +1,4 @@
-<h2 class="NBA">National Basketbal Association - Team Rosters</h2>
+<h2 class="NBA">National Basketball Association - Team Rosters</h2>
 
 <div *ngIf="isLoading">Loading...</div>
 <div *ngIf="!isLoading && !roster.length">
@@ -33,7 +33,7 @@
         <td class="actions">
           <button title="Edit" pButton type="button" icon="pi pi-pencil" (click)="editRow.emit(roster)">Edit</button>
           &nbsp;
-          <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="deleteRow.emit(roster)">Delete</button>
+          <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="deleteRow.emit(roster.playerID)">Delete</button>
         </td>
         <td>{{ roster.team }}</td>
         <td>{{ roster.firstName }}</td>
