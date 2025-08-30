@@ -31,7 +31,7 @@ export class RosterComponent implements OnInit {
       lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
-      height: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]+\' ?[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
+      height: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]+\'?[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
       weight: new FormControl(null, [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]+$')]),
       college: new FormControl('', [noXssValidator()]),
       age: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
