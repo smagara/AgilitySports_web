@@ -36,7 +36,7 @@ export class RosterComponent implements OnInit {
       number: new FormControl('', [Validators.required,
         Validators.pattern('^[0-9]+$')]), // numbers only
       height: new FormControl(null, [Validators.required,
-        Validators.pattern('^[0-9]+\' [0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
+        Validators.pattern('^[0-9]+\'[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
       weight: new FormControl(null, [Validators.required,
         Validators.min(98),
         Validators.max(500),
