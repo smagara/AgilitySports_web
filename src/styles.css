@@ -112,6 +112,57 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   padding: 20px;
 }
 
+/* Mobile-specific dialog improvements */
+@media (max-width: 767px) {
+  .p-dialog .p-fluid {
+    padding: 15px;
+  }
+  
+  .p-dialog {
+    margin: 10px !important;
+  }
+  
+  .detailButton {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  
+  .detailButton button {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+/* Tablet and medium screen adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .p-dialog .p-fluid {
+    padding: 18px;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1200px) {
+  .p-dialog .p-fluid {
+    padding: 25px;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-width: 767px) and (orientation: landscape) {
+  .p-dialog .p-fluid {
+    padding: 10px;
+  }
+  
+  .detailField {
+    margin-bottom: 0.75rem;
+  }
+  
+  .detailField label {
+    font-size: 0.85rem;
+    padding-bottom: 0.25rem;
+  }
+}
+
 .p-dialog .p-field {
   margin-bottom: 1rem;
 }
@@ -159,29 +210,111 @@ td.actions {
 
 .divider {
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 1rem;
   padding: 0;
   border-top: darkblue 4px solid;
 }
 
-.detailField label, .detailField input, .detailField select {
-  display: inline-block;
-}
-
-.detailField input, .detailField select {
-  width: 40%;
-  text-align: left;
-  min-width: 140px;
-  margin:0;
+.detailField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 }
 
 .detailField label {
-  width: 10%;
-  min-width: 140px;
+  display: block;
   text-align: left;
-  padding-right: 2em;
-  padding-top: 1em;
+  padding-bottom: 0.5rem;
   font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.detailField input, .detailField select {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  min-height: 44px; /* Minimum touch target size for mobile */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Ensure dropdown components get full width */
+.detailField app-position-dropdown {
+  width: 100%;
+  display: block;
+}
+
+.detailField app-position-dropdown select {
+  width: 100% !important;
+  min-height: 44px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+/* Touch-friendly improvements for dropdown */
+@media (max-width: 767px) {
+  .detailField app-position-dropdown select {
+    min-height: 48px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 767px) {
+  .detailField input, .detailField select {
+    min-height: 48px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem;
+  }
+}
+
+/* Responsive adjustments for larger screens */
+@media (min-width: 768px) {
+  .detailField {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .detailField label {
+    width: 30%;
+    min-width: 120px;
+    padding-right: 1rem;
+    padding-bottom: 0;
+    text-align: right;
+  }
+  
+  .detailField input, .detailField select {
+    width: 70%;
+    flex: 1;
+  }
+  
+  .detailField app-position-dropdown {
+    width: 70%;
+    flex: 1;
+  }
+  
+  .detailField app-position-dropdown select {
+    width: 100% !important;
+  }
 }
 
 .detailButton {

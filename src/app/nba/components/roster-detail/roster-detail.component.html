@@ -1,5 +1,5 @@
-<p-dialog id="detailPopup" header="NBA Player Detail" [(visible)]="display" [modal]="true" [style]="{width: '30vw'}"
-[responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
+<p-dialog id="detailPopup" header="NBA Player Detail" [(visible)]="display" [modal]="true" 
+  [style]="{width: '90vw', maxWidth: '600px'}" [responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
 <form [formGroup]="nbaForm" (ngSubmit)="isAdding ? onAdd() : onSave()">
   <div class="p-fluid">
     <hr class="divider" />
