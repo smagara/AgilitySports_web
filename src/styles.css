@@ -130,6 +130,7 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   .detailButton button {
     width: 100%;
     min-width: auto;
+    white-space: nowrap; /* Prevent text wrapping on mobile too */
   }
 }
 
@@ -143,7 +144,14 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
 /* Large screen optimizations */
 @media (min-width: 1200px) {
   .p-dialog .p-fluid {
-    padding: 25px;
+    padding: 15px; /* Reduced from 25px for tighter layout */
+  }
+}
+
+/* Desktop-specific optimizations */
+@media (min-width: 768px) {
+  .p-dialog .p-fluid {
+    padding: 15px; /* Reduced padding for desktop */
   }
 }
 
@@ -213,6 +221,13 @@ td.actions {
   margin-bottom: 1rem;
   padding: 0;
   border-top: darkblue 4px solid;
+}
+
+/* Desktop divider spacing */
+@media (min-width: 768px) {
+  .divider {
+    margin-bottom: 0.75rem; /* Tighter spacing on desktop */
+  }
 }
 
 .detailField {
@@ -292,28 +307,37 @@ td.actions {
   .detailField {
     flex-direction: row;
     align-items: center;
+    margin-bottom: 0.5rem; /* Tighter spacing between fields */
   }
   
   .detailField label {
-    width: 30%;
-    min-width: 120px;
-    padding-right: 1rem;
+    width: 25%;
+    min-width: 100px;
+    padding-right: 0.75rem;
     padding-bottom: 0;
     text-align: right;
+    font-size: 0.9rem;
   }
   
   .detailField input, .detailField select {
-    width: 70%;
+    width: 75%;
     flex: 1;
+    padding: 0.4rem 0.5rem; /* Reduced padding */
+    font-size: 0.9rem;
+    min-height: 36px; /* Smaller height for desktop */
   }
   
   .detailField app-position-dropdown {
-    width: 70%;
+    width: 75%;
     flex: 1;
   }
   
   .detailField app-position-dropdown select {
     width: 100% !important;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.9rem;
+    min-height: 36px;
+    padding-right: 2rem;
   }
 }
 
@@ -328,4 +352,55 @@ td.actions {
   width: 5em;
   min-width: 5em;
   text-align: center;
+  border: 2px solid #666;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.detailButton button:hover {
+  background: linear-gradient(to bottom, #e8e8e8 0%, #d8d8d8 100%);
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.detailButton button:active {
+  background: linear-gradient(to bottom, #d8d8d8 0%, #c8c8c8 100%);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
+}
+
+/* Desktop button optimizations */
+@media (min-width: 768px) {
+  .detailButton {
+    margin-top: 1.5em; /* Reduced top margin */
+    gap: 0.75em; /* Tighter button spacing */
+  }
+  
+  .detailButton button {
+    width: auto; /* Allow buttons to size based on content */
+    min-width: 5em; /* Ensure minimum width for text */
+    padding: 0.5rem 1.2rem; /* Increased horizontal padding */
+    font-size: 0.9rem;
+    white-space: nowrap; /* Prevent text wrapping */
+    /* Maintain 3D styling on desktop */
+    border: 2px solid #666;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
 }
