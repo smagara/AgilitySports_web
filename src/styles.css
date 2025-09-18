@@ -131,6 +131,35 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
     width: 100%;
     min-width: auto;
     white-space: nowrap; /* Prevent text wrapping on mobile too */
+    /* Ensure proper button styling on mobile */
+    color: #333 !important;
+    background: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%) !important;
+    border: 2px solid #666 !important;
+    border-radius: 4px;
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .detailButton button:hover {
+    background: linear-gradient(to bottom, #e8e8e8 0%, #d8d8d8 100%) !important;
+    box-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  
+  .detailButton button:active {
+    background: linear-gradient(to bottom, #d8d8d8 0%, #c8c8c8 100%) !important;
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.3),
+      inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
   }
 }
 
