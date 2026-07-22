@@ -62,6 +62,13 @@
         </div>
       </div>
       <div class="detailField">
+        <label for="league">League</label>
+        <app-league-dropdown id="league" [sport]="'nfl'" formControlName="league"></app-league-dropdown>
+        <div *ngIf="nflForm.get('league')?.invalid && (nflForm.get('league')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('league')?.errors?.['required']">League is required.</div>
+        </div>
+      </div>
+      <div class="detailField">
         <label for="weight">Weight</label>
         <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
         <div *ngIf="nflForm.get('weight')?.invalid && (nflForm.get('weight')?.touched || isSubmitted)">

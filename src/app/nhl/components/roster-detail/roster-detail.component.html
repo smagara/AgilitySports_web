@@ -13,6 +13,13 @@
         </div>
       </div>
       <div class="detailField">
+        <label for="league">League</label>
+        <app-league-dropdown id="league" [sport]="'nhl'" formControlName="league"></app-league-dropdown>
+        <div *ngIf="shouldValidate() && nhlForm.get('league')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('league')?.errors?.['required']">League is required.</div>
+        </div>
+      </div>
+      <div class="detailField">
         <label for="name">Name</label>
         <input id="name" pInputText formControlName="name" maxlength="50" placeholder="First Last..." appTrim />
         <div *ngIf="shouldValidate() && nhlForm.get('name')?.invalid">
@@ -38,9 +45,7 @@
       </div>
       <div class="detailField">
         <label for="handed">Handed</label>
-        <select id="handed" formControlName="handed" class="handed" title="handed">
-          <option *ngFor="let theHand of handedList" [value]="theHand.hand">{{ theHand.label }}</option>
-        </select>
+        <app-handedness-dropdown id="handed" formControlName="handed" [includeBoth]="true"></app-handedness-dropdown>
         <div *ngIf="shouldValidate() && nhlForm.get('handed')?.invalid">
           <div class="field-error" *ngIf="nhlForm.get('handed')?.errors?.['required']">Handed is required.</div>
         </div>

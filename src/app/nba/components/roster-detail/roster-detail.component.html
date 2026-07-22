@@ -11,6 +11,13 @@
       </div>
     </div>
     <div class="detailField">
+      <label for="league">League</label>
+      <app-league-dropdown id="league" [sport]="'nba'" formControlName="league"></app-league-dropdown>
+      <div *ngIf="nbaForm.get('league')?.invalid && (nbaForm.get('league')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nbaForm.get('league')?.errors?.['required']">League is required.</div>
+      </div>
+    </div>
+    <div class="detailField">
       <label for="firstName">First Name</label>
       <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First name..." appTrim />
       <div *ngIf="nbaForm.get('firstName')?.hasError('xss') && (nbaForm.get('firstName')?.touched || isSubmitted)" class="field-error">

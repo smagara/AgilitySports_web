@@ -12,7 +12,7 @@ export interface MLBRosterDto {
     weight: string;
     bats: string;
     throws: string;
-    dateOfBirth: Date;
+    dateOfBirth: Date | null;
     birthCountry: string;
     birthPlace: string;
 }

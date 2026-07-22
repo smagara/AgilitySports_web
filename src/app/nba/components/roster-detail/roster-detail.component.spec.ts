@@ -26,6 +26,25 @@ class MockPositionDropdownComponent {
   setDisabledState(isDisabled: boolean): void {}
 }
 
+@Component({
+  selector: 'app-league-dropdown',
+  template: '<select></select>',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MockLeagueDropdownComponent),
+      multi: true
+    }
+  ]
+})
+class MockLeagueDropdownComponent {
+  @Input() sport: string = '';
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
+  setDisabledState(isDisabled: boolean): void {}
+}
+
 describe('RosterDetailComponent', () => {
   let component: RosterDetailComponent;
   let fixture: ComponentFixture<RosterDetailComponent>;
@@ -35,7 +54,8 @@ describe('RosterDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         RosterDetailComponent,
-        MockPositionDropdownComponent
+        MockPositionDropdownComponent,
+        MockLeagueDropdownComponent
       ],
       imports: [
         ReactiveFormsModule,
@@ -48,6 +68,7 @@ describe('RosterDetailComponent', () => {
     // Create a mock form
     mockForm = new FormGroup({
       team: new FormControl(''),
+      league: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
       position: new FormControl(''),

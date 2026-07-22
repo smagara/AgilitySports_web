@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
+import { feetInchesToInches, inchesToFeetInches } from 'src/app/common/formatters/height-formatter';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
+import { resolveLeagueValueForSport } from 'src/app/staticdata/services/league-helpers';
 import { NFLRosterDto } from '../../services/nfl';
 import { NflService } from '../../services/nfl.service';
 
@@ -27,6 +29,7 @@ export class RosterComponent implements OnInit {
   ngOnInit(): void {
     this.nflForm = new FormGroup({
       team: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
+      league: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
@@ -88,7 +91,7 @@ export class RosterComponent implements OnInit {
         lastName: this.selectedRow.lastName || '',
         position: this.selectedRow.position || '',
         number: this.selectedRow.number || '',
-        height: this.selectedRow.height || '',
+        height: feetInchesToInches(this.selectedRow.height || ''),
         weight: this.selectedRow.weight || '',
         college: this.selectedRow.college || '',
         age: this.selectedRow.age || 0
@@ -127,7 +130,7 @@ export class RosterComponent implements OnInit {
         lastName: this.nflForm.get('lastName')?.value || '',
         position: this.nflForm.get('position')?.value || '',
         number: this.nflForm.get('number')?.value || '',
-        height: this.nflForm.get('height')?.value || '',
+        height: feetInchesToInches(this.nflForm.get('height')?.value || ''),
         weight: this.nflForm.get('weight')?.value || '',
         college: this.nflForm.get('college')?.value || '',
         age: this.nflForm.get('age')?.value || 0
@@ -191,11 +194,12 @@ export class RosterComponent implements OnInit {
 
     this.nflForm.setValue({
       team: row.team || '',
+      league: resolveLeagueValueForSport('nfl', row.team || '', row.league),
       firstName: row.firstName || '',
       lastName: row.lastName || '',
       position: row.position || '',
       number: row.number || '',
-      height: row.height || '',
+      height: inchesToFeetInches(row.height || ''),
       weight: row.weight || '',
       college: row.college || '',
       playerID: row.playerID || '',

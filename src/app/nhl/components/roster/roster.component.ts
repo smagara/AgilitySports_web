@@ -4,6 +4,7 @@ import { switchMap, timer } from 'rxjs';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
+import { resolveLeagueValueForSport } from 'src/app/staticdata/services/league-helpers';
 import { NHLRosterDto } from '../../services/nhl';
 import { NhlService } from '../../services/nhl.service';
 
@@ -22,18 +23,13 @@ export class RosterComponent implements OnInit {
   selectedRow: any = {};
   isAdding: boolean = false;
   isSubmitted: boolean = false;
-  handedList: { label: string, hand: string }[] = [
-    { label: '*** Please Select ***', hand: '' },
-    { label: 'Left', hand: 'L' },
-    { label: 'Right', hand: 'R' },
-    { label: 'Both', hand: 'B' }];
-
   constructor(private nhlService: NhlService) { }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
     this.nhlForm = new FormGroup({
       team: new FormControl('', [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
+      league: new FormControl('', [Validators.required]),
       name: new FormControl('',  [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
       position: new FormControl('', [Validators.required /*, nonEmptyStringValidator() not needed */]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
@@ -110,6 +106,7 @@ export class RosterComponent implements OnInit {
   setFormValues(row: any) {
     this.nhlForm.setValue({
       team: row.team || '',
+      league: resolveLeagueValueForSport('nhl', row.team || '', row.league),
       name: row.name || '',
       position: row.position || '',
       number: row.number || '',

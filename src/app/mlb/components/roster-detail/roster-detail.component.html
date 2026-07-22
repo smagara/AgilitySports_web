@@ -1,0 +1,119 @@
+<p-dialog id="detailPopup" header="MLB Player Detail" [(visible)]="display" [modal]="true"
+  [style]="{width: '90vw', maxWidth: '700px'}" [responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
+  <form [formGroup]="mlbForm" (ngSubmit)="isAdding ? onAdd() : onSave()">
+    <div class="p-fluid">
+      <hr class="divider" />
+      <div class="detailField">
+        <label for="teamName">Team</label>
+        <input id="teamName" pInputText formControlName="teamName" maxlength="50" appTrim />
+        <div *ngIf="hasError('teamName')">
+          <div class="field-error" *ngIf="hasError('teamName', 'required')">Team is required.</div>
+          <div class="field-error" *ngIf="hasError('teamName', 'nonEmptyString')">Team cannot be empty.</div>
+          <div class="field-error" *ngIf="hasError('teamName', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="league">League</label>
+        <app-league-dropdown id="league" [sport]="'mlb'" formControlName="league" />
+        <div *ngIf="hasError('league')">
+          <div class="field-error" *ngIf="hasError('league', 'required')">League is required.</div>
+          <div class="field-error" *ngIf="hasError('league', 'invalidLeague')">Please choose a valid league.</div>
+          <div class="field-error" *ngIf="hasError('league', 'nonEmptyString')">League cannot be empty.</div>
+          <div class="field-error" *ngIf="hasError('league', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="firstName">First Name</label>
+        <input id="firstName" pInputText formControlName="firstName" maxlength="50" appTrim />
+        <div *ngIf="hasError('firstName')">
+          <div class="field-error" *ngIf="hasError('firstName', 'required')">First Name is required.</div>
+          <div class="field-error" *ngIf="hasError('firstName', 'nonEmptyString')">First Name cannot be empty.</div>
+          <div class="field-error" *ngIf="hasError('firstName', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" pInputText formControlName="lastName" maxlength="50" appTrim />
+        <div *ngIf="hasError('lastName')">
+          <div class="field-error" *ngIf="hasError('lastName', 'required')">Last Name is required.</div>
+          <div class="field-error" *ngIf="hasError('lastName', 'nonEmptyString')">Last Name cannot be empty.</div>
+          <div class="field-error" *ngIf="hasError('lastName', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="position">Position</label>
+        <app-position-dropdown id="position" [sport]="'mlb'" formControlName="position" />
+        <div *ngIf="hasError('position')">
+          <div class="field-error" *ngIf="hasError('position', 'required')">Position is required.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="height">Height</label>
+        <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
+        <div *ngIf="hasError('height')">
+          <div class="field-error" *ngIf="hasError('height', 'required')">Height is required.</div>
+          <div class="field-error" *ngIf="hasError('height', 'pattern')">Height must be in the format of Feet-Inches.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="weight">Weight</label>
+        <input id="weight" pInputText formControlName="weight" maxlength="3" appTrim />
+        <div *ngIf="hasError('weight')">
+          <div class="field-error" *ngIf="hasError('weight', 'required')">Weight is required.</div>
+          <div class="field-error" *ngIf="hasError('weight', 'min')">Weight must be at least 98.</div>
+          <div class="field-error" *ngIf="hasError('weight', 'max')">Weight cannot exceed 500.</div>
+          <div class="field-error" *ngIf="hasError('weight', 'pattern')">Weight must be numeric up to 3 digits.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="bats">Bats</label>
+        <app-handedness-dropdown id="bats" formControlName="bats" [includeBoth]="true"></app-handedness-dropdown>
+        <div *ngIf="hasError('bats')">
+          <div class="field-error" *ngIf="hasError('bats', 'required')">Bats is required.</div>
+          <div class="field-error" *ngIf="hasError('bats', 'pattern')">Bats must be L, R, or B.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="throws">Throws</label>
+        <app-handedness-dropdown id="throws" formControlName="throws" [includeBoth]="false"></app-handedness-dropdown>
+        <div *ngIf="hasError('throws')">
+          <div class="field-error" *ngIf="hasError('throws', 'required')">Throws is required.</div>
+          <div class="field-error" *ngIf="hasError('throws', 'pattern')">Throws must be L or R.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
+        <div *ngIf="hasError('dateOfBirth')">
+          <div class="field-error" *ngIf="hasError('dateOfBirth', 'required')">Date of Birth is required.</div>
+          <div class="field-error" *ngIf="hasError('dateOfBirth', 'pattern')">Date of Birth must be in the format MM/dd/yyyy.</div>
+          <div class="field-error" *ngIf="hasError('dateOfBirth', 'yearRange')">Date of Birth must be between 1900 and current year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="birthCountry">Birth Country</label>
+        <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" appTrim />
+        <div class="field-error" *ngIf="hasError('birthCountry', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+      </div>
+      <div class="detailField">
+        <label for="birthPlace">Birth Place</label>
+        <input id="birthPlace" pInputText formControlName="birthPlace" maxlength="50" appTrim />
+        <div class="field-error" *ngIf="hasError('birthPlace', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+      </div>
+      <div class="detailField">
+        <label for="playerID">PlayerID</label>
+        <input id="playerID" readonly pInputText formControlName="playerID" />
+      </div>
+
+      <div class="detailButton">
+        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
+        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
+        <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="onHideDialog()"
+          label="Cancel">Cancel</button>
+      </div>
+    </div>
+    <div *ngIf="errMessage.length" class="errMessage">
+      {{errMessage}}
+    </div>
+  </form>
+</p-dialog>

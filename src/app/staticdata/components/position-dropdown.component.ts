@@ -26,6 +26,7 @@ export class PositionDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() sport: string = 'missing';
   positionCodes: PositionCodesDTO[] = [];
   value: string = '';
+  selectedValue: string = '';
   errorMessage: string = '';
 
   constructor(private staticDataService: StaticDataService) { }
@@ -40,10 +41,13 @@ export class PositionDropdownComponent implements OnInit, ControlValueAccessor {
 
         if (data.length === 0) {
           this.errorMessage = 'No position codes found for ' + this.sport;
-          throw new Error(this.errorMessage);
+          this.positionCodes = [];
+          return;
         }
 
+        this.errorMessage = '';
         this.positionCodes = data;
+        this.syncDisplayAndModelValue();
       },
       (error) => {
         console.error('Error fetching position codes for ' + this.sport + ": ", error);
@@ -51,12 +55,48 @@ export class PositionDropdownComponent implements OnInit, ControlValueAccessor {
     );
   }
 
+  private normalize(value: any): string {
+    return String(value ?? '').trim();
+  }
+
+  private syncDisplayAndModelValue(): void {
+    const currentValue = this.normalize(this.value);
+
+    if (!currentValue) {
+      this.selectedValue = '';
+      return;
+    }
+
+    const matchByCode = this.positionCodes.find(p =>
+      this.normalize(p.positionCode).toLowerCase() === currentValue.toLowerCase()
+    );
+
+    if (matchByCode) {
+      this.selectedValue = matchByCode.positionCode;
+      return;
+    }
+
+    const matchByDescription = this.positionCodes.find(p =>
+      this.normalize(p.positionDesc).toLowerCase() === currentValue.toLowerCase()
+    );
+
+    if (matchByDescription) {
+      this.selectedValue = matchByDescription.positionCode;
+      this.value = matchByDescription.positionCode;
+      this.onChange(this.value);
+      return;
+    }
+
+    this.selectedValue = '';
+  }
+
   // Implement ControlValueAccessor
   onChange: any = () => { };
   onTouched: any = () => { };
 
   writeValue(value: any): void {
-    this.value = value;
+    this.value = this.normalize(value);
+    this.syncDisplayAndModelValue();
   }
 
   registerOnChange(fn: any): void {
@@ -73,6 +113,7 @@ export class PositionDropdownComponent implements OnInit, ControlValueAccessor {
 
   onSelectChange(event: any): void {
     this.value = event.target.value;
+    this.selectedValue = this.value;
     this.onChange(this.value);
     this.onTouched();
   }

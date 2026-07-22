@@ -1,4 +1,4 @@
-<h2 class="NBA">National Basketball Association - Team Rosters</h2>
+<h2 class="MLB">Major League Baseball - Team Rosters</h2>
 
 <div *ngIf="isLoading">Loading...</div>
 <div *ngIf="!isLoading && !roster.length">
@@ -10,42 +10,48 @@
     <button title="Add" pButton type="button" icon="pi pi-create" (click)="onAddRow()">Add</button>
     <div class="instruction">Add a new player to the roster</div>
   </div>
-  <p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="name" [rows]="10"
+  <p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="playerID" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
     <ng-template pTemplate="header">
       <tr>
         <th>Actions</th>
-        <th pSortableColumn="team">Team <p-sortIcon field="team"></p-sortIcon></th>
+        <th pSortableColumn="teamName">Team <p-sortIcon field="teamName"></p-sortIcon></th>
         <th>Team Short</th>
+        <th pSortableColumn="league">League <p-sortIcon field="league"></p-sortIcon></th>
         <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
         <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
         <th pSortableColumn="position">Position <p-sortIcon field="position"></p-sortIcon></th>
-        <th pSortableColumn="number">Number <p-sortIcon field="number"></p-sortIcon></th>
         <th pSortableColumn="height">Height <p-sortIcon field="height"></p-sortIcon></th>
         <th pSortableColumn="weight">Weight <p-sortIcon field="weight"></p-sortIcon></th>
-        <th pSortableColumn="dateOfBirth">DOB<p-sortIcon field="dateOfBirth"></p-sortIcon></th>
-        <th pSortableColumn="college">College <p-sortIcon field="college"></p-sortIcon></th>
+        <th pSortableColumn="bats">Bats <p-sortIcon field="bats"></p-sortIcon></th>
+        <th pSortableColumn="throws">Throws <p-sortIcon field="throws"></p-sortIcon></th>
+        <th pSortableColumn="dateOfBirth">Birth Date <p-sortIcon field="dateOfBirth"></p-sortIcon></th>
+        <th pSortableColumn="birthCountry">Birth Country <p-sortIcon field="birthCountry"></p-sortIcon></th>
+        <th pSortableColumn="birthPlace">Birthplace <p-sortIcon field="birthPlace"></p-sortIcon></th>
         <th pSortableColumn="playerID">Player ID (internal) <p-sortIcon field="playerID"></p-sortIcon></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-roster>
       <tr>
         <td class="actions">
-          <button title="Edit" pButton type="button" icon="pi pi-pencil" (click)="editRow.emit(roster)">Edit</button>
+          <button title="Edit" pButton type="button" icon="pi pi-pencil" (click)="onEditRow(roster)">Edit</button>
           &nbsp;
-          <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="deleteRow.emit(roster.playerID)">Delete</button>
+          <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="onDeleteRow(roster.playerID)">Delete</button>
         </td>
-        <td>{{ roster.team }}</td>
-        <td>{{ roster.team | teamShort }}</td>
+        <td>{{ roster.teamName }}</td>
+        <td>{{ roster.teamName | teamShort }}</td>
+        <td>{{ roster.league }}</td>
         <td>{{ roster.firstName }}</td>
         <td>{{ roster.lastName }}</td>
         <td>{{ roster.position }}</td>
-        <td>{{ roster.number }}</td>
         <td>{{ roster.height | heightDisplay }}</td>
         <td>{{ roster.weight }}</td>
+        <td>{{ roster.bats }}</td>
+        <td>{{ roster.throws }}</td>
         <td>{{ roster.dateOfBirth | date:'MM/dd/yyyy' }}</td>
-        <td>{{ roster.college }}</td>
+        <td>{{ roster.birthCountry }}</td>
+        <td>{{ roster.birthPlace }}</td>
         <td>{{ roster.playerID }}</td>
       </tr>
     </ng-template>

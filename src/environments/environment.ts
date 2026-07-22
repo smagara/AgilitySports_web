@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://agilitysportsapi.azurewebsites.net/api/'
+  apiUrl: 'https://agilitysportsapi.azurewebsites.net/api/v2/'
 };
