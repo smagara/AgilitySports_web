@@ -5,12 +5,15 @@
       <hr class="divider" />
       <div class="detailField">
         <label for="team">Team</label>
-        <input id="team" pInputText formControlName="team" maxlength="50" appTrim />
+        <app-team-dropdown id="team" [sport]="'nfl'" formControlName="team"></app-team-dropdown>
         <div *ngIf="nflForm.get('team')?.invalid && (nflForm.get('team')?.touched || isSubmitted)">
           <div class="field-error" *ngIf="nflForm.get('team')?.errors?.['required']">Team is required.</div>
-          <div class="field-error" *ngIf="nflForm.get('team')?.errors?.['xss']">Input cannot contain &lt; or &gt;
-            characters.</div>
+          <div class="field-error" *ngIf="nflForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</div>
         </div>
+      </div>
+      <div class="detailField">
+        <label for="league">League</label>
+        <input id="league" pInputText formControlName="league" readonly />
       </div>
       <div class="detailField">
         <label for="firstName">First Name</label>
@@ -62,13 +65,6 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="league">League</label>
-        <app-league-dropdown id="league" [sport]="'nfl'" formControlName="league"></app-league-dropdown>
-        <div *ngIf="nflForm.get('league')?.invalid && (nflForm.get('league')?.touched || isSubmitted)">
-          <div class="field-error" *ngIf="nflForm.get('league')?.errors?.['required']">League is required.</div>
-        </div>
-      </div>
-      <div class="detailField">
         <label for="weight">Weight</label>
         <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
         <div *ngIf="nflForm.get('weight')?.invalid && (nflForm.get('weight')?.touched || isSubmitted)">
@@ -80,13 +76,13 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="age">Age</label>
-        <input id="age" pInputText formControlName="age" maxlength="2" appTrim />
-        <div *ngIf="nflForm.get('age')?.invalid && (nflForm.get('age')?.touched || isSubmitted)">
-          <div class="field-error" *ngIf="nflForm.get('age')?.errors?.['required']">Player Age is required.
+        <label for="dateOfBirth">Date of Birth</label>
+        <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
+        <div *ngIf="nflForm.get('dateOfBirth')?.invalid && (nflForm.get('dateOfBirth')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is required.
           </div>
-          <div class="field-error" *ngIf="nflForm.get('age')?.errors?.['pattern']">Player Age must be numeric up
-            to 2 digits.</div>
+          <div class="field-error" *ngIf="nflForm.get('dateOfBirth')?.errors?.['pattern']">Date of Birth must be in
+            the format MM/dd/yyyy.</div>
         </div>
       </div>
       <div class="detailField">

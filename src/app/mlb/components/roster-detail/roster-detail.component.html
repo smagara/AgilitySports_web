@@ -4,12 +4,11 @@
     <div class="p-fluid">
       <hr class="divider" />
       <div class="detailField">
-        <label for="teamName">Team</label>
-        <input id="teamName" pInputText formControlName="teamName" maxlength="50" appTrim />
-        <div *ngIf="hasError('teamName')">
-          <div class="field-error" *ngIf="hasError('teamName', 'required')">Team is required.</div>
-          <div class="field-error" *ngIf="hasError('teamName', 'nonEmptyString')">Team cannot be empty.</div>
-          <div class="field-error" *ngIf="hasError('teamName', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+        <label for="teamCode">Team</label>
+        <app-team-dropdown id="teamCode" [sport]="'mlb'" formControlName="teamCode"></app-team-dropdown>
+        <div *ngIf="hasError('teamCode')">
+          <div class="field-error" *ngIf="hasError('teamCode', 'required')">Team is required.</div>
+          <div class="field-error" *ngIf="hasError('teamCode', 'invalidTeam')">Please select a valid team.</div>
         </div>
       </div>
       <div class="detailField">
@@ -48,6 +47,14 @@
         </div>
       </div>
       <div class="detailField">
+        <label for="number">Number</label>
+        <input id="number" pInputText formControlName="number" maxlength="3" inputmode="numeric" appTrim />
+        <div *ngIf="hasError('number')">
+          <div class="field-error" *ngIf="hasError('number', 'required')">Number is required.</div>
+          <div class="field-error" *ngIf="hasError('number', 'pattern')">Number must be numeric.</div>
+        </div>
+      </div>
+      <div class="detailField">
         <label for="height">Height</label>
         <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
         <div *ngIf="hasError('height')">
@@ -57,12 +64,12 @@
       </div>
       <div class="detailField">
         <label for="weight">Weight</label>
-        <input id="weight" pInputText formControlName="weight" maxlength="3" appTrim />
+        <input id="weight" pInputText formControlName="weight" maxlength="3" inputmode="numeric" appTrim />
         <div *ngIf="hasError('weight')">
           <div class="field-error" *ngIf="hasError('weight', 'required')">Weight is required.</div>
           <div class="field-error" *ngIf="hasError('weight', 'min')">Weight must be at least 98.</div>
           <div class="field-error" *ngIf="hasError('weight', 'max')">Weight cannot exceed 500.</div>
-          <div class="field-error" *ngIf="hasError('weight', 'pattern')">Weight must be numeric up to 3 digits.</div>
+          <div class="field-error" *ngIf="hasError('weight', 'pattern')">Weight must be a 2-3 digit number.</div>
         </div>
       </div>
       <div class="detailField">

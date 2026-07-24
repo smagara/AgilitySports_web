@@ -5,9 +5,9 @@
     <hr class="divider" />
     <div class="detailField">
       <label for="team">Team</label>
-      <input id="team" pInputText formControlName="team" maxlength="50" appTrim />
-      <div *ngIf="nbaForm.get('team')?.hasError('xss') && (nbaForm.get('team')?.touched || isSubmitted)" class="field-error">
-        Input cannot contain &lt; or &gt; characters.
+      <app-team-dropdown id="team" [sport]="'nba'" formControlName="team"></app-team-dropdown>
+      <div *ngIf="nbaForm.get('team')?.invalid && (nbaForm.get('team')?.touched || isSubmitted)" class="field-error">
+        <span *ngIf="nbaForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</span>
       </div>
     </div>
     <div class="detailField">

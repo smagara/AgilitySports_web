@@ -6,7 +6,6 @@ import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
-import { resolveLeagueValueForSport } from 'src/app/staticdata/services/league-helpers';
 import { MLBRosterDto } from '../../services/mlb';
 import { MlbService } from '../../services/mlb.service';
 
@@ -30,13 +29,14 @@ export class RosterComponent implements OnInit {
 
   ngOnInit(): void {
     this.mlbForm = new FormGroup({
-      teamName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
-      league: new FormControl('', [Validators.required, Validators.pattern('^(AL|NL)$')]),
+      teamCode: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
+      league: new FormControl({ value: '', disabled: true }),
       firstName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required]),
+      number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
       height: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+'[0-9]{1,2}\"$")]),
-      weight: new FormControl('', [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]+$')]),
+      weight: new FormControl('', [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]{2,3}$')]),
       bats: new FormControl('', [Validators.required, Validators.pattern('^[LRBS]$')]),
       throws: new FormControl('', [Validators.required, Validators.pattern('^[RL]$')]),
       dateOfBirth: new FormControl('', [Validators.required, yearRangeValidator(1900, new Date().getFullYear()), Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
@@ -54,7 +54,7 @@ export class RosterComponent implements OnInit {
       next: data => {
         this.roster = data.map((row) => ({
           ...row,
-          league: this.resolveLeagueValue(row)
+          league: row.league || ''
         }));
         this.isLoading = false;
       },
@@ -165,11 +165,12 @@ export class RosterComponent implements OnInit {
 
   setFormValues(row: MLBRosterDto) {
     this.mlbForm.setValue({
-      teamName: row.teamName || '',
-      league: this.resolveLeagueValue(row),
+      teamCode: row.teamCode || '',
+      league: row.league || '',
       firstName: row.firstName || '',
       lastName: row.lastName || '',
       position: row.position || '',
+      number: row.number || '',
       height: inchesToFeetInches(row.height || ''),
       weight: row.weight || '',
       bats: this.normalizeBatsForForm(row.bats),
@@ -191,13 +192,15 @@ export class RosterComponent implements OnInit {
   private buildRosterPayload(source: any, playerID: string): MLBRosterDto {
     return {
       playerID: playerID || '-1',
-      teamName: source.teamName || '',
+      teamCode: String(source.teamCode || '').trim().toUpperCase(),
+      teamName: source.teamName || this.lookupTeamShortName(String(source.teamCode || '').trim().toUpperCase()),
       firstName: source.firstName || '',
       lastName: source.lastName || '',
-      league: this.resolveLeagueValue(source),
+      league: String(source.league || ''),
       position: source.position || '',
+      number: String(source.number ?? ''),
       height: feetInchesToInches(source.height || ''),
-      weight: source.weight || '',
+      weight: String(source.weight ?? ''),
       bats: this.normalizeBatsForPayload(source.bats),
       throws: this.normalizeThrowsForPayload(source.throws),
       dateOfBirth: source.dateOfBirth ? new Date(source.dateOfBirth) : null,
@@ -224,7 +227,8 @@ export class RosterComponent implements OnInit {
     return String(value || '').trim().toUpperCase();
   }
 
-  private resolveLeagueValue(source: Partial<MLBRosterDto>): string {
-    return resolveLeagueValueForSport('mlb', String(source.teamName || ''), source.league);
+  private lookupTeamShortName(teamCode: string): string {
+    const match = this.roster.find((r) => String(r.teamCode || '').toUpperCase() === teamCode.toUpperCase());
+    return match?.teamName || '';
   }
 }

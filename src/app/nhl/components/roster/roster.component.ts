@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
+import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
-import { resolveLeagueValueForSport } from 'src/app/staticdata/services/league-helpers';
 import { NHLRosterDto } from '../../services/nhl';
 import { NhlService } from '../../services/nhl.service';
 
@@ -29,15 +29,16 @@ export class RosterComponent implements OnInit {
     const currentYear = new Date().getFullYear();
     this.nhlForm = new FormGroup({
       team: new FormControl('', [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
-      league: new FormControl('', [Validators.required]),
-      name: new FormControl('',  [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
+      league: new FormControl({ value: '', disabled: true }),
+      firstName: new FormControl('',  [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
+      lastName: new FormControl('',  [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
       position: new FormControl('', [Validators.required /*, nonEmptyStringValidator() not needed */]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
       handed: new FormControl(null, [Validators.required]),
       drafted: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
+      dateOfBirth: new FormControl('', [Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       birthCountry: new FormControl('', [noXssValidator()]),
       birthPlace: new FormControl('', [noXssValidator()]),
-      age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(55), Validators.pattern('^[0-9]+$')]),
       playerID: new FormControl({ value: '', disabled: true })
     });
 
@@ -104,17 +105,20 @@ export class RosterComponent implements OnInit {
   }
 
   setFormValues(row: any) {
+    const [firstNameFromName, ...lastNameParts] = String(row.name || '').trim().split(/\s+/).filter((x: string) => !!x);
+
     this.nhlForm.setValue({
-      team: row.team || '',
-      league: resolveLeagueValueForSport('nhl', row.team || '', row.league),
-      name: row.name || '',
+      team: row.teamCode || row.team || '',
+      league: row.league || '',
+      firstName: row.firstName || firstNameFromName || '',
+      lastName: row.lastName || lastNameParts.join(' ') || '',
       position: row.position || '',
       number: row.number || '',
       handed: row.handed || '',
       drafted: row.drafted || '',
+      dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
       birthCountry: row.birthCountry || '',
       birthPlace: row.birthPlace || '',
-      age: row.age || '',
       playerID: row.playerID || ''
     });
   }
@@ -130,7 +134,22 @@ export class RosterComponent implements OnInit {
     this.isSubmitted = true;
     if (this.nhlForm.valid) {
       this.refreshSelectedRow();
-      this.nhlService.SaveRoster(this.selectedRow).subscribe({
+
+      const playerToSave = {
+        playerID: this.selectedRow.playerID,
+        team: this.selectedRow.team,
+        league: this.selectedRow.league,
+        name: [this.selectedRow.firstName, this.selectedRow.lastName].filter((x: string) => !!x).join(' ').trim(),
+        position: this.selectedRow.position,
+        number: this.selectedRow.number,
+        handed: this.selectedRow.handed,
+        drafted: this.selectedRow.drafted,
+        birthCountry: this.selectedRow.birthCountry,
+        birthPlace: this.selectedRow.birthPlace,
+        dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null
+      };
+
+      this.nhlService.SaveRoster(playerToSave).subscribe({
         next: data => {
           console.log('Player updated successfully', data);
           this.errMessage = "Player updated successfully!";
@@ -155,7 +174,21 @@ export class RosterComponent implements OnInit {
   add() {
     this.isSubmitted = true;
     if (this.nhlForm.valid) {
-      this.nhlService.AddRoster(this.nhlForm.value).subscribe({
+      const playerToAdd = {
+        playerID: -1,
+        team: this.nhlForm.get('team')?.value,
+        league: this.nhlForm.get('league')?.value,
+        name: [this.nhlForm.get('firstName')?.value, this.nhlForm.get('lastName')?.value].filter((x: string) => !!x).join(' ').trim(),
+        position: this.nhlForm.get('position')?.value,
+        number: this.nhlForm.get('number')?.value,
+        handed: this.nhlForm.get('handed')?.value,
+        drafted: this.nhlForm.get('drafted')?.value,
+        birthCountry: this.nhlForm.get('birthCountry')?.value,
+        birthPlace: this.nhlForm.get('birthPlace')?.value,
+        dateOfBirth: this.nhlForm.get('dateOfBirth')?.value ? new Date(this.nhlForm.get('dateOfBirth')?.value) : null
+      };
+
+      this.nhlService.AddRoster(playerToAdd).subscribe({
         next: data => {
           console.log('Player added successfully', data);
           this.errMessage = "Player added successfully!";

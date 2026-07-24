@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { resolveLeagueValueForSport } from './league-helpers';
-import { LeagueOptionDTO, TeamLeagueDTO } from './league';
+import { LeagueOptionDTO, TeamLeagueDTO, TeamOptionDTO } from './league';
 import { PositionCodesDTO } from './positioncodes';
 
 @Injectable({
@@ -16,6 +15,7 @@ export class StaticDataService {
   // In-memory cache: key is sport code, value is the positions array
   private positionCache = new Map<string, PositionCodesDTO[]>();
   private leagueCache = new Map<string, LeagueOptionDTO[]>();
+  private teamCache = new Map<string, TeamOptionDTO[]>();
 
   constructor(private http: HttpClient) {}
 
@@ -32,25 +32,54 @@ export class StaticDataService {
   }
 
   private normalizeTeamLeagueItem(item: any, fallbackSport: string): TeamLeagueDTO {
+    const teamCode = String(item?.teamCode ?? item?.TeamCode ?? item?.team ?? item?.Team ?? '').trim().toUpperCase();
     const teamName = String(item?.teamName ?? item?.TeamName ?? item?.team ?? item?.Team ?? item?.name ?? item?.Name ?? '');
     const league = String(item?.league ?? item?.League ?? item?.lgID ?? item?.lgId ?? item?.leagueCode ?? item?.LeagueCode ?? '');
     return {
       sport: String(item?.sport ?? item?.Sport ?? fallbackSport ?? ''),
+      teamCode,
       teamName,
-      league: resolveLeagueValueForSport(fallbackSport, teamName, league)
+      league
     };
   }
 
-  private getLeagueFallbackOptions(sportKey: string): LeagueOptionDTO[] {
-    if (sportKey === 'mlb') {
-      return [
-        { code: 'AL', label: 'AL' },
-        { code: 'NL', label: 'NL' }
-      ];
+  GetTeamCodes(sport: string): Observable<TeamOptionDTO[]> {
+    const sportKey = this.normalizeSportKey(sport);
+    const cached = this.teamCache.get(sportKey);
+    if (cached) {
+      return of(cached);
     }
 
-    const league = resolveLeagueValueForSport(sportKey, '', '');
-    return league ? [{ code: league, label: league }] : [];
+    const teamsUrl = `${this.baseURL}staticdata/teams?sport=${encodeURIComponent(sportKey)}`;
+
+    return this.http.get<any[]>(teamsUrl).pipe(
+      map((data: any[]) => (data || [])
+        .map(item => this.normalizeTeamLeagueItem(item, sportKey))
+        .filter(item => !!item.teamCode)
+        .map(item => ({ code: String(item.teamCode || ''), label: String(item.teamName || item.teamCode || '') }))
+      ),
+      map((options: TeamOptionDTO[]) => {
+        const deduped = new Map<string, TeamOptionDTO>();
+        for (const option of options) {
+          const key = option.code.trim().toUpperCase();
+          if (!key) {
+            continue;
+          }
+
+          deduped.set(key, {
+            code: key,
+            label: option.label || key
+          });
+        }
+
+        return Array.from(deduped.values()).sort((a, b) => a.label.localeCompare(b.label));
+      }),
+      tap(options => this.teamCache.set(sportKey, options))
+    );
+  }
+
+  private getLeagueFallbackOptions(sportKey: string): LeagueOptionDTO[] {
+    return [];
   }
 
   GetLeagueCodes(sport: string): Observable<LeagueOptionDTO[]> {

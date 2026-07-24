@@ -6,7 +6,6 @@ import { feetInchesToInches, inchesToFeetInches } from 'src/app/common/formatter
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
-import { resolveLeagueValueForSport } from 'src/app/staticdata/services/league-helpers';
 import { NBARosterDto } from '../../services/nba';
 import { NbaService } from '../../services/nba.service';
 
@@ -31,7 +30,7 @@ export class RosterComponent implements OnInit {
   ngOnInit(): void {
     this.nbaForm = new FormGroup({
       team: new FormControl('', [noXssValidator()]),
-      league: new FormControl('', [Validators.required]),
+      league: new FormControl({ value: '', disabled: true }),
       firstName: new FormControl('', [noXssValidator()]),
       lastName: new FormControl('', [noXssValidator()]),
       position: new FormControl('', [Validators.required,
@@ -67,7 +66,10 @@ export class RosterComponent implements OnInit {
     this.isLoading = true;
     this.nbaService.GetRoster().subscribe({
       next: data => {
-        this.roster = data;
+        this.roster = (data || []).map((item: any) => ({
+          ...item,
+          teamCode: item?.teamCode ?? item?.TeamCode ?? item?.team ?? item?.Team ?? ''
+        }));
         this.isLoading = false;
       },
       error: error => {
@@ -104,7 +106,8 @@ export class RosterComponent implements OnInit {
 
       const playerToSave: NBARosterDto = {
         playerID: this.selectedRow.playerID,
-        team: this.selectedRow.team || '',
+        teamCode: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
+        team: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
         firstName: this.selectedRow.firstName || '',
         lastName: this.selectedRow.lastName || '',
         position: this.selectedRow.position || '',
@@ -143,7 +146,8 @@ export class RosterComponent implements OnInit {
 
       const playerToAdd: NBARosterDto = {
         playerID: -1, // Adds will generate a new ID
-        team: this.nbaForm.get('team')?.value || '',
+        teamCode: (this.nbaForm.get('team')?.value || '').toString().trim().toUpperCase(),
+        team: (this.nbaForm.get('team')?.value || '').toString().trim().toUpperCase(),
         firstName: this.nbaForm.get('firstName')?.value || '',
         lastName: this.nbaForm.get('lastName')?.value || '',
         position: this.nbaForm.get('position')?.value || '',
@@ -211,8 +215,8 @@ export class RosterComponent implements OnInit {
   setFormValues(row: any) {
 
     this.nbaForm.setValue({
-      team: row.team || '',
-      league: resolveLeagueValueForSport('nba', row.team || '', row.league),
+      team: row.teamCode || row.team || '',
+      league: row.league || '',
       firstName: row.firstName || '',
       lastName: row.lastName || '',
       position: row.position || '',
