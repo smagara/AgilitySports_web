@@ -25,6 +25,15 @@ export class RosterComponent implements OnInit {
   isSubmitted: boolean = false;
   constructor(private nhlService: NhlService) { }
 
+  private normalizeOptionalNumber(value: any): number | undefined {
+    if (value === null || value === undefined || String(value).trim() === '') {
+      return undefined;
+    }
+
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
     this.nhlForm = new FormGroup({
@@ -150,15 +159,15 @@ export class RosterComponent implements OnInit {
         name: [this.selectedRow.firstName, this.selectedRow.lastName].filter((x: string) => !!x).join(' ').trim(),
         position: this.selectedRow.position,
         number: this.selectedRow.number,
-        draftYear: this.selectedRow.draftYear,
+        draftYear: this.normalizeOptionalNumber(this.selectedRow.draftYear),
         birthCountry: this.selectedRow.birthCountry,
         birthPlace: this.selectedRow.birthPlace,
         dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
         handed: this.selectedRow.handed,
-        goals: this.selectedRow.goals,
-        penaltyMinutes: this.selectedRow.penaltyMinutes,
-        points: this.selectedRow.points,
-        savePct: this.selectedRow.savePct
+        goals: this.normalizeOptionalNumber(this.selectedRow.goals),
+        penaltyMinutes: this.normalizeOptionalNumber(this.selectedRow.penaltyMinutes),
+        points: this.normalizeOptionalNumber(this.selectedRow.points),
+        savePct: this.normalizeOptionalNumber(this.selectedRow.savePct)
       };
 
       this.nhlService.SaveRoster(playerToSave).subscribe({
@@ -193,15 +202,15 @@ export class RosterComponent implements OnInit {
         name: [this.nhlForm.get('firstName')?.value, this.nhlForm.get('lastName')?.value].filter((x: string) => !!x).join(' ').trim(),
         position: this.nhlForm.get('position')?.value,
         number: this.nhlForm.get('number')?.value,
-        draftYear: this.nhlForm.get('draftYear')?.value,
+        draftYear: this.normalizeOptionalNumber(this.nhlForm.get('draftYear')?.value),
         birthCountry: this.nhlForm.get('birthCountry')?.value,
         birthPlace: this.nhlForm.get('birthPlace')?.value,
         dateOfBirth: this.nhlForm.get('dateOfBirth')?.value ? new Date(this.nhlForm.get('dateOfBirth')?.value) : null,
         handed: this.nhlForm.get('handed')?.value,
-        goals: this.nhlForm.get('goals')?.value,
-        penaltyMinutes: this.nhlForm.get('penaltyMinutes')?.value,
-        points: this.nhlForm.get('points')?.value,
-        savePct: this.nhlForm.get('savePct')?.value
+        goals: this.normalizeOptionalNumber(this.nhlForm.get('goals')?.value),
+        penaltyMinutes: this.normalizeOptionalNumber(this.nhlForm.get('penaltyMinutes')?.value),
+        points: this.normalizeOptionalNumber(this.nhlForm.get('points')?.value),
+        savePct: this.normalizeOptionalNumber(this.nhlForm.get('savePct')?.value)
       };
 
       this.nhlService.AddRoster(playerToAdd).subscribe({

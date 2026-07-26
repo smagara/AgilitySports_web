@@ -27,6 +27,15 @@ export class RosterComponent implements OnInit {
 
   constructor (private mlbService: MlbService) {}
 
+  private normalizeOptionalNumber(value: any): number | null {
+    if (value === null || value === undefined || String(value).trim() === '') {
+      return null;
+    }
+
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
   ngOnInit(): void {
     this.mlbForm = new FormGroup({
       teamCode: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
@@ -212,9 +221,9 @@ export class RosterComponent implements OnInit {
       birthPlace: source.birthPlace || '',
       bats: this.normalizeBatsForPayload(source.bats),
       throws: this.normalizeThrowsForPayload(source.throws),
-      battingAverage: source.battingAverage || '',
-      homeRuns: source.homeRuns || '',
-      era: source.era || ''
+      battingAverage: this.normalizeOptionalNumber(source.battingAverage),
+      homeRuns: this.normalizeOptionalNumber(source.homeRuns),
+      era: this.normalizeOptionalNumber(source.era)
     };
   }
 
