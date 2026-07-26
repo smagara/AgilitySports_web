@@ -293,6 +293,12 @@ td.actions {
   display: block;
 }
 
+.detailField app-team-dropdown,
+.detailField app-league-dropdown {
+  width: 100%;
+  display: block;
+}
+
 .detailField app-position-dropdown select {
   width: 100% !important;
   min-height: 44px;
@@ -310,6 +316,21 @@ td.actions {
   background-position: right 0.7rem center;
   background-size: 1rem;
   padding-right: 2.5rem;
+}
+
+.detailField app-team-dropdown select,
+.detailField app-league-dropdown select {
+  width: 100% !important;
+  min-height: 44px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
 }
 
 /* Touch-friendly improvements for dropdown */
@@ -360,6 +381,12 @@ td.actions {
     width: 75%;
     flex: 1;
   }
+
+  .detailField app-team-dropdown,
+  .detailField app-league-dropdown {
+    width: 75%;
+    flex: 1;
+  }
   
   .detailField app-position-dropdown select {
     width: 100% !important;
@@ -367,6 +394,14 @@ td.actions {
     font-size: 0.9rem;
     min-height: 36px;
     padding-right: 2rem;
+  }
+
+  .detailField app-team-dropdown select,
+  .detailField app-league-dropdown select {
+    width: 100% !important;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.9rem;
+    min-height: 36px;
   }
 }
 

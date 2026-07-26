@@ -2,8 +2,11 @@ export interface Nba {
 }
 
 export interface NBARosterDto {
-  playerID: number;
+  playerId: string | number;
+  teamCode?: string;
   team: string;
+  teamName?: string;
+  league?: string;
   firstName: string;
   lastName: string;
   position: string;
@@ -12,5 +15,10 @@ export interface NBARosterDto {
   weight: string;
   dateOfBirth: Date | null;
   college: string;
+  draftYear?: number | null;
+  seasonYear?: number | null;
+  pointsPerGame?: number | null;
+  reboundsPerGame?: number | null;
+  assistsPerGame?: number | null;
 }
 

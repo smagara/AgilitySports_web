@@ -1,4 +1,4 @@
-<h2 class="NHL">National Hockey League - Team Rosters</h2>
+<h2 class="MLB">Major League Baseball - Team Rosters</h2>
 
 <div *ngIf="isLoading">Loading...</div>
 <div *ngIf="!isLoading && !roster.length">
@@ -10,7 +10,7 @@
     <button title="Add" pButton type="button" icon="pi pi-create" (click)="onAddRow()">Add</button>
     <div class="instruction">Add a new player to the roster</div>
   </div>
-  <p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="name" [rows]="10"
+  <p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="playerId" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
     <ng-template pTemplate="header">
@@ -37,14 +37,14 @@
           &nbsp;
           <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="onDeleteRow(roster.playerId)">Delete</button>
         </td>
-        <td>{{ roster.teamName || roster.team || '' }}</td>
-        <td>{{ roster.league || '' }}</td>
-        <td>{{ getFirstName(roster) }}</td>
-        <td>{{ getLastName(roster) }}</td>
+        <td>{{ roster.team || roster.teamName || '' }}</td>
+        <td>{{ roster.league }}</td>
+        <td>{{ roster.firstName }}</td>
+        <td>{{ roster.lastName }}</td>
         <td>{{ roster.position }}</td>
-        <td>{{ roster.number }}</td>
+        <td>{{ roster.number || '' }}</td>
         <td>{{ roster.height | heightDisplay }}</td>
-        <td>{{ roster.weight || '' }}</td>
+        <td>{{ roster.weight }}</td>
         <td>{{ roster.age ?? computeAge(roster.dateOfBirth) }}</td>
         <td>{{ roster.college || '' }}</td>
         <td>{{ roster.draftYear ?? '' }}</td>

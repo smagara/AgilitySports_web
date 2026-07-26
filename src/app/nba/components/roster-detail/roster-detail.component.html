@@ -5,9 +5,16 @@
     <hr class="divider" />
     <div class="detailField">
       <label for="team">Team</label>
-      <input id="team" pInputText formControlName="team" maxlength="50" appTrim />
-      <div *ngIf="nbaForm.get('team')?.hasError('xss') && (nbaForm.get('team')?.touched || isSubmitted)" class="field-error">
-        Input cannot contain &lt; or &gt; characters.
+      <app-team-dropdown id="team" [sport]="'nba'" formControlName="team"></app-team-dropdown>
+      <div *ngIf="nbaForm.get('team')?.invalid && (nbaForm.get('team')?.touched || isSubmitted)" class="field-error">
+        <span *ngIf="nbaForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</span>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="league">League</label>
+      <app-league-dropdown id="league" [sport]="'nba'" formControlName="league"></app-league-dropdown>
+      <div *ngIf="nbaForm.get('league')?.invalid && (nbaForm.get('league')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nbaForm.get('league')?.errors?.['required']">League is required.</div>
       </div>
     </div>
     <div class="detailField">
@@ -81,10 +88,31 @@
       </div>
     </div>
     <div class="detailField">
-      <label for="playerID">PlayerID</label>
-      <input id="playerID" readonly pInputText formControlName="playerID" />
+      <label for="playerId">PlayerID</label>
+      <input id="playerId" readonly pInputText formControlName="playerId" />
     </div>
-
+    <hr/>
+    <div class="detailField">
+      <label for="pointsPerGame">Points/Game</label>
+      <input id="pointsPerGame" pInputText formControlName="pointsPerGame" maxlength="5" appTrim />
+      <div *ngIf="nbaForm.get('pointsPerGame')?.invalid && (nbaForm.get('pointsPerGame')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nbaForm.get('pointsPerGame')?.errors?.['pattern']">Points Per Game must be a valid number (decimals allowed).</div>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="reboundsPerGame">Rebounds/Game</label>
+      <input id="reboundsPerGame" pInputText formControlName="reboundsPerGame" maxlength="5" appTrim />
+      <div *ngIf="nbaForm.get('reboundsPerGame')?.invalid && (nbaForm.get('reboundsPerGame')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nbaForm.get('reboundsPerGame')?.errors?.['pattern']">Rebounds Per Game must be a valid number (decimals allowed).</div>
+      </div>
+    </div>
+    <div class="detailField">
+      <label for="assistsPerGame">Assists/Game</label>
+      <input id="assistsPerGame" pInputText formControlName="assistsPerGame" maxlength="5" appTrim />
+      <div *ngIf="nbaForm.get('assistsPerGame')?.invalid && (nbaForm.get('assistsPerGame')?.touched || isSubmitted)">
+        <div class="field-error" *ngIf="nbaForm.get('assistsPerGame')?.errors?.['pattern']">Assists Per Game must be a valid number (decimals allowed).</div>
+      </div>
+    </div>
     <div class="detailButton">
       <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
       <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>

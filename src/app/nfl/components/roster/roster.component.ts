@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
+import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
+import { feetInchesToInches, inchesToFeetInches } from 'src/app/common/formatters/height-formatter';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { NFLRosterDto } from '../../services/nfl';
@@ -27,15 +29,18 @@ export class RosterComponent implements OnInit {
   ngOnInit(): void {
     this.nflForm = new FormGroup({
       team: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
+      league: new FormControl({ value: '', disabled: true }),
       firstName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
       height: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]+\'?[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
       weight: new FormControl(null, [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]+$')]),
+      dateOfBirth: new FormControl('', [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       college: new FormControl('', [noXssValidator()]),
-      age: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
-      playerID: new FormControl({ value: '', disabled: true })
+      playerId: new FormControl({ value: '', disabled: true }),
+      sacks: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]),
+      touchdowns: new FormControl('', [Validators.pattern('^[0-9]+$')]),
     });
     this.loadRoster();
   }
@@ -52,7 +57,14 @@ export class RosterComponent implements OnInit {
     this.isLoading = true;
     this.nflService.GetRoster().subscribe({
       next: data => {
-        this.roster = data;
+        this.roster = (data || []).map((item: any) => {
+          const rawDob = item?.dateOfBirth ?? item?.DateOfBirth ?? null;
+          return {
+            ...item,
+            teamCode: item?.teamCode ?? item?.TeamCode ?? item?.team ?? item?.Team ?? '',
+            dateOfBirth: this.toIsoDateOrNull(rawDob)
+          };
+        });
         this.isLoading = false;
       },
       error: error => {
@@ -82,16 +94,19 @@ export class RosterComponent implements OnInit {
       this.refreshSelectedRow();
 
       const playerToSave: NFLRosterDto = {
-        playerID: this.selectedRow.playerID,
-        team: this.selectedRow.team || '',
+        playerId: this.selectedRow.playerId,
+        teamCode: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
+        team: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
         firstName: this.selectedRow.firstName || '',
         lastName: this.selectedRow.lastName || '',
         position: this.selectedRow.position || '',
         number: this.selectedRow.number || '',
-        height: this.selectedRow.height || '',
+        height: feetInchesToInches(this.selectedRow.height || ''),
         weight: this.selectedRow.weight || '',
+        dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
         college: this.selectedRow.college || '',
-        age: this.selectedRow.age || 0
+        sacks: this.selectedRow.sacks || '',
+        touchdowns: this.selectedRow.touchdowns || ''
       };
 
       this.nflService.SaveRoster(playerToSave).subscribe({
@@ -121,16 +136,19 @@ export class RosterComponent implements OnInit {
     if (this.nflForm.valid) {
 
       const playerToAdd: NFLRosterDto = {
-        playerID: -1, // Adds will generate a new ID
-        team: this.nflForm.get('team')?.value || '',
+        playerId: -1, // Adds will generate a new ID
+        teamCode: (this.nflForm.get('team')?.value || '').toString().trim().toUpperCase(),
+        team: (this.nflForm.get('team')?.value || '').toString().trim().toUpperCase(),
         firstName: this.nflForm.get('firstName')?.value || '',
         lastName: this.nflForm.get('lastName')?.value || '',
         position: this.nflForm.get('position')?.value || '',
         number: this.nflForm.get('number')?.value || '',
-        height: this.nflForm.get('height')?.value || '',
+        height: feetInchesToInches(this.nflForm.get('height')?.value || ''),
         weight: this.nflForm.get('weight')?.value || '',
+        dateOfBirth: this.nflForm.get('dateOfBirth')?.value ? new Date(this.nflForm.get('dateOfBirth')?.value) : null,
         college: this.nflForm.get('college')?.value || '',
-        age: this.nflForm.get('age')?.value || 0
+        sacks: this.nflForm.get('sacks')?.value || '',
+        touchdowns: this.nflForm.get('touchdowns')?.value || '',
       };
 
       this.nflService.AddRoster(playerToAdd).subscribe({
@@ -156,14 +174,14 @@ export class RosterComponent implements OnInit {
     }
   }
 
-  deleteRow(playerID: string) {
-    if (!playerID) {
+  deleteRow(playerId: string) {
+    if (!playerId) {
       console.error('No player selected to delete!');
       this.errMessage = "No player selected to delete!";
       this.display = true;
       return;
     }
-    this.nflService.DeleteRoster(playerID).subscribe({
+    this.nflService.DeleteRoster(playerId).subscribe({
       next: data => {
         console.log('Player deleted successfully', data);
         this.display = false;
@@ -188,18 +206,22 @@ export class RosterComponent implements OnInit {
   };
 
   setFormValues(row: any) {
+    const rawDob = row?.dateOfBirth ?? row?.DateOfBirth ?? null;
 
     this.nflForm.setValue({
-      team: row.team || '',
+      team: row.teamCode || row.team || '',
+      league: row.league || '',
       firstName: row.firstName || '',
       lastName: row.lastName || '',
       position: row.position || '',
       number: row.number || '',
-      height: row.height || '',
+      height: inchesToFeetInches(row.height || ''),
       weight: row.weight || '',
+      dateOfBirth: this.toDateInputString(rawDob),
       college: row.college || '',
-      playerID: row.playerID || '',
-      age: row.age || 0
+      playerId: row.playerId || '',
+      sacks: row.sacks || '',
+      touchdowns: row.touchdowns || ''
     });
 
   }
@@ -207,7 +229,33 @@ export class RosterComponent implements OnInit {
   refreshSelectedRow() {
     this.selectedRow = {
       ...this.nflForm.value, // Get all the current form values
-      playerID: this.selectedRow.playerID
+      playerId: this.selectedRow.playerId
     };
+  }
+
+  private toIsoDateOrNull(value: any): string | null {
+    if (!value) {
+      return null;
+    }
+
+    const asDate = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(asDate.getTime())) {
+      return null;
+    }
+
+    return asDate.toISOString();
+  }
+
+  private toDateInputString(value: any): string {
+    if (!value) {
+      return '';
+    }
+
+    const asDate = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(asDate.getTime())) {
+      return '';
+    }
+
+    return formatDateMMDDYYYY(asDate);
   }
 }

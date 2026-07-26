@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
 import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
+import { feetInchesToInches, inchesToFeetInches } from 'src/app/common/formatters/height-formatter';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
@@ -26,9 +27,58 @@ export class RosterComponent implements OnInit {
 
   constructor(private nbaService: NbaService) { }
 
+  private normalizeOptionalNumber(value: any): number | null {
+    if (value === null || value === undefined || String(value).trim() === '') {
+      return null;
+    }
+
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  private normalizeNbaPositionCode(value: any): string {
+    const raw = String(value || '').trim();
+    if (!raw) {
+      return '';
+    }
+
+    const upper = raw.toUpperCase();
+    const validCodes = new Set(['C', 'F', 'G', 'PF', 'PG', 'SF', 'SG']);
+    if (validCodes.has(upper)) {
+      return upper;
+    }
+
+    const byLabel: Record<string, string> = {
+      'CENTER': 'C',
+      'FORWARD': 'F',
+      'GUARD': 'G',
+      'POWER FORWARD': 'PF',
+      'POINT GUARD': 'PG',
+      'SMALL FORWARD': 'SF',
+      'SHOOTING GUARD': 'SG'
+    };
+
+    return byLabel[upper] || upper;
+  }
+
+  private buildApiErrorMessage(error: any, fallback: string): string {
+    const details = error?.error?.details;
+    if (Array.isArray(details) && details.length > 0) {
+      return details.join(' ');
+    }
+
+    const message = error?.error?.message;
+    if (typeof message === 'string' && message.trim()) {
+      return message;
+    }
+
+    return fallback;
+  }
+
   ngOnInit(): void {
     this.nbaForm = new FormGroup({
       team: new FormControl('', [noXssValidator()]),
+      league: new FormControl({ value: '', disabled: true }),
       firstName: new FormControl('', [noXssValidator()]),
       lastName: new FormControl('', [noXssValidator()]),
       position: new FormControl('', [Validators.required,
@@ -47,7 +97,11 @@ export class RosterComponent implements OnInit {
           Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]
       ),
       college: new FormControl('', [noXssValidator()]),
-      playerID: new FormControl({ value: '', disabled: true })
+      playerId: new FormControl({ value: '', disabled: true }),
+      pointsPerGame: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
+      reboundsPerGame: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
+      assistsPerGame: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
+       
     });
     this.loadRoster();
   }
@@ -64,7 +118,10 @@ export class RosterComponent implements OnInit {
     this.isLoading = true;
     this.nbaService.GetRoster().subscribe({
       next: data => {
-        this.roster = data;
+        this.roster = (data || []).map((item: any) => ({
+          ...item,
+          teamCode: item?.teamCode ?? item?.TeamCode ?? item?.team ?? item?.Team ?? ''
+        }));
         this.isLoading = false;
       },
       error: error => {
@@ -87,10 +144,10 @@ export class RosterComponent implements OnInit {
     this.display = true;
   }
 
-  deleteRow(playerID: string) {
+  deleteRow(playerId: string) {
     this.resetAction();
     this.display = false;
-    this.delete(playerID);
+    this.delete(playerId);
   }
 
   save() {
@@ -100,16 +157,24 @@ export class RosterComponent implements OnInit {
       this.refreshSelectedRow();
 
       const playerToSave: NBARosterDto = {
-        playerID: this.selectedRow.playerID,
-        team: this.selectedRow.team || '',
+        playerId: this.selectedRow.playerId,
+        teamCode: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
+        team: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
+        teamName: this.selectedRow.teamName || '',
         firstName: this.selectedRow.firstName || '',
         lastName: this.selectedRow.lastName || '',
-        position: this.selectedRow.position || '',
+        league: this.selectedRow.league || '',
+        position: this.normalizeNbaPositionCode(this.selectedRow.position),
         number: this.selectedRow.number || '',
-        height: this.selectedRow.height || '',
+        height: feetInchesToInches(this.selectedRow.height || ''),
         weight: this.selectedRow.weight || '',
         dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
-        college: this.selectedRow.college || ''
+        college: this.selectedRow.college || '',
+        draftYear: this.normalizeOptionalNumber(this.selectedRow.draftYear),
+        seasonYear: this.normalizeOptionalNumber(this.selectedRow.seasonYear),
+        pointsPerGame: this.normalizeOptionalNumber(this.selectedRow.pointsPerGame),
+        reboundsPerGame: this.normalizeOptionalNumber(this.selectedRow.reboundsPerGame),
+        assistsPerGame: this.normalizeOptionalNumber(this.selectedRow.assistsPerGame)
       };
 
       this.nbaService.SaveRoster(playerToSave).subscribe({
@@ -127,7 +192,7 @@ export class RosterComponent implements OnInit {
         },
         error: error => {
           console.error('There was an error saving the player!', error);
-          this.errMessage = "There was an error saving the player. Please try again.";
+          this.errMessage = this.buildApiErrorMessage(error, 'There was an error saving the player. Please try again.');
           this.display = true;
         }
       });
@@ -139,16 +204,22 @@ export class RosterComponent implements OnInit {
     if (this.nbaForm.valid) {
 
       const playerToAdd: NBARosterDto = {
-        playerID: -1, // Adds will generate a new ID
-        team: this.nbaForm.get('team')?.value || '',
+        playerId: -1, // Adds will generate a new ID
+        teamCode: (this.nbaForm.get('team')?.value || '').toString().trim().toUpperCase(),
+        team: (this.nbaForm.get('team')?.value || '').toString().trim().toUpperCase(),
         firstName: this.nbaForm.get('firstName')?.value || '',
         lastName: this.nbaForm.get('lastName')?.value || '',
-        position: this.nbaForm.get('position')?.value || '',
+        league: this.nbaForm.get('league')?.value || '',
+        position: this.normalizeNbaPositionCode(this.nbaForm.get('position')?.value),
         number: this.nbaForm.get('number')?.value || '',
-        height: this.nbaForm.get('height')?.value || '',
+        height: feetInchesToInches(this.nbaForm.get('height')?.value || ''),
         weight: this.nbaForm.get('weight')?.value || '',
         dateOfBirth: this.nbaForm.get('dateOfBirth')?.value ? new Date(this.nbaForm.get('dateOfBirth')?.value) : null,
-        college: this.nbaForm.get('college')?.value || ''
+        college: this.nbaForm.get('college')?.value || '',
+        seasonYear: new Date().getFullYear(),
+        pointsPerGame: this.normalizeOptionalNumber(this.nbaForm.get('pointsPerGame')?.value),
+        reboundsPerGame: this.normalizeOptionalNumber(this.nbaForm.get('reboundsPerGame')?.value),
+        assistsPerGame: this.normalizeOptionalNumber(this.nbaForm.get('assistsPerGame')?.value),
       };
 
       this.nbaService.AddRoster(playerToAdd).subscribe({
@@ -167,21 +238,21 @@ export class RosterComponent implements OnInit {
         },
         error: error => {
           console.error('There was an error adding the player!', error);
-          this.errMessage = "There was an error adding the player. Please try again.";
+          this.errMessage = this.buildApiErrorMessage(error, 'There was an error adding the player. Please try again.');
           this.display = true;
         }
       });
     }
   }
 
-  delete(playerID: string) {
-    if (!playerID) {
+  delete(playerId: string) {
+    if (!playerId) {
       console.error('No player selected to delete!');
       this.errMessage = "No player selected to delete!";
       this.display = true;
       return;
     }
-    this.nbaService.DeleteRoster(playerID).subscribe({
+    this.nbaService.DeleteRoster(playerId).subscribe({
       next: data => {
         console.log('Player deleted successfully', data);
         this.display = false;
@@ -208,24 +279,29 @@ export class RosterComponent implements OnInit {
   setFormValues(row: any) {
 
     this.nbaForm.setValue({
-      team: row.team || '',
+      team: row.teamCode || row.team || '',
+      league: row.league || '',
       firstName: row.firstName || '',
       lastName: row.lastName || '',
-      position: row.position || '',
+      position: this.normalizeNbaPositionCode(row.position || ''),
       number: row.number || '',
-      height: row.height || '',
+      height: inchesToFeetInches(row.height || ''),
       weight: row.weight || '',
       dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
       college: row.college || '',
-      playerID: row.playerID || ''
+      playerId: row.playerId || '',
+      pointsPerGame: row.pointsPerGame ?? '',
+      reboundsPerGame: row.reboundsPerGame ?? '',
+      assistsPerGame: row.assistsPerGame ?? ''
     });
 
   }
 
   refreshSelectedRow() {
     this.selectedRow = {
-      ...this.nbaForm.value, // Get all the current form values
-      playerID: this.selectedRow.playerID
+      ...this.selectedRow,
+      ...this.nbaForm.value,
+      playerId: this.selectedRow.playerId
     };
   }
 }

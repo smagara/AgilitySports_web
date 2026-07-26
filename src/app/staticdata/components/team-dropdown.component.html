@@ -1,0 +1,6 @@
+<select [value]="selectedValue" [disabled]="isDisabled" id="team-dropdown" (change)="onSelectChange($event)">
+  <option value="">Select a team</option>
+  <option *ngFor="let team of teamCodes" [value]="team.code">
+    {{ team.label }} ({{ team.code }})
+  </option>
+</select>

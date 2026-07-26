@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MLBAttendChartDTO, MLBAttendanceDto, MLBRosterDto } from './mlb';
 import { environment } from 'src/environments/environment';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,45 @@ export class MlbService {
 
   GetRoster(): Observable<MLBRosterDto[]> {
     return this.http.get<MLBRosterDto[]>(this.baseURL + 'mlb/roster')
+  }
+
+  SaveRoster(roster: MLBRosterDto): Observable<MLBRosterDto> {
+    return this.http.put<MLBRosterDto>(this.baseURL + 'mlb/roster', roster).pipe(
+      catchError((error) => {
+        if (error.status === 500) {
+          console.error('Server error', error);
+        } else {
+          console.error('An error occurred', error);
+        }
+        return throwError(() => new Error('An error occured saving the MLB roster change.'));
+      })
+    );
+  }
+
+  AddRoster(roster: MLBRosterDto): Observable<MLBRosterDto> {
+    return this.http.post<MLBRosterDto>(this.baseURL + 'mlb/roster', roster).pipe(
+      catchError((error) => {
+        if (error.status === 500) {
+          console.error('Server error', error);
+        } else {
+          console.error('An error occurred', error);
+        }
+        return throwError(() => new Error('An error occured adding to MLB roster. Please try again later.'));
+      })
+    );
+  }
+
+  DeleteRoster(playerId: string): Observable<any> {
+    return this.http.delete<any>(this.baseURL + 'mlb/roster/?playerId=' + playerId).pipe(
+      catchError((error) => {
+        if (error.status === 500) {
+          console.error('Server error', error);
+        } else {
+          console.error('An error occurred', error);
+        }
+        return throwError(() => new Error('An error occurred deleting from the MLB roster.'));
+      })
+    );
   }
 
   GetAttendance(): Observable<MLBAttendanceDto[]> {

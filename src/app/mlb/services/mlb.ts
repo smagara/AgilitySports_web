@@ -2,19 +2,25 @@ export interface mlb {
 }
 
 export interface MLBRosterDto {
-    playerID: string;
+    playerId: string | number;
+    teamCode?: string;
     teamName: string;
     firstName: string;
     lastName: string;
     league: string;
     position: string;
+    number?: string;
     height: string;
     weight: string;
-    bats: string;
-    throws: string;
-    dateOfBirth: Date;
+    dateOfBirth: Date | null;
     birthCountry: string;
     birthPlace: string;
+    draftYear?: number | null;
+    bats: string;
+    throws: string;
+    battingAverage?: number | null;
+    homeRuns?: number | null;
+    era?: number | null;
 }
 
 export interface MLBAttendanceDto {

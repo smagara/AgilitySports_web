@@ -1,0 +1,6 @@
+<select id="handedness-dropdown" [disabled]="isDisabled" (change)="onSelectChange($event)">
+  <option value="" [selected]="!value">Select handedness</option>
+  <option *ngFor="let option of options" [value]="option.code" [selected]="option.code === value">
+    {{ option.label }}
+  </option>
+</select>

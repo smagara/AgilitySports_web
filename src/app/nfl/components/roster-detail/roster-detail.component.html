@@ -5,12 +5,15 @@
       <hr class="divider" />
       <div class="detailField">
         <label for="team">Team</label>
-        <input id="team" pInputText formControlName="team" maxlength="50" appTrim />
+        <app-team-dropdown id="team" [sport]="'nfl'" formControlName="team"></app-team-dropdown>
         <div *ngIf="nflForm.get('team')?.invalid && (nflForm.get('team')?.touched || isSubmitted)">
           <div class="field-error" *ngIf="nflForm.get('team')?.errors?.['required']">Team is required.</div>
-          <div class="field-error" *ngIf="nflForm.get('team')?.errors?.['xss']">Input cannot contain &lt; or &gt;
-            characters.</div>
+          <div class="field-error" *ngIf="nflForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</div>
         </div>
+      </div>
+      <div class="detailField">
+        <label for="league">League</label>
+        <input id="league" pInputText formControlName="league" readonly />
       </div>
       <div class="detailField">
         <label for="firstName">First Name</label>
@@ -73,13 +76,13 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="age">Age</label>
-        <input id="age" pInputText formControlName="age" maxlength="2" appTrim />
-        <div *ngIf="nflForm.get('age')?.invalid && (nflForm.get('age')?.touched || isSubmitted)">
-          <div class="field-error" *ngIf="nflForm.get('age')?.errors?.['required']">Player Age is required.
+        <label for="dateOfBirth">Date of Birth</label>
+        <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
+        <div *ngIf="nflForm.get('dateOfBirth')?.invalid && (nflForm.get('dateOfBirth')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is required.
           </div>
-          <div class="field-error" *ngIf="nflForm.get('age')?.errors?.['pattern']">Player Age must be numeric up
-            to 2 digits.</div>
+          <div class="field-error" *ngIf="nflForm.get('dateOfBirth')?.errors?.['pattern']">Date of Birth must be in
+            the format MM/dd/yyyy.</div>
         </div>
       </div>
       <div class="detailField">
@@ -90,10 +93,24 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="playerID">PlayerID</label>
-        <input id="playerID" readonly pInputText formControlName="playerID" />
+        <label for="playerId">PlayerID</label>
+        <input id="playerId" readonly pInputText formControlName="playerId" />
       </div>
-
+      <hr/>
+      <div class="detailField">
+        <label for="sacks">Sacks</label>
+        <input id="sacks" pInputText formControlName="sacks" maxlength="5" appTrim />
+        <div *ngIf="nflForm.get('sacks')?.invalid && (nflForm.get('sacks')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('sacks')?.errors?.['pattern']">Sacks must be a valid number (decimals allowed).</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="touchdowns">Touchdowns</label>
+        <input id="touchdowns" pInputText formControlName="touchdowns" maxlength="3" appTrim />
+        <div *ngIf="nflForm.get('touchdowns')?.invalid && (nflForm.get('touchdowns')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('touchdowns')?.errors?.['pattern']">Touchdowns must be a valid number (no decimals).</div>
+        </div>
+      </div>
       <div class="detailButton">
         <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
         <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>

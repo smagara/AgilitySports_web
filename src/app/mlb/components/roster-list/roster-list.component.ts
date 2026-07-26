@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { NHLRosterDto } from '../../services/nhl';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MLBRosterDto } from '../../services/mlb';
 
 @Component({
   selector: 'sports-roster-list',
@@ -9,8 +9,8 @@ export class RosterListComponent implements OnInit {
   @Input() roster: any[] = [];
   @Input() isLoading: boolean = false;
   @Output() addRow = new EventEmitter<void>();
-  @Output() editRow = new EventEmitter<NHLRosterDto>();
-  @Output() deleteRow = new EventEmitter<number>();
+  @Output() editRow = new EventEmitter<MLBRosterDto>();
+  @Output() deleteRow = new EventEmitter<string>();
 
   constructor() { }
 
@@ -20,41 +20,12 @@ export class RosterListComponent implements OnInit {
     this.addRow.emit();
   }
 
-  onEditRow(row: NHLRosterDto) {
+  onEditRow(row: MLBRosterDto) {
     this.editRow.emit(row);
   }
 
-  onDeleteRow(playerId: number) {
+  onDeleteRow(playerId: string) {
     this.deleteRow.emit(playerId);
-  }
-
-  getFirstName(row: any): string {
-    const firstName = String(row?.firstName || '').trim();
-    if (firstName) {
-      return firstName;
-    }
-
-    const name = String(row?.name || '').trim();
-    if (!name) {
-      return '';
-    }
-
-    return name.split(/\s+/)[0] || '';
-  }
-
-  getLastName(row: any): string {
-    const lastName = String(row?.lastName || '').trim();
-    if (lastName) {
-      return lastName;
-    }
-
-    const name = String(row?.name || '').trim();
-    if (!name) {
-      return '';
-    }
-
-    const parts = name.split(/\s+/);
-    return parts.length > 1 ? parts.slice(1).join(' ') : '';
   }
 
   computeAge(dateOfBirth?: Date | string | null): number | '' {

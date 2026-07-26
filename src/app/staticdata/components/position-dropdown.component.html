@@ -1,5 +1,6 @@
 <!-- Common position-dropdown.component.html -->
-<select [value]="value" id="position-dropdown" (change)="onSelectChange($event)">
+<select [value]="selectedValue" id="position-dropdown" (change)="onSelectChange($event)">
+  <option value="">Select a position</option>
   <option *ngFor="let p of positionCodes" [value]="p.positionCode">
     {{ p.positionDesc }}
   </option>

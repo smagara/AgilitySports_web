@@ -2,14 +2,21 @@ export interface Nfl {
 }
 
 export interface NFLRosterDto {
-    playerID: number;
+    playerId: string | number;
+    teamCode?: string;
     team: string;
+    teamName?: string;
+    league?: string;
     firstName: string;
     lastName: string;
     position: string;
     number: string;
     height: string;
     weight: string;
-    age: number;
+    dateOfBirth?: Date | null;
+    age?: number | null;
     college: string;
+    draftYear?: number | null;
+    sacks?: number | null;
+    touchdowns?: number | null;
 }

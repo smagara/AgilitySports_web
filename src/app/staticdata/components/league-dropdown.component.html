@@ -1,0 +1,6 @@
+<select [value]="selectedValue" [disabled]="isDisabled" id="league-dropdown" (change)="onSelectChange($event)">
+  <option value="">Select a league</option>
+  <option *ngFor="let league of leagueCodes" [value]="league.code">
+    {{ league.label }}
+  </option>
+</select>
