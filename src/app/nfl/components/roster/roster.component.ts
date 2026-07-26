@@ -26,6 +26,15 @@ export class RosterComponent implements OnInit {
 
   constructor(private nflService: NflService) { }
 
+  private normalizeOptionalNumber(value: any): number | null {
+    if (value === null || value === undefined || String(value).trim() === '') {
+      return null;
+    }
+
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
   ngOnInit(): void {
     this.nflForm = new FormGroup({
       team: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
@@ -105,8 +114,8 @@ export class RosterComponent implements OnInit {
         weight: this.selectedRow.weight || '',
         dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
         college: this.selectedRow.college || '',
-        sacks: this.selectedRow.sacks || '',
-        touchdowns: this.selectedRow.touchdowns || ''
+        sacks: this.normalizeOptionalNumber(this.selectedRow.sacks),
+        touchdowns: this.normalizeOptionalNumber(this.selectedRow.touchdowns)
       };
 
       this.nflService.SaveRoster(playerToSave).subscribe({
@@ -147,8 +156,8 @@ export class RosterComponent implements OnInit {
         weight: this.nflForm.get('weight')?.value || '',
         dateOfBirth: this.nflForm.get('dateOfBirth')?.value ? new Date(this.nflForm.get('dateOfBirth')?.value) : null,
         college: this.nflForm.get('college')?.value || '',
-        sacks: this.nflForm.get('sacks')?.value || '',
-        touchdowns: this.nflForm.get('touchdowns')?.value || '',
+        sacks: this.normalizeOptionalNumber(this.nflForm.get('sacks')?.value),
+        touchdowns: this.normalizeOptionalNumber(this.nflForm.get('touchdowns')?.value),
       };
 
       this.nflService.AddRoster(playerToAdd).subscribe({
