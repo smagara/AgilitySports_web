@@ -73,14 +73,6 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="bats">Bats</label>
-        <app-handedness-dropdown id="bats" formControlName="bats" [includeBoth]="true"></app-handedness-dropdown>
-        <div *ngIf="hasError('bats')">
-          <div class="field-error" *ngIf="hasError('bats', 'required')">Bats is required.</div>
-          <div class="field-error" *ngIf="hasError('bats', 'pattern')">Bats must be L, R, or B.</div>
-        </div>
-      </div>
-      <div class="detailField">
         <label for="throws">Throws</label>
         <app-handedness-dropdown id="throws" formControlName="throws" [includeBoth]="false"></app-handedness-dropdown>
         <div *ngIf="hasError('throws')">
@@ -108,10 +100,45 @@
         <div class="field-error" *ngIf="hasError('birthPlace', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
       </div>
       <div class="detailField">
-        <label for="playerID">PlayerID</label>
-        <input id="playerID" readonly pInputText formControlName="playerID" />
+        <label for="playerId">PlayerID</label>
+        <input id="playerId" readonly pInputText formControlName="playerId" />
       </div>
-
+      <hr/>
+      <div class="detailField">
+        <label for="bats">Bats</label>
+        <app-handedness-dropdown id="bats" formControlName="bats" [includeBoth]="true"></app-handedness-dropdown>
+        <div *ngIf="hasError('bats')">
+          <div class="field-error" *ngIf="hasError('bats', 'pattern')">Bats must be L, R, or B.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="bats">Throws</label>
+        <app-handedness-dropdown id="throws" formControlName="throws" [includeBoth]="true"></app-handedness-dropdown>
+        <div *ngIf="hasError('throws')">
+          <div class="field-error" *ngIf="hasError('throws', 'pattern')">Bats must be L, R, or B.</div>
+        </div>
+      </div>      
+      <div class="detailField">
+        <label for="battingAverage">Batting Average</label>
+        <input id="battingAverage" maxlength="5" inputmode="numeric" formControlName="battingAverage" />
+        <div *ngIf="hasError('battingAverage')">
+          <div class="field-error" *ngIf="hasError('battingAverage', 'pattern')">Batting average must be numeric, between 0 and 1.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="homeRuns">Home Runs</label>
+        <input id="homeRuns" pInputText formControlName="homeRuns" maxlength="3" inputmode="numeric" appTrim />
+        <div *ngIf="hasError('homeRuns')">
+          <div class="field-error" *ngIf="hasError('homeRuns', 'pattern')">Home runs must be numeric.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="era">ERA</label>
+        <input id="era" maxlength="5" inputmode="numeric" formControlName="era" />
+        <div *ngIf="hasError('era')">
+          <div class="field-error" *ngIf="hasError('era', 'pattern')">ERA must be numeric, two decimals.</div>
+        </div>
+      </div>
       <div class="detailButton">
         <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
         <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>

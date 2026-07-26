@@ -107,15 +107,17 @@ describe('RosterDetailComponent', () => {
     mockForm = new FormGroup({
       team: new FormControl(''),
       league: new FormControl(''),
-      name: new FormControl(''),
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
       position: new FormControl(''),
       number: new FormControl(''),
       handed: new FormControl(''),
-      drafted: new FormControl(''),
+      draftYear: new FormControl(''),
+      dateOfBirth: new FormControl(''),
       birthCountry: new FormControl(''),
       birthPlace: new FormControl(''),
-      age: new FormControl(''),
-      playerID: new FormControl('')
+      playerId: new FormControl(''),
+      goals: new FormControl('')
     });
 
     fixture = TestBed.createComponent(RosterDetailComponent);

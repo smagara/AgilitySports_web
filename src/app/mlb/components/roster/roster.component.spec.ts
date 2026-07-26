@@ -40,7 +40,7 @@ describe('RosterComponent', () => {
   it('should derive league from team name when API league is blank', () => {
     const mockRoster: MLBRosterDto[] = [
       {
-        playerID: '100001',
+        playerId: '100001',
         teamName: 'Arizona Diamondbacks',
         firstName: 'Test',
         lastName: 'Player',
@@ -66,7 +66,7 @@ describe('RosterComponent', () => {
   it('should keep league blank when team is unknown and API league is blank', () => {
     const mockRoster: MLBRosterDto[] = [
       {
-        playerID: '100999',
+        playerId: '100999',
         teamName: 'Unknown Team',
         firstName: 'Test',
         lastName: 'Player',
@@ -92,7 +92,7 @@ describe('RosterComponent', () => {
   it('should ignore invalid league and derive league from team name', () => {
     const mockRoster: MLBRosterDto[] = [
       {
-        playerID: '100010',
+        playerId: '100010',
         teamName: 'New York Yankees',
         firstName: 'Test',
         lastName: 'Player',

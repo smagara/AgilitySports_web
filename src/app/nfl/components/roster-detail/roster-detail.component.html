@@ -93,10 +93,24 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="playerID">PlayerID</label>
-        <input id="playerID" readonly pInputText formControlName="playerID" />
+        <label for="playerId">PlayerID</label>
+        <input id="playerId" readonly pInputText formControlName="playerId" />
       </div>
-
+      <hr/>
+      <div class="detailField">
+        <label for="sacks">Sacks</label>
+        <input id="sacks" pInputText formControlName="sacks" maxlength="5" appTrim />
+        <div *ngIf="nflForm.get('sacks')?.invalid && (nflForm.get('sacks')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('sacks')?.errors?.['pattern']">Sacks must be a valid number (decimals allowed).</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="touchdowns">Touchdowns</label>
+        <input id="touchdowns" pInputText formControlName="touchdowns" maxlength="3" appTrim />
+        <div *ngIf="nflForm.get('touchdowns')?.invalid && (nflForm.get('touchdowns')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('touchdowns')?.errors?.['pattern']">Touchdowns must be a valid number (no decimals).</div>
+        </div>
+      </div>
       <div class="detailButton">
         <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
         <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>

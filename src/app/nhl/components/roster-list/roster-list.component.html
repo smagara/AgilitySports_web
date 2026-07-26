@@ -26,8 +26,8 @@
         <th pSortableColumn="weight">weight <p-sortIcon field="weight"></p-sortIcon></th>
         <th pSortableColumn="age">Age <p-sortIcon field="age"></p-sortIcon></th>
         <th pSortableColumn="college">College <p-sortIcon field="college"></p-sortIcon></th>
-        <th pSortableColumn="yearDrafted">yearDrafted <p-sortIcon field="yearDrafted"></p-sortIcon></th>
-        <th pSortableColumn="playerID">PlayerID <p-sortIcon field="playerID"></p-sortIcon></th>
+        <th pSortableColumn="draftYear">Draft Year <p-sortIcon field="draftYear"></p-sortIcon></th>
+        <th pSortableColumn="playerId">PlayerID <p-sortIcon field="playerId"></p-sortIcon></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-roster>
@@ -35,7 +35,7 @@
         <td class="actions">
           <button title="Edit" pButton type="button" icon="pi pi-pencil" (click)="onEditRow(roster)">Edit</button>
           &nbsp;
-          <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="onDeleteRow(roster.playerID)">Delete</button>
+          <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="onDeleteRow(roster.playerId)">Delete</button>
         </td>
         <td>{{ roster.teamName || roster.team || '' }}</td>
         <td>{{ roster.league || '' }}</td>
@@ -47,8 +47,8 @@
         <td>{{ roster.weight || '' }}</td>
         <td>{{ roster.age ?? computeAge(roster.dateOfBirth) }}</td>
         <td>{{ roster.college || '' }}</td>
-        <td>{{ roster.yearDrafted ?? roster.drafted ?? '' }}</td>
-        <td>{{ roster.playerID }}</td>
+        <td>{{ roster.draftYear ?? '' }}</td>
+        <td>{{ roster.playerId }}</td>
       </tr>
     </ng-template>
   </p-table>

@@ -37,12 +37,15 @@ export class RosterComponent implements OnInit {
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
       height: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+'[0-9]{1,2}\"$")]),
       weight: new FormControl('', [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]{2,3}$')]),
-      bats: new FormControl('', [Validators.required, Validators.pattern('^[LRBS]$')]),
-      throws: new FormControl('', [Validators.required, Validators.pattern('^[RL]$')]),
       dateOfBirth: new FormControl('', [Validators.required, yearRangeValidator(1900, new Date().getFullYear()), Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       birthCountry: new FormControl('', [noXssValidator()]),
       birthPlace: new FormControl('', [noXssValidator()]),
-      playerID: new FormControl({ value: '', disabled: true })
+      playerId: new FormControl({ value: '', disabled: true }),
+      bats: new FormControl('', [Validators.required, Validators.pattern('^[LRBS]$')]),
+      throws: new FormControl('', [Validators.required, Validators.pattern('^[RL]$')]),
+      battingAverage: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
+      homeRuns: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+      era: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
     });
 
     this.loadRoster();
@@ -86,14 +89,14 @@ export class RosterComponent implements OnInit {
     this.display = true;
   }
 
-  deleteRow(playerID: string) {
-    if (!playerID) {
+  deleteRow(playerId: string) {
+    if (!playerId) {
       this.errMessage = 'No player selected to delete!';
       this.display = true;
       return;
     }
 
-    this.mlbService.DeleteRoster(playerID).subscribe({
+    this.mlbService.DeleteRoster(playerId).subscribe({
       next: () => {
         this.display = false;
         this.loadRoster();
@@ -111,7 +114,7 @@ export class RosterComponent implements OnInit {
     if (this.mlbForm.valid) {
       this.refreshSelectedRow();
 
-      const playerToSave = this.buildRosterPayload(this.selectedRow, this.selectedRow.playerID);
+      const playerToSave = this.buildRosterPayload(this.selectedRow, this.selectedRow.playerId);
 
       this.mlbService.SaveRoster(playerToSave).subscribe({
         next: () => {
@@ -136,7 +139,7 @@ export class RosterComponent implements OnInit {
   add() {
     this.isSubmitted = true;
     if (this.mlbForm.valid) {
-      const playerToAdd = this.buildRosterPayload(this.mlbForm.value, '-1');
+      const playerToAdd = this.buildRosterPayload(this.mlbForm.value, -1);
 
       this.mlbService.AddRoster(playerToAdd).subscribe({
         next: () => {
@@ -178,20 +181,23 @@ export class RosterComponent implements OnInit {
       dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
       birthCountry: row.birthCountry || '',
       birthPlace: row.birthPlace || '',
-      playerID: row.playerID || ''
+      playerId: row.playerId || '',
+      battingAverage: row.battingAverage || '',
+      homeRuns: row.homeRuns || '',
+      era: row.era || ''
     });
   }
 
   refreshSelectedRow() {
     this.selectedRow = {
       ...this.mlbForm.value,
-      playerID: this.selectedRow.playerID
+      playerId: this.selectedRow.playerId
     };
   }
 
-  private buildRosterPayload(source: any, playerID: string): MLBRosterDto {
+  private buildRosterPayload(source: any, playerId: string | number): MLBRosterDto {
     return {
-      playerID: playerID || '-1',
+      playerId: playerId || -1,
       teamCode: String(source.teamCode || '').trim().toUpperCase(),
       teamName: source.teamName || this.lookupTeamShortName(String(source.teamCode || '').trim().toUpperCase()),
       firstName: source.firstName || '',
@@ -201,11 +207,14 @@ export class RosterComponent implements OnInit {
       number: String(source.number ?? ''),
       height: feetInchesToInches(source.height || ''),
       weight: String(source.weight ?? ''),
-      bats: this.normalizeBatsForPayload(source.bats),
-      throws: this.normalizeThrowsForPayload(source.throws),
       dateOfBirth: source.dateOfBirth ? new Date(source.dateOfBirth) : null,
       birthCountry: source.birthCountry || '',
-      birthPlace: source.birthPlace || ''
+      birthPlace: source.birthPlace || '',
+      bats: this.normalizeBatsForPayload(source.bats),
+      throws: this.normalizeThrowsForPayload(source.throws),
+      battingAverage: source.battingAverage || '',
+      homeRuns: source.homeRuns || '',
+      era: source.era || ''
     };
   }
 

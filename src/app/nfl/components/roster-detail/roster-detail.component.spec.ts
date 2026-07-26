@@ -77,7 +77,7 @@ describe('RosterDetailComponent', () => {
       weight: new FormControl(''),
       age: new FormControl(''),
       college: new FormControl(''),
-      playerID: new FormControl('')
+      playerId: new FormControl('')
     });
 
     fixture = TestBed.createComponent(RosterDetailComponent);

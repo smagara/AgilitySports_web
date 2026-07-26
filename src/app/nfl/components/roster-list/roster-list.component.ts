@@ -6,11 +6,11 @@ import { NFLRosterDto } from '../../services/nfl';
   templateUrl: './roster-list.component.html',
 })
 export class RosterListComponent implements OnInit {
-  @Input() roster: (NFLRosterDto & { yearDrafted?: number | null })[] = [];
+  @Input() roster: NFLRosterDto[] = [];
   @Input() isLoading: boolean = false;
   @Output() addRow = new EventEmitter<void>();
   @Output() editRow = new EventEmitter<NFLRosterDto>();
-  @Output() deleteRow = new EventEmitter<number>();
+  @Output() deleteRow = new EventEmitter<string | number>();
 
   constructor() { }
 
@@ -24,8 +24,8 @@ export class RosterListComponent implements OnInit {
     this.editRow.emit(row);
   }
 
-  onDeleteRow(playerID: number) {
-    this.deleteRow.emit(playerID);
+  onDeleteRow(playerId: string | number) {
+    this.deleteRow.emit(playerId);
   }
 
   computeAge(dateOfBirth?: Date | string | null): number | '' {

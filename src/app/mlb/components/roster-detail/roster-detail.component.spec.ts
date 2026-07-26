@@ -76,11 +76,12 @@ describe('RosterDetailComponent', () => {
     fixture = TestBed.createComponent(RosterDetailComponent);
     component = fixture.componentInstance;
     component.mlbForm = new FormGroup({
-      teamName: new FormControl(''),
+      teamCode: new FormControl(''),
       league: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
       position: new FormControl(''),
+      number: new FormControl(''),
       height: new FormControl(''),
       weight: new FormControl(''),
       bats: new FormControl(''),
@@ -88,7 +89,7 @@ describe('RosterDetailComponent', () => {
       dateOfBirth: new FormControl(''),
       birthCountry: new FormControl(''),
       birthPlace: new FormControl(''),
-      playerID: new FormControl('')
+      playerId: new FormControl('')
     });
     fixture.detectChanges();
   });

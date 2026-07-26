@@ -38,7 +38,9 @@ export class RosterComponent implements OnInit {
       weight: new FormControl(null, [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]+$')]),
       dateOfBirth: new FormControl('', [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       college: new FormControl('', [noXssValidator()]),
-      playerID: new FormControl({ value: '', disabled: true })
+      playerId: new FormControl({ value: '', disabled: true }),
+      sacks: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]),
+      touchdowns: new FormControl('', [Validators.pattern('^[0-9]+$')]),
     });
     this.loadRoster();
   }
@@ -92,7 +94,7 @@ export class RosterComponent implements OnInit {
       this.refreshSelectedRow();
 
       const playerToSave: NFLRosterDto = {
-        playerID: this.selectedRow.playerID,
+        playerId: this.selectedRow.playerId,
         teamCode: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
         team: (this.selectedRow.team || this.selectedRow.teamCode || '').toString().trim().toUpperCase(),
         firstName: this.selectedRow.firstName || '',
@@ -103,6 +105,8 @@ export class RosterComponent implements OnInit {
         weight: this.selectedRow.weight || '',
         dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
         college: this.selectedRow.college || '',
+        sacks: this.selectedRow.sacks || '',
+        touchdowns: this.selectedRow.touchdowns || ''
       };
 
       this.nflService.SaveRoster(playerToSave).subscribe({
@@ -132,7 +136,7 @@ export class RosterComponent implements OnInit {
     if (this.nflForm.valid) {
 
       const playerToAdd: NFLRosterDto = {
-        playerID: -1, // Adds will generate a new ID
+        playerId: -1, // Adds will generate a new ID
         teamCode: (this.nflForm.get('team')?.value || '').toString().trim().toUpperCase(),
         team: (this.nflForm.get('team')?.value || '').toString().trim().toUpperCase(),
         firstName: this.nflForm.get('firstName')?.value || '',
@@ -143,6 +147,8 @@ export class RosterComponent implements OnInit {
         weight: this.nflForm.get('weight')?.value || '',
         dateOfBirth: this.nflForm.get('dateOfBirth')?.value ? new Date(this.nflForm.get('dateOfBirth')?.value) : null,
         college: this.nflForm.get('college')?.value || '',
+        sacks: this.nflForm.get('sacks')?.value || '',
+        touchdowns: this.nflForm.get('touchdowns')?.value || '',
       };
 
       this.nflService.AddRoster(playerToAdd).subscribe({
@@ -168,14 +174,14 @@ export class RosterComponent implements OnInit {
     }
   }
 
-  deleteRow(playerID: string) {
-    if (!playerID) {
+  deleteRow(playerId: string) {
+    if (!playerId) {
       console.error('No player selected to delete!');
       this.errMessage = "No player selected to delete!";
       this.display = true;
       return;
     }
-    this.nflService.DeleteRoster(playerID).subscribe({
+    this.nflService.DeleteRoster(playerId).subscribe({
       next: data => {
         console.log('Player deleted successfully', data);
         this.display = false;
@@ -213,7 +219,9 @@ export class RosterComponent implements OnInit {
       weight: row.weight || '',
       dateOfBirth: this.toDateInputString(rawDob),
       college: row.college || '',
-      playerID: row.playerID || ''
+      playerId: row.playerId || '',
+      sacks: row.sacks || '',
+      touchdowns: row.touchdowns || ''
     });
 
   }
@@ -221,7 +229,7 @@ export class RosterComponent implements OnInit {
   refreshSelectedRow() {
     this.selectedRow = {
       ...this.nflForm.value, // Get all the current form values
-      playerID: this.selectedRow.playerID
+      playerId: this.selectedRow.playerId
     };
   }
 

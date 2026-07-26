@@ -6,11 +6,11 @@ import { NBARosterDto } from '../../services/nba';
   templateUrl: './roster-list.component.html',
 })
 export class RosterListComponent implements OnInit {
-  @Input() roster: (NBARosterDto & { league?: string; age?: number | null; yearDrafted?: number | null })[] = [];
+  @Input() roster: (NBARosterDto & { league?: string; age?: number | null })[] = [];
   @Input() isLoading: boolean = false;
   @Output() addRow = new EventEmitter<void>();
   @Output() editRow = new EventEmitter<NBARosterDto>();
-  @Output() deleteRow = new EventEmitter<number>();
+  @Output() deleteRow = new EventEmitter<string | number>();
 
   constructor() { }
 
@@ -24,8 +24,8 @@ export class RosterListComponent implements OnInit {
     this.editRow.emit(row);
   }
 
-  onDeleteRow(playerID: number) {
-    this.deleteRow.emit(playerID);
+  onDeleteRow(playerId: string | number) {
+    this.deleteRow.emit(playerId);
   }
 
   computeAge(dateOfBirth?: Date | string | null): number | '' {

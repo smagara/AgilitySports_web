@@ -77,7 +77,10 @@ describe('RosterDetailComponent', () => {
       weight: new FormControl(''),
       dateOfBirth: new FormControl(''),
       college: new FormControl(''),
-      playerID: new FormControl('')
+      playerId: new FormControl(''),
+      pointsPerGame: new FormControl(''),
+      reboundsPerGame: new FormControl(''),
+      assistsPerGame: new FormControl('')
     });
 
     fixture = TestBed.createComponent(RosterDetailComponent);

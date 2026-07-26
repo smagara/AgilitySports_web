@@ -49,20 +49,13 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="handed">Handed</label>
-        <app-handedness-dropdown id="handed" formControlName="handed" [includeBoth]="true"></app-handedness-dropdown>
-        <div *ngIf="shouldValidate() && nhlForm.get('handed')?.invalid">
-          <div class="field-error" *ngIf="nhlForm.get('handed')?.errors?.['required']">Handed is required.</div>
-        </div>
-      </div>
-      <div class="detailField">
-        <label for="drafted">Drafted Year</label>
-        <input id="drafted" pInputText formControlName="drafted" maxlength="4" placeholder="YYYY..." />
-        <div *ngIf="shouldValidate() && nhlForm.get('drafted')?.invalid">
-          <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['required']">Drafted Year is required.</div>
-          <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['pattern']">Drafted Year must be a 4-digit
+        <label for="draftYear">Drafted Year</label>
+        <input id="draftYear" pInputText formControlName="draftYear" maxlength="4" placeholder="YYYY..." />
+        <div *ngIf="shouldValidate() && nhlForm.get('draftYear')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('draftYear')?.errors?.['required']">Drafted Year is required.</div>
+          <div class="field-error" *ngIf="nhlForm.get('draftYear')?.errors?.['pattern']">Drafted Year must be a 4-digit
             year.</div>
-          <div class="field-error" *ngIf="nhlForm.get('drafted')?.errors?.['yearRange']">Drafted Year must be between
+          <div class="field-error" *ngIf="nhlForm.get('draftYear')?.errors?.['yearRange']">Drafted Year must be between
             1900 - Current Year.</div>
         </div>
       </div>
@@ -88,10 +81,46 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="playerID">PlayerID</label>
-        <input id="playerID" readonly pInputText formControlName="playerID" />
+        <label for="playerId">PlayerID</label>
+        <input id="playerId" readonly pInputText formControlName="playerId" />
       </div>
-
+      <hr/>
+      <div class="detailField">
+        <label for="handed">Handed</label>
+        <app-handedness-dropdown id="handed" formControlName="handed" [includeBoth]="true"></app-handedness-dropdown>
+        <div *ngIf="shouldValidate() && nhlForm.get('handed')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('handed')?.errors?.['required']">Handed is required.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="goals">Goals</label>
+        <input id="goals" pInputText formControlName="goals" maxlength="3"/>
+        <div *ngIf="shouldValidate() && nhlForm.get('goals')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('goals')?.errors?.['pattern']">Goals must be a round number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="penaltyMinutes">Penalty Mins</label>
+        <input id="penaltyMinutes" pInputText formControlName="penaltyMinutes" maxlength="3"/>
+        <div *ngIf="shouldValidate() && nhlForm.get('penaltyMinutes')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('penaltyMinutes')?.errors?.['pattern']">Penalty Minutes must be a round number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="points">Points</label>
+        <input id="points" pInputText formControlName="points" maxlength="3"/>
+        <div *ngIf="shouldValidate() && nhlForm.get('points')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('points')?.errors?.['pattern']">Points must be a round number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="savePct">Save %</label>
+        <input id="savePct" pInputText formControlName="savePct" placeholder="0.500" maxlength="5"/>
+        <div *ngIf="shouldValidate() && nhlForm.get('savePct')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('savePct')?.errors?.['pattern']">Save Percent must be between 0 and 1, ie 0.500.</div>
+          <div class="field-error" *ngIf="nhlForm.get('savePct')?.errors?.['max']">Save Percent must be less than 1.</div>
+        </div>
+      </div>
       <div class="detailButton">
         <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
         <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>

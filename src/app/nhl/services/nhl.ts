@@ -2,7 +2,7 @@ export interface Nhl {
 }
 
 export interface NHLRosterDto {
-    playerID: number;
+    playerId: number;
     name?: string;
     firstName?: string;
     lastName?: string;
@@ -15,12 +15,15 @@ export interface NHLRosterDto {
     height?: string;
     weight?: string;
     dateOfBirth?: Date | string | null;
-    handed?: string;
     age?: number;
-    drafted?: number;
-    yearDrafted?: number;
+    draftYear?: number;
     college?: string;
     birthPlace?: string;
     birthCountry?: string;
+    handed?: string;
+    goals?: number;
+    penaltyMinutes?: number;
+    points?: number;
+    savePct?: number;
 }
 

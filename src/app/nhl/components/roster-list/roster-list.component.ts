@@ -24,8 +24,8 @@ export class RosterListComponent implements OnInit {
     this.editRow.emit(row);
   }
 
-  onDeleteRow(playerID: number) {
-    this.deleteRow.emit(playerID);
+  onDeleteRow(playerId: number) {
+    this.deleteRow.emit(playerId);
   }
 
   getFirstName(row: any): string {

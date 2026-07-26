@@ -34,12 +34,16 @@ export class RosterComponent implements OnInit {
       lastName: new FormControl('',  [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
       position: new FormControl('', [Validators.required /*, nonEmptyStringValidator() not needed */]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
-      handed: new FormControl(null, [Validators.required]),
-      drafted: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
+      draftYear: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
       dateOfBirth: new FormControl('', [Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       birthCountry: new FormControl('', [noXssValidator()]),
       birthPlace: new FormControl('', [noXssValidator()]),
-      playerID: new FormControl({ value: '', disabled: true })
+      playerId: new FormControl({ value: '', disabled: true }),
+      handed: new FormControl(null, [Validators.required]),
+      goals: new FormControl(null, [Validators.pattern('^[0-9]+$')]),
+      penaltyMinutes: new FormControl(null, [Validators.pattern('^[0-9]+$')]),
+      points: new FormControl(null, [Validators.pattern('^[0-9]+$')]),
+      savePct: new FormControl('', [Validators.min(0.0), Validators.max(0.999), Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
     });
 
     this.loadRoster();
@@ -73,14 +77,14 @@ export class RosterComponent implements OnInit {
     this.display = true;
   }
 
-  deleteRow(playerID: string) {
-    if (!playerID) {
+  deleteRow(playerId: string) {
+    if (!playerId) {
       console.error('No player selected to delete!');
       this.errMessage = "No player selected to delete!";
       this.display = true;
       return;
     }
-    this.nhlService.DeleteRoster(playerID).subscribe({
+    this.nhlService.DeleteRoster(playerId).subscribe({
       next: data => {
         console.log('Player deleted successfully', data);
         this.display = false;
@@ -114,19 +118,23 @@ export class RosterComponent implements OnInit {
       lastName: row.lastName || lastNameParts.join(' ') || '',
       position: row.position || '',
       number: row.number || '',
-      handed: row.handed || '',
-      drafted: row.drafted || '',
+      draftYear: row.draftYear || '',
       dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
       birthCountry: row.birthCountry || '',
       birthPlace: row.birthPlace || '',
-      playerID: row.playerID || ''
+      playerId: row.playerId || '',
+      handed: row.handed || '',
+      goals: row.goals || '',
+      penaltyMinutes: row.penaltyMinutes,
+      points: row.points,
+      savePct: row.savePct
     });
   }
 
   refreshSelectedRow() {
     this.selectedRow = {
       ...this.nhlForm.value, // Get all the current form values
-      playerID: this.selectedRow.playerID
+      playerId: this.selectedRow.playerId
     };
   }
 
@@ -136,17 +144,21 @@ export class RosterComponent implements OnInit {
       this.refreshSelectedRow();
 
       const playerToSave = {
-        playerID: this.selectedRow.playerID,
+        playerId: this.selectedRow.playerId,
         team: this.selectedRow.team,
         league: this.selectedRow.league,
         name: [this.selectedRow.firstName, this.selectedRow.lastName].filter((x: string) => !!x).join(' ').trim(),
         position: this.selectedRow.position,
         number: this.selectedRow.number,
-        handed: this.selectedRow.handed,
-        drafted: this.selectedRow.drafted,
+        draftYear: this.selectedRow.draftYear,
         birthCountry: this.selectedRow.birthCountry,
         birthPlace: this.selectedRow.birthPlace,
-        dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null
+        dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
+        handed: this.selectedRow.handed,
+        goals: this.selectedRow.goals,
+        penaltyMinutes: this.selectedRow.penaltyMinutes,
+        points: this.selectedRow.points,
+        savePct: this.selectedRow.savePct
       };
 
       this.nhlService.SaveRoster(playerToSave).subscribe({
@@ -175,17 +187,21 @@ export class RosterComponent implements OnInit {
     this.isSubmitted = true;
     if (this.nhlForm.valid) {
       const playerToAdd = {
-        playerID: -1,
+        playerId: -1,
         team: this.nhlForm.get('team')?.value,
         league: this.nhlForm.get('league')?.value,
         name: [this.nhlForm.get('firstName')?.value, this.nhlForm.get('lastName')?.value].filter((x: string) => !!x).join(' ').trim(),
         position: this.nhlForm.get('position')?.value,
         number: this.nhlForm.get('number')?.value,
-        handed: this.nhlForm.get('handed')?.value,
-        drafted: this.nhlForm.get('drafted')?.value,
+        draftYear: this.nhlForm.get('draftYear')?.value,
         birthCountry: this.nhlForm.get('birthCountry')?.value,
         birthPlace: this.nhlForm.get('birthPlace')?.value,
-        dateOfBirth: this.nhlForm.get('dateOfBirth')?.value ? new Date(this.nhlForm.get('dateOfBirth')?.value) : null
+        dateOfBirth: this.nhlForm.get('dateOfBirth')?.value ? new Date(this.nhlForm.get('dateOfBirth')?.value) : null,
+        handed: this.nhlForm.get('handed')?.value,
+        goals: this.nhlForm.get('goals')?.value,
+        penaltyMinutes: this.nhlForm.get('penaltyMinutes')?.value,
+        points: this.nhlForm.get('points')?.value,
+        savePct: this.nhlForm.get('savePct')?.value
       };
 
       this.nhlService.AddRoster(playerToAdd).subscribe({

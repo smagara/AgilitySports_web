@@ -24,8 +24,8 @@ export class RosterListComponent implements OnInit {
     this.editRow.emit(row);
   }
 
-  onDeleteRow(playerID: string) {
-    this.deleteRow.emit(playerID);
+  onDeleteRow(playerId: string) {
+    this.deleteRow.emit(playerId);
   }
 
   computeAge(dateOfBirth?: Date | string | null): number | '' {
