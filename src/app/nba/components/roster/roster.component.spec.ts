@@ -5,8 +5,6 @@ import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/fo
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { NbaService } from '../../services/nba.service';
-import { RosterDetailComponent } from '../roster-detail/roster-detail.component';
-import { RosterListComponent } from '../roster-list/roster-list.component';
 import { RosterComponent } from './roster.component';
 
 // Mock PositionDropdownComponent
@@ -37,8 +35,6 @@ describe('RosterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         RosterComponent,
-        RosterListComponent,
-        RosterDetailComponent,
         MockPositionDropdownComponent
       ],
       imports: [

@@ -49,6 +49,25 @@ class MockLeagueDropdownComponent {
 }
 
 @Component({
+  selector: 'app-team-dropdown',
+  template: '<select></select>',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MockTeamDropdownComponent),
+      multi: true
+    }
+  ]
+})
+class MockTeamDropdownComponent {
+  @Input() sport: string = '';
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
+  setDisabledState(isDisabled: boolean): void {}
+}
+
+@Component({
   selector: 'app-handedness-dropdown',
   template: '<select></select>',
   providers: [
@@ -90,6 +109,7 @@ describe('RosterDetailComponent', () => {
         RosterDetailComponent,
         MockPositionDropdownComponent,
         MockLeagueDropdownComponent,
+        MockTeamDropdownComponent,
         MockHandednessDropdownComponent
       ],
       imports: [
@@ -117,7 +137,10 @@ describe('RosterDetailComponent', () => {
       birthCountry: new FormControl(''),
       birthPlace: new FormControl(''),
       playerId: new FormControl(''),
-      goals: new FormControl('')
+      goals: new FormControl(''),
+      penaltyMinutes: new FormControl(''),
+      points: new FormControl(''),
+      savePct: new FormControl('')
     });
 
     fixture = TestBed.createComponent(RosterDetailComponent);
