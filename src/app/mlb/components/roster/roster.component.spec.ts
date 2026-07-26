@@ -37,7 +37,7 @@ describe('RosterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should derive league from team name when API league is blank', () => {
+  it('should keep league blank when API league is blank', () => {
     const mockRoster: MLBRosterDto[] = [
       {
         playerId: '100001',
@@ -60,7 +60,7 @@ describe('RosterComponent', () => {
 
     component.loadRoster();
 
-    expect(component.roster[0].league).toBe('NL');
+    expect(component.roster[0].league).toBe('');
   });
 
   it('should keep league blank when team is unknown and API league is blank', () => {
@@ -89,7 +89,7 @@ describe('RosterComponent', () => {
     expect(component.roster[0].league).toBe('');
   });
 
-  it('should ignore invalid league and derive league from team name', () => {
+  it('should preserve invalid league when API returns a non-empty value', () => {
     const mockRoster: MLBRosterDto[] = [
       {
         playerId: '100010',
@@ -112,6 +112,6 @@ describe('RosterComponent', () => {
 
     component.loadRoster();
 
-    expect(component.roster[0].league).toBe('AL');
+    expect(component.roster[0].league).toBe('AB');
   });
 });

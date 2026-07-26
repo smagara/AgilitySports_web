@@ -45,6 +45,25 @@ class MockLeagueDropdownComponent {
   setDisabledState(isDisabled: boolean): void {}
 }
 
+@Component({
+  selector: 'app-team-dropdown',
+  template: '<select></select>',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MockTeamDropdownComponent),
+      multi: true
+    }
+  ]
+})
+class MockTeamDropdownComponent {
+  @Input() sport: string = '';
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
+  setDisabledState(isDisabled: boolean): void {}
+}
+
 describe('RosterDetailComponent', () => {
   let component: RosterDetailComponent;
   let fixture: ComponentFixture<RosterDetailComponent>;
@@ -55,7 +74,8 @@ describe('RosterDetailComponent', () => {
       declarations: [
         RosterDetailComponent,
         MockPositionDropdownComponent,
-        MockLeagueDropdownComponent
+        MockLeagueDropdownComponent,
+        MockTeamDropdownComponent
       ],
       imports: [
         ReactiveFormsModule,

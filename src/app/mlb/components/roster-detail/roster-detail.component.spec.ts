@@ -19,6 +19,7 @@ import { RosterDetailComponent } from './roster-detail.component';
   ]
 })
 class MockPositionDropdownComponent {
+  @Input() sport: string = '';
   writeValue(obj: any): void {}
   registerOnChange(fn: any): void {}
   registerOnTouched(fn: any): void {}
@@ -37,6 +38,26 @@ class MockPositionDropdownComponent {
   ]
 })
 class MockLeagueDropdownComponent {
+  @Input() sport: string = '';
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
+  setDisabledState(isDisabled: boolean): void {}
+}
+
+@Component({
+  selector: 'app-team-dropdown',
+  template: '<select></select>',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MockTeamDropdownComponent),
+      multi: true
+    }
+  ]
+})
+class MockTeamDropdownComponent {
+  @Input() sport: string = '';
   writeValue(obj: any): void {}
   registerOnChange(fn: any): void {}
   registerOnTouched(fn: any): void {}
@@ -68,7 +89,7 @@ describe('RosterDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RosterDetailComponent, MockPositionDropdownComponent, MockLeagueDropdownComponent, MockHandednessDropdownComponent],
+      declarations: [RosterDetailComponent, MockPositionDropdownComponent, MockLeagueDropdownComponent, MockTeamDropdownComponent, MockHandednessDropdownComponent],
       imports: [ReactiveFormsModule, DialogModule, NoopAnimationsModule],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -89,7 +110,10 @@ describe('RosterDetailComponent', () => {
       dateOfBirth: new FormControl(''),
       birthCountry: new FormControl(''),
       birthPlace: new FormControl(''),
-      playerId: new FormControl('')
+      playerId: new FormControl(''),
+      battingAverage: new FormControl(''),
+      homeRuns: new FormControl(''),
+      era: new FormControl('')
     });
     fixture.detectChanges();
   });
