@@ -114,4 +114,37 @@ describe('RosterComponent', () => {
 
     expect(component.roster[0].league).toBe('AB');
   });
+
+  it('should prefer details array over message and fallback in API errors', () => {
+    const error = {
+      error: {
+        details: ['detail one', 'detail two'],
+        message: 'message text'
+      }
+    };
+
+    const result = (component as any).buildApiErrorMessage(error, 'fallback text');
+
+    expect(result).toBe('detail one detail two');
+  });
+
+  it('should use message when details are not present', () => {
+    const error = {
+      error: {
+        message: 'message text'
+      }
+    };
+
+    const result = (component as any).buildApiErrorMessage(error, 'fallback text');
+
+    expect(result).toBe('message text');
+  });
+
+  it('should use fallback when details and message are missing', () => {
+    const error = { error: {} };
+
+    const result = (component as any).buildApiErrorMessage(error, 'fallback text');
+
+    expect(result).toBe('fallback text');
+  });
 });

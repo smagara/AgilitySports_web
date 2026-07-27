@@ -66,8 +66,8 @@
             between
             1900 - Current Year.</div>
         </div>
-</div>
-        <div class="detailField">
+      </div>
+      <div class="detailField">
           <label for="height">Height</label>
           <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
           <div *ngIf="nbaForm.get('height')?.invalid && (nbaForm.get('height')?.touched || isSubmitted)">
@@ -102,13 +102,13 @@
         <div class="detailField">
           <label for="birthCountry">Birth Country</label>
           <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" appTrim />
-          <div class="field-error" *ngIf="nbaForm.get('birthCountry')?.errors?.['xss']">Input cannot contain &lt; or
+          <div class="field-error" *ngIf="nbaForm.get('birthCountry')?.errors?.['xss'] && (nbaForm.get('birthCountry')?.touched || isSubmitted)">Input cannot contain &lt; or
             &gt; characters.</div>
         </div>
         <div class="detailField">
           <label for="birthCityState">Birth Place</label>
           <input id="birthCityState" pInputText formControlName="birthCityState" maxlength="50" appTrim />
-          <div class="field-error" *ngIf="nbaForm.get('birthCityState')?.errors?.['xss']">Input cannot contain &lt; or
+          <div class="field-error" *ngIf="nbaForm.get('birthCityState')?.errors?.['xss'] && (nbaForm.get('birthCityState')?.touched || isSubmitted)">Input cannot contain &lt; or
             &gt;
             characters.</div>
         </div>
