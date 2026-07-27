@@ -220,7 +220,7 @@ export class RosterComponent implements OnInit {
         league: this.nbaForm.get('league')?.value || '',
         position: this.normalizeNbaPositionCode(this.nbaForm.get('position')?.value),
         number: this.nbaForm.get('number')?.value || '',
-        draftYear: this.nbaForm.get('draftYear')?.value || '',
+        draftYear: this.normalizeOptionalNumber(this.nbaForm.get('draftYear')?.value),
         seasonYear: this.normalizeOptionalNumber(this.nbaForm.get('seasonYear')?.value),
         height: feetInchesToInches(this.nbaForm.get('height')?.value || ''),
         weight: this.nbaForm.get('weight')?.value || '',

@@ -74,7 +74,7 @@ export class RosterComponent implements OnInit {
       next: data => {
         this.roster = (data || []).map((item: any) => ({
           ...item,
-          birthCityState: item?.birthCityState ?? item?.birthCityState ?? ''
+          birthCityState: item?.birthCityState ?? item?.BirthCityState ?? ''
         }));
         this.isLoading = false;
       },
@@ -146,7 +146,7 @@ export class RosterComponent implements OnInit {
       weight: row.weight || '',
       dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
       birthCountry: row.birthCountry || '',
-      birthCityState: row.birthCityState || row.birthCityState || '',
+      birthCityState: row.birthCityState || row.BirthCityState || '',
       college: row.college || '',
       playerId: row.playerId || '',
       handed: row.handed || '',

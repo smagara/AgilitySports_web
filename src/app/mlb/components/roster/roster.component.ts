@@ -57,11 +57,11 @@ export class RosterComponent implements OnInit {
       firstName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required]),
-      number: new FormControl('', [Validators.required, Validators.pattern('^(?:[0-9]|[1-9][0-9])$')]),
+      number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{1,3}$')]),
       draftYear: new FormControl('', [yearRangeValidator(1900, new Date().getFullYear()), Validators.pattern('^[0-9]{4}$')]),
       seasonYear: new FormControl(new Date().getFullYear(), [Validators.required, yearRangeValidator(1900, new Date().getFullYear() + 1), Validators.pattern('^[0-9]{4}$')]),
       height: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+'[0-9]{1,2}\"$")]),
-      weight: new FormControl('', [Validators.required, Validators.min(98), Validators.max(400), Validators.pattern('^[0-9]{2,3}$')]),
+      weight: new FormControl('', [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]{2,3}$')]),
       dateOfBirth: new FormControl('', [Validators.required, yearRangeValidator(1900, new Date().getFullYear()), Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       birthCountry: new FormControl('', [noXssValidator()]),
       birthCityState: new FormControl('', [noXssValidator()]),
@@ -227,7 +227,7 @@ export class RosterComponent implements OnInit {
 
   private buildRosterPayload(source: any, playerId: number): MLBRosterDto {
     return {
-      playerId: playerId > 0 ? playerId : 0,
+      playerId: playerId > 0 ? playerId : -1,
       teamCode: String(source.teamCode || '').trim().toUpperCase(),
       teamName: source.teamName || this.lookupTeamShortName(String(source.teamCode || '').trim().toUpperCase()),
       firstName: source.firstName || '',
