@@ -14,6 +14,8 @@ export interface NBARosterDto {
   height: string;
   weight: string;
   dateOfBirth: Date | null;
+  birthCountry: string;
+  birthCityState: string;
   college: string;
   draftYear?: number | null;
   seasonYear?: number | null;

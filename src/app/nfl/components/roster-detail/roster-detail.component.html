@@ -55,6 +55,14 @@
         </div>
       </div>
       <div class="detailField">
+        <label for="draftYear">Drafted Year</label>
+        <input id="draftYear" pInputText formControlName="draftYear" maxlength="4" placeholder="YYYY..." appTrim />
+        <div *ngIf="nflForm.get('draftYear')?.invalid && (nflForm.get('draftYear')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('draftYear')?.errors?.['pattern']">Drafted Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="nflForm.get('draftYear')?.errors?.['yearRange']">Drafted Year must be between 1900 - Current Year.</div>
+        </div>
+      </div>
+      <div class="detailField">
         <label for="height">Height</label>
         <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
         <div *ngIf="nflForm.get('height')?.invalid && (nflForm.get('height')?.touched || isSubmitted)">
@@ -86,6 +94,20 @@
         </div>
       </div>
       <div class="detailField">
+        <label for="birthCountry">Birth Country</label>
+        <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" appTrim />
+        <div *ngIf="nflForm.get('birthCountry')?.hasError('xss') && (nflForm.get('birthCountry')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="birthCityState">Birth Place</label>
+        <input id="birthCityState" pInputText formControlName="birthCityState" maxlength="50" appTrim />
+        <div *ngIf="nflForm.get('birthCityState')?.hasError('xss') && (nflForm.get('birthCityState')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
         <label for="college">College</label>
         <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
         <div *ngIf="nflForm.get('college')?.hasError('xss') && (nflForm.get('college')?.touched || isSubmitted)" class="field-error">
@@ -93,7 +115,16 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="playerId">PlayerID</label>
+        <label for="seasonYear">Season Year</label>
+        <input id="seasonYear" pInputText formControlName="seasonYear" maxlength="4" placeholder="YYYY..." appTrim />
+        <div *ngIf="nflForm.get('seasonYear')?.invalid && (nflForm.get('seasonYear')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nflForm.get('seasonYear')?.errors?.['required']">Season Year is required.</div>
+          <div class="field-error" *ngIf="nflForm.get('seasonYear')?.errors?.['pattern']">Season Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="nflForm.get('seasonYear')?.errors?.['yearRange']">Season Year must be between 1900 - next year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="playerId">Player ID</label>
         <input id="playerId" readonly pInputText formControlName="playerId" />
       </div>
       <hr/>

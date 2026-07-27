@@ -17,8 +17,9 @@ export interface NHLRosterDto {
     dateOfBirth?: Date | string | null;
     age?: number;
     draftYear?: number;
+    seasonYear?: number;
     college?: string;
-    birthPlace?: string;
+    birthCityState?: string;
     birthCountry?: string;
     handed?: string;
     goals?: number;

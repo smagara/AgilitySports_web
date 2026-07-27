@@ -26,7 +26,7 @@ export class MlbService {
         } else {
           console.error('An error occurred', error);
         }
-        return throwError(() => new Error('An error occured saving the MLB roster change.'));
+        return throwError(() => error);
       })
     );
   }
@@ -39,12 +39,12 @@ export class MlbService {
         } else {
           console.error('An error occurred', error);
         }
-        return throwError(() => new Error('An error occured adding to MLB roster. Please try again later.'));
+        return throwError(() => error);
       })
     );
   }
 
-  DeleteRoster(playerId: string): Observable<any> {
+  DeleteRoster(playerId: number): Observable<any> {
     return this.http.delete<any>(this.baseURL + 'mlb/roster/?playerId=' + playerId).pipe(
       catchError((error) => {
         if (error.status === 500) {

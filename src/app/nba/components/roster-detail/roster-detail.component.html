@@ -1,127 +1,177 @@
-<p-dialog id="detailPopup" header="NBA Player Detail" [(visible)]="display" [modal]="true" 
+<p-dialog id="detailPopup" header="NBA Player Detail" [(visible)]="display" [modal]="true"
   [style]="{width: '90vw', maxWidth: '600px'}" [responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
-<form [formGroup]="nbaForm" (ngSubmit)="isAdding ? onAdd() : onSave()">
-  <div class="p-fluid">
-    <hr class="divider" />
-    <div class="detailField">
-      <label for="team">Team</label>
-      <app-team-dropdown id="team" [sport]="'nba'" formControlName="team"></app-team-dropdown>
-      <div *ngIf="nbaForm.get('team')?.invalid && (nbaForm.get('team')?.touched || isSubmitted)" class="field-error">
-        <span *ngIf="nbaForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</span>
-      </div>
-    </div>
-    <div class="detailField">
-      <label for="league">League</label>
-      <app-league-dropdown id="league" [sport]="'nba'" formControlName="league"></app-league-dropdown>
-      <div *ngIf="nbaForm.get('league')?.invalid && (nbaForm.get('league')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('league')?.errors?.['required']">League is required.</div>
-      </div>
-    </div>
-    <div class="detailField">
-      <label for="firstName">First Name</label>
-      <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First name..." appTrim />
-      <div *ngIf="nbaForm.get('firstName')?.hasError('xss') && (nbaForm.get('firstName')?.touched || isSubmitted)" class="field-error">
-        Input cannot contain &lt; or &gt; characters.
-      </div>
-    </div>
-    <div class="detailField">
-      <label for="lastName">Last Name</label>
-      <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last name..." appTrim />
-      <div *ngIf="nbaForm.get('lastName')?.hasError('xss') && (nbaForm.get('lastName')?.touched || isSubmitted)" class="field-error">
-        Input cannot contain &lt; or &gt; characters.
-      </div>
-    </div>
-    <div class="detailField">
-      <label for="position">Position</label>
-      <app-position-dropdown id="position" [sport]="'nba'" formControlName="position" />
-      <div *ngIf="nbaForm.get('position')?.invalid && (nbaForm.get('position')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('position')?.errors?.['required']">Position is required.</div>
-        <div class="field-error" *ngIf="nbaForm.get('position')?.errors?.['nonEmptyString']">Position cannot be
-          empty.</div>
-      </div>
-    </div>
-    <div class="detailField">
-      <label for="number">Number</label>
-      <input id="number" pInputText formControlName="number" maxlength="5"  appTrim />
-      <div *ngIf="nbaForm.get('number')?.invalid && (nbaForm.get('number')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('number')?.errors?.['required']">Player Number is required.
+  <form [formGroup]="nbaForm" (ngSubmit)="isAdding ? onAdd() : onSave()">
+    <div class="p-fluid">
+      <hr class="divider" />
+      <div class="detailField">
+        <label for="team">Team</label>
+        <app-team-dropdown id="team" [sport]="'nba'" formControlName="team"></app-team-dropdown>
+        <div *ngIf="nbaForm.get('team')?.invalid && (nbaForm.get('team')?.touched || isSubmitted)" class="field-error">
+          <span *ngIf="nbaForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</span>
         </div>
-        <div class="field-error" *ngIf="nbaForm.get('number')?.errors?.['pattern']">Player Number must be numeric up
-          to 5 digits.</div>
       </div>
-    </div>
-    <div class="detailField">
-      <label for="height">Height</label>
-      <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
-      <div *ngIf="nbaForm.get('height')?.invalid && (nbaForm.get('height')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('height')?.errors?.['required']">Height is required.</div>
-        <div class="field-error" *ngIf="nbaForm.get('height')?.errors?.['pattern']">Height must be in the format of
-          Feet-Inches.</div>
-      </div>
-    </div>
-    <div class="detailField">
-      <label for="weight">Weight</label>
-      <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
-      <div *ngIf="nbaForm.get('weight')?.invalid && (nbaForm.get('weight')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['required']">Weight is required.</div>
-        <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['min']">Weight must be at least 98.</div>
-        <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['max']">Weight cannot exceed 500.</div>
-        <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['pattern']">Weight must be numeric up to 3
-          digits.</div>
-      </div>
-    </div>
-    <div class="detailField">
-      <label for="dateOfBirth">Date of Birth</label>
-      <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
-      <div *ngIf="nbaForm.get('dateOfBirth')?.invalid && (nbaForm.get('dateOfBirth')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is required.
+      <div class="detailField">
+        <label for="league">League</label>
+        <app-league-dropdown id="league" [sport]="'nba'" formControlName="league"></app-league-dropdown>
+        <div *ngIf="nbaForm.get('league')?.invalid && (nbaForm.get('league')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nbaForm.get('league')?.errors?.['required']">League is required.</div>
         </div>
-        <div class="field-error" *ngIf="nbaForm.get('dateOfBirth')?.errors?.['pattern']">Date of Birth must be in
-          the format of MM/dd/yyyy.</div>
       </div>
-    </div>
-    <div class="detailField">
-      <label for="college">College</label>
-      <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
-      <div *ngIf="nbaForm.get('college')?.hasError('xss') && (nbaForm.get('college')?.touched || isSubmitted)" class="field-error">
-        Input cannot contain &lt; or &gt; characters.
+      <div class="detailField">
+        <label for="firstName">First Name</label>
+        <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First name..."
+          appTrim />
+        <div *ngIf="nbaForm.get('firstName')?.hasError('xss') && (nbaForm.get('firstName')?.touched || isSubmitted)"
+          class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
       </div>
-    </div>
-    <div class="detailField">
-      <label for="playerId">PlayerID</label>
-      <input id="playerId" readonly pInputText formControlName="playerId" />
-    </div>
-    <hr/>
-    <div class="detailField">
-      <label for="pointsPerGame">Points/Game</label>
-      <input id="pointsPerGame" pInputText formControlName="pointsPerGame" maxlength="5" appTrim />
-      <div *ngIf="nbaForm.get('pointsPerGame')?.invalid && (nbaForm.get('pointsPerGame')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('pointsPerGame')?.errors?.['pattern']">Points Per Game must be a valid number (decimals allowed).</div>
+      <div class="detailField">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last name..." appTrim />
+        <div *ngIf="nbaForm.get('lastName')?.hasError('xss') && (nbaForm.get('lastName')?.touched || isSubmitted)"
+          class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
       </div>
-    </div>
-    <div class="detailField">
-      <label for="reboundsPerGame">Rebounds/Game</label>
-      <input id="reboundsPerGame" pInputText formControlName="reboundsPerGame" maxlength="5" appTrim />
-      <div *ngIf="nbaForm.get('reboundsPerGame')?.invalid && (nbaForm.get('reboundsPerGame')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('reboundsPerGame')?.errors?.['pattern']">Rebounds Per Game must be a valid number (decimals allowed).</div>
+      <div class="detailField">
+        <label for="position">Position</label>
+        <app-position-dropdown id="position" [sport]="'nba'" formControlName="position" />
+        <div *ngIf="nbaForm.get('position')?.invalid && (nbaForm.get('position')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nbaForm.get('position')?.errors?.['required']">Position is required.</div>
+          <div class="field-error" *ngIf="nbaForm.get('position')?.errors?.['nonEmptyString']">Position cannot be
+            empty.</div>
+        </div>
       </div>
-    </div>
-    <div class="detailField">
-      <label for="assistsPerGame">Assists/Game</label>
-      <input id="assistsPerGame" pInputText formControlName="assistsPerGame" maxlength="5" appTrim />
-      <div *ngIf="nbaForm.get('assistsPerGame')?.invalid && (nbaForm.get('assistsPerGame')?.touched || isSubmitted)">
-        <div class="field-error" *ngIf="nbaForm.get('assistsPerGame')?.errors?.['pattern']">Assists Per Game must be a valid number (decimals allowed).</div>
+      <div class="detailField">
+        <label for="number">Number</label>
+        <input id="number" pInputText formControlName="number" maxlength="5" appTrim />
+        <div *ngIf="nbaForm.get('number')?.invalid && (nbaForm.get('number')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="nbaForm.get('number')?.errors?.['required']">Player Number is required.
+          </div>
+          <div class="field-error" *ngIf="nbaForm.get('number')?.errors?.['pattern']">Player Number must be numeric up
+            to 5 digits.</div>
+        </div>
       </div>
+      <div class="detailField">
+        <label for="draftYear">Drafted Year</label>
+        <input id="draftYear" pInputText formControlName="draftYear" maxlength="4" placeholder="YYYY..." />
+        <div *ngIf="shouldValidate() && nbaForm.get('draftYear')?.invalid">
+          <div class="field-error" *ngIf="nbaForm.get('draftYear')?.errors?.['required']">Drafted Year is required.
+          </div>
+          <div class="field-error" *ngIf="nbaForm.get('draftYear')?.errors?.['pattern']">Drafted Year must be a
+            4-digit
+            year.</div>
+          <div class="field-error" *ngIf="nbaForm.get('draftYear')?.errors?.['yearRange']">Drafted Year must be
+            between
+            1900 - Current Year.</div>
+        </div>
+</div>
+        <div class="detailField">
+          <label for="height">Height</label>
+          <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
+          <div *ngIf="nbaForm.get('height')?.invalid && (nbaForm.get('height')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nbaForm.get('height')?.errors?.['required']">Height is required.</div>
+            <div class="field-error" *ngIf="nbaForm.get('height')?.errors?.['pattern']">Height must be in the format
+              of
+              Feet-Inches.</div>
+          </div>
+        </div>
+        <div class="detailField">
+          <label for="weight">Weight</label>
+          <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
+          <div *ngIf="nbaForm.get('weight')?.invalid && (nbaForm.get('weight')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['required']">Weight is required.</div>
+            <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['min']">Weight must be at least 98.</div>
+            <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['max']">Weight cannot exceed 500.</div>
+            <div class="field-error" *ngIf="nbaForm.get('weight')?.errors?.['pattern']">Weight must be numeric up to 3
+              digits.</div>
+          </div>
+        </div>
+        <div class="detailField">
+          <label for="dateOfBirth">Date of Birth</label>
+          <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
+          <div *ngIf="nbaForm.get('dateOfBirth')?.invalid && (nbaForm.get('dateOfBirth')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nbaForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is
+              required.
+            </div>
+            <div class="field-error" *ngIf="nbaForm.get('dateOfBirth')?.errors?.['pattern']">Date of Birth must be in
+              the format of MM/dd/yyyy.</div>
+          </div>
+        </div>
+        <div class="detailField">
+          <label for="birthCountry">Birth Country</label>
+          <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" appTrim />
+          <div class="field-error" *ngIf="nbaForm.get('birthCountry')?.errors?.['xss']">Input cannot contain &lt; or
+            &gt; characters.</div>
+        </div>
+        <div class="detailField">
+          <label for="birthCityState">Birth Place</label>
+          <input id="birthCityState" pInputText formControlName="birthCityState" maxlength="50" appTrim />
+          <div class="field-error" *ngIf="nbaForm.get('birthCityState')?.errors?.['xss']">Input cannot contain &lt; or
+            &gt;
+            characters.</div>
+        </div>
+        <div class="detailField">
+          <label for="college">College</label>
+          <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
+          <div *ngIf="nbaForm.get('college')?.hasError('xss') && (nbaForm.get('college')?.touched || isSubmitted)"
+            class="field-error">
+            Input cannot contain &lt; or &gt; characters.
+          </div>
+        </div>
+        <div class="detailField">
+          <label for="seasonYear">Season Year</label>
+          <input id="seasonYear" pInputText formControlName="seasonYear" maxlength="4" placeholder="YYYY..." appTrim />
+          <div *ngIf="nbaForm.get('seasonYear')?.invalid && (nbaForm.get('seasonYear')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nbaForm.get('seasonYear')?.errors?.['required']">Season Year is required.</div>
+            <div class="field-error" *ngIf="nbaForm.get('seasonYear')?.errors?.['pattern']">Season Year must be a 4-digit year.</div>
+            <div class="field-error" *ngIf="nbaForm.get('seasonYear')?.errors?.['yearRange']">Season Year must be between 1900 - next year.</div>
+          </div>
+        </div>
+        <div class="detailField">
+          <label for="playerId">Player ID</label>
+          <input id="playerId" readonly pInputText formControlName="playerId" />
+        </div>
+        <hr />
+        <div class="detailField">
+          <label for="pointsPerGame">Points/Game</label>
+          <input id="pointsPerGame" pInputText formControlName="pointsPerGame" maxlength="5" appTrim />
+          <div *ngIf="nbaForm.get('pointsPerGame')?.invalid && (nbaForm.get('pointsPerGame')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nbaForm.get('pointsPerGame')?.errors?.['pattern']">Points Per Game must be
+              a
+              valid number (decimals allowed).</div>
+          </div>
+        </div>
+        <div class="detailField">
+          <label for="reboundsPerGame">Rebounds/Game</label>
+          <input id="reboundsPerGame" pInputText formControlName="reboundsPerGame" maxlength="5" appTrim />
+          <div
+            *ngIf="nbaForm.get('reboundsPerGame')?.invalid && (nbaForm.get('reboundsPerGame')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nbaForm.get('reboundsPerGame')?.errors?.['pattern']">Rebounds Per Game
+              must
+              be a valid number (decimals allowed).</div>
+          </div>
+        </div>
+        <div class="detailField">
+          <label for="assistsPerGame">Assists/Game</label>
+          <input id="assistsPerGame" pInputText formControlName="assistsPerGame" maxlength="5" appTrim />
+          <div
+            *ngIf="nbaForm.get('assistsPerGame')?.invalid && (nbaForm.get('assistsPerGame')?.touched || isSubmitted)">
+            <div class="field-error" *ngIf="nbaForm.get('assistsPerGame')?.errors?.['pattern']">Assists Per Game must
+              be
+              a valid number (decimals allowed).</div>
+          </div>
+        </div>
+        <div class="detailButton">
+          <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
+          <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
+          <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="onHideDialog()"
+            label="Cancel">Cancel</button>
+        </div>
+      </div>
+      <div *ngIf="errMessage.length" class="errMessage">
+        {{errMessage}}
     </div>
-    <div class="detailButton">
-      <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
-      <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
-      <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="onHideDialog()"
-        label="Cancel">Cancel</button>
-    </div>
-  </div>
-  <div *ngIf="errMessage.length" class="errMessage">
-    {{errMessage}}
-  </div>
-</form>
+  </form>
 </p-dialog>

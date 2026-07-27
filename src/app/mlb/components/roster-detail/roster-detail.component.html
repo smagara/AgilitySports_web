@@ -55,6 +55,14 @@
         </div>
       </div>
       <div class="detailField">
+        <label for="draftYear">Drafted Year</label>
+        <input id="draftYear" pInputText formControlName="draftYear" maxlength="4" inputmode="numeric" placeholder="YYYY..." appTrim />
+        <div *ngIf="hasError('draftYear')">
+          <div class="field-error" *ngIf="hasError('draftYear', 'pattern')">Drafted Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="hasError('draftYear', 'yearRange')">Drafted Year must be between 1900 and current year.</div>
+        </div>
+      </div>
+      <div class="detailField">
         <label for="height">Height</label>
         <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
         <div *ngIf="hasError('height')">
@@ -73,14 +81,6 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="throws">Throws</label>
-        <app-handedness-dropdown id="throws" formControlName="throws" [includeBoth]="false"></app-handedness-dropdown>
-        <div *ngIf="hasError('throws')">
-          <div class="field-error" *ngIf="hasError('throws', 'required')">Throws is required.</div>
-          <div class="field-error" *ngIf="hasError('throws', 'pattern')">Throws must be L or R.</div>
-        </div>
-      </div>
-      <div class="detailField">
         <label for="dateOfBirth">Date of Birth</label>
         <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
         <div *ngIf="hasError('dateOfBirth')">
@@ -95,28 +95,36 @@
         <div class="field-error" *ngIf="hasError('birthCountry', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
       </div>
       <div class="detailField">
-        <label for="birthPlace">Birth Place</label>
-        <input id="birthPlace" pInputText formControlName="birthPlace" maxlength="50" appTrim />
-        <div class="field-error" *ngIf="hasError('birthPlace', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+        <label for="birthCityState">Birth Place</label>
+        <input id="birthCityState" pInputText formControlName="birthCityState" maxlength="50" appTrim />
+        <div class="field-error" *ngIf="hasError('birthCityState', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
       </div>
       <div class="detailField">
-        <label for="playerId">PlayerID</label>
+        <label for="college">College</label>
+        <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
+        <div class="field-error" *ngIf="hasError('college', 'xss')">Input cannot contain &lt; or &gt; characters.</div>
+      </div>
+      <div class="detailField">
+        <label for="seasonYear">Season Year</label>
+        <input id="seasonYear" pInputText formControlName="seasonYear" maxlength="4" inputmode="numeric" placeholder="YYYY..." appTrim />
+        <div *ngIf="hasError('seasonYear')">
+          <div class="field-error" *ngIf="hasError('seasonYear', 'required')">Season Year is required.</div>
+          <div class="field-error" *ngIf="hasError('seasonYear', 'pattern')">Season Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="hasError('seasonYear', 'yearRange')">Season Year must be between 1900 and next year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="playerId">Player ID</label>
         <input id="playerId" readonly pInputText formControlName="playerId" />
       </div>
       <hr/>
       <div class="detailField">
         <label for="bats">Bats</label>
         <app-handedness-dropdown id="bats" formControlName="bats" [includeBoth]="true"></app-handedness-dropdown>
-        <div *ngIf="hasError('bats')">
-          <div class="field-error" *ngIf="hasError('bats', 'pattern')">Bats must be L, R, or B.</div>
-        </div>
       </div>
       <div class="detailField">
-        <label for="bats">Throws</label>
+        <label for="throws">Throws</label>
         <app-handedness-dropdown id="throws" formControlName="throws" [includeBoth]="true"></app-handedness-dropdown>
-        <div *ngIf="hasError('throws')">
-          <div class="field-error" *ngIf="hasError('throws', 'pattern')">Bats must be L, R, or B.</div>
-        </div>
       </div>      
       <div class="detailField">
         <label for="battingAverage">Batting Average</label>

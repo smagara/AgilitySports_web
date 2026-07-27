@@ -60,6 +60,24 @@
         </div>
       </div>
       <div class="detailField">
+        <label for="height">Height</label>
+        <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
+        <div *ngIf="shouldValidate() && nhlForm.get('height')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('height')?.errors?.['required']">Height is required.</div>
+          <div class="field-error" *ngIf="nhlForm.get('height')?.errors?.['pattern']">Height must be in the format of Feet-Inches.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="weight">Weight</label>
+        <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
+        <div *ngIf="shouldValidate() && nhlForm.get('weight')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('weight')?.errors?.['required']">Weight is required.</div>
+          <div class="field-error" *ngIf="nhlForm.get('weight')?.errors?.['min']">Weight must be at least 98.</div>
+          <div class="field-error" *ngIf="nhlForm.get('weight')?.errors?.['max']">Weight cannot exceed 500.</div>
+          <div class="field-error" *ngIf="nhlForm.get('weight')?.errors?.['pattern']">Weight must be numeric up to 3 digits.</div>
+        </div>
+      </div>
+      <div class="detailField">
         <label for="dateOfBirth">Date of Birth</label>
         <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
         <div *ngIf="shouldValidate() && nhlForm.get('dateOfBirth')?.invalid">
@@ -74,14 +92,32 @@
         </div>
       </div>
       <div class="detailField">
-        <label for="birthPlace">Birth Place</label>
-        <input id="birthPlace" pInputText formControlName="birthPlace" maxlength="50" appTrim />
-        <div *ngIf="nhlForm.get('birthPlace')?.hasError('xss') && (nhlForm.get('birthPlace')?.touched || isSubmitted)" class="field-error">
+        <label for="birthCityState">Birth Place</label>
+        <input id="birthCityState" pInputText formControlName="birthCityState" maxlength="50" appTrim />
+        <div *ngIf="nhlForm.get('birthCityState')?.hasError('xss') && (nhlForm.get('birthCityState')?.touched || isSubmitted)" class="field-error">
           Input cannot contain &lt; or &gt; characters.
         </div>
       </div>
       <div class="detailField">
-        <label for="playerId">PlayerID</label>
+        <label for="college">College</label>
+        <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
+        <div *ngIf="nhlForm.get('college')?.hasError('xss') && (nhlForm.get('college')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="seasonYear">Season Year</label>
+        <input id="seasonYear" pInputText formControlName="seasonYear" maxlength="4" placeholder="YYYY..." appTrim />
+        <div *ngIf="shouldValidate() && nhlForm.get('seasonYear')?.invalid">
+          <div class="field-error" *ngIf="nhlForm.get('seasonYear')?.errors?.['required']">Season Year is required.</div>
+          <div class="field-error" *ngIf="nhlForm.get('seasonYear')?.errors?.['pattern']">Season Year must be a 4-digit
+            year.</div>
+          <div class="field-error" *ngIf="nhlForm.get('seasonYear')?.errors?.['yearRange']">Season Year must be between
+            1900 - next year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="playerId">Player ID</label>
         <input id="playerId" readonly pInputText formControlName="playerId" />
       </div>
       <hr/>

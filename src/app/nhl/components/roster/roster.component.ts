@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, timer } from 'rxjs';
 import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
+import { feetInchesToInches, inchesToFeetInches } from 'src/app/common/formatters/height-formatter';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
 import { yearRangeValidator } from 'src/app/common/validators/year-range';
@@ -43,12 +44,20 @@ export class RosterComponent implements OnInit {
       lastName: new FormControl('',  [Validators.required, nonEmptyStringValidator(), noXssValidator()]),
       position: new FormControl('', [Validators.required /*, nonEmptyStringValidator() not needed */]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
+      height: new FormControl(null, [Validators.required,
+        Validators.pattern('^[0-9]+\'[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
+      weight: new FormControl(null, [Validators.required,
+        Validators.min(98),
+        Validators.max(500),
+        Validators.pattern('^[0-9]+$')]),
       draftYear: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
+      seasonYear: new FormControl(currentYear, [Validators.required, yearRangeValidator(1900, currentYear + 1), Validators.pattern('^[0-9]{4}$')]),
       dateOfBirth: new FormControl('', [Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       birthCountry: new FormControl('', [noXssValidator()]),
-      birthPlace: new FormControl('', [noXssValidator()]),
+      birthCityState: new FormControl('', [noXssValidator()]),
+      college: new FormControl('', [noXssValidator()]),
       playerId: new FormControl({ value: '', disabled: true }),
-      handed: new FormControl(null, [Validators.required]),
+      handed: new FormControl(null),
       goals: new FormControl(null, [Validators.pattern('^[0-9]+$')]),
       penaltyMinutes: new FormControl(null, [Validators.pattern('^[0-9]+$')]),
       points: new FormControl(null, [Validators.pattern('^[0-9]+$')]),
@@ -63,7 +72,10 @@ export class RosterComponent implements OnInit {
     this.isLoading = true;
     this.nhlService.GetRoster().subscribe({
       next: data => {
-        this.roster = data;
+        this.roster = (data || []).map((item: any) => ({
+          ...item,
+          birthCityState: item?.birthCityState ?? item?.birthCityState ?? ''
+        }));
         this.isLoading = false;
       },
       error: error => {
@@ -76,6 +88,7 @@ export class RosterComponent implements OnInit {
   addRow() {
     this.resetAction();
     this.isAdding = true;
+    this.nhlForm.patchValue({ seasonYear: new Date().getFullYear() });
     this.display = true;
   }
 
@@ -128,9 +141,13 @@ export class RosterComponent implements OnInit {
       position: row.position || '',
       number: row.number || '',
       draftYear: row.draftYear || '',
+      seasonYear: row.seasonYear || '',
+      height: inchesToFeetInches(row.height || ''),
+      weight: row.weight || '',
       dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
       birthCountry: row.birthCountry || '',
-      birthPlace: row.birthPlace || '',
+      birthCityState: row.birthCityState || row.birthCityState || '',
+      college: row.college || '',
       playerId: row.playerId || '',
       handed: row.handed || '',
       goals: row.goals || '',
@@ -160,8 +177,12 @@ export class RosterComponent implements OnInit {
         position: this.selectedRow.position,
         number: this.selectedRow.number,
         draftYear: this.normalizeOptionalNumber(this.selectedRow.draftYear),
+        seasonYear: this.normalizeOptionalNumber(this.selectedRow.seasonYear),
+        height: feetInchesToInches(this.selectedRow.height || ''),
+        weight: this.selectedRow.weight,
+        college: this.selectedRow.college,
         birthCountry: this.selectedRow.birthCountry,
-        birthPlace: this.selectedRow.birthPlace,
+        birthCityState: this.selectedRow.birthCityState,
         dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
         handed: this.selectedRow.handed,
         goals: this.normalizeOptionalNumber(this.selectedRow.goals),
@@ -203,8 +224,12 @@ export class RosterComponent implements OnInit {
         position: this.nhlForm.get('position')?.value,
         number: this.nhlForm.get('number')?.value,
         draftYear: this.normalizeOptionalNumber(this.nhlForm.get('draftYear')?.value),
+        seasonYear: this.normalizeOptionalNumber(this.nhlForm.get('seasonYear')?.value),
+        height: feetInchesToInches(this.nhlForm.get('height')?.value || ''),
+        weight: this.nhlForm.get('weight')?.value,
+        college: this.nhlForm.get('college')?.value,
         birthCountry: this.nhlForm.get('birthCountry')?.value,
-        birthPlace: this.nhlForm.get('birthPlace')?.value,
+        birthCityState: this.nhlForm.get('birthCityState')?.value,
         dateOfBirth: this.nhlForm.get('dateOfBirth')?.value ? new Date(this.nhlForm.get('dateOfBirth')?.value) : null,
         handed: this.nhlForm.get('handed')?.value,
         goals: this.normalizeOptionalNumber(this.nhlForm.get('goals')?.value),
