@@ -27,6 +27,20 @@ export class RosterComponent implements OnInit {
 
   constructor (private mlbService: MlbService) {}
 
+  private buildApiErrorMessage(error: any, fallback: string): string {
+    const details = error?.error?.details;
+    if (Array.isArray(details) && details.length > 0) {
+      return details.join(' ');
+    }
+
+    const message = error?.error?.message;
+    if (typeof message === 'string' && message.trim()) {
+      return message;
+    }
+
+    return fallback;
+  }
+
   private normalizeOptionalNumber(value: any): number | null {
     if (value === null || value === undefined || String(value).trim() === '') {
       return null;
@@ -43,15 +57,18 @@ export class RosterComponent implements OnInit {
       firstName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required]),
-      number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+      number: new FormControl('', [Validators.required, Validators.pattern('^(?:[0-9]|[1-9][0-9])$')]),
+      draftYear: new FormControl('', [yearRangeValidator(1900, new Date().getFullYear()), Validators.pattern('^[0-9]{4}$')]),
+      seasonYear: new FormControl(new Date().getFullYear(), [Validators.required, yearRangeValidator(1900, new Date().getFullYear() + 1), Validators.pattern('^[0-9]{4}$')]),
       height: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+'[0-9]{1,2}\"$")]),
-      weight: new FormControl('', [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]{2,3}$')]),
+      weight: new FormControl('', [Validators.required, Validators.min(98), Validators.max(400), Validators.pattern('^[0-9]{2,3}$')]),
       dateOfBirth: new FormControl('', [Validators.required, yearRangeValidator(1900, new Date().getFullYear()), Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
       birthCountry: new FormControl('', [noXssValidator()]),
-      birthPlace: new FormControl('', [noXssValidator()]),
+      birthCityState: new FormControl('', [noXssValidator()]),
+      college: new FormControl('', [noXssValidator()]),
       playerId: new FormControl({ value: '', disabled: true }),
       bats: new FormControl('', [Validators.required, Validators.pattern('^[LRBS]$')]),
-      throws: new FormControl('', [Validators.required, Validators.pattern('^[RL]$')]),
+      throws: new FormControl('', [Validators.required]),
       battingAverage: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
       homeRuns: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
       era: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
@@ -88,6 +105,7 @@ export class RosterComponent implements OnInit {
   addRow() {
     this.resetAction();
     this.isAdding = true;
+    this.mlbForm.patchValue({ seasonYear: new Date().getFullYear() });
     this.display = true;
   }
 
@@ -98,8 +116,8 @@ export class RosterComponent implements OnInit {
     this.display = true;
   }
 
-  deleteRow(playerId: string) {
-    if (!playerId) {
+  deleteRow(playerId: number) {
+    if (!playerId || playerId <= 0) {
       this.errMessage = 'No player selected to delete!';
       this.display = true;
       return;
@@ -138,7 +156,7 @@ export class RosterComponent implements OnInit {
         },
         error: error => {
           console.error('There was an error saving the player!', error);
-          this.errMessage = 'There was an error saving the player. Please try again.';
+          this.errMessage = this.buildApiErrorMessage(error, 'There was an error saving the player. Please try again.');
           this.display = true;
         }
       });
@@ -163,7 +181,7 @@ export class RosterComponent implements OnInit {
         },
         error: error => {
           console.error('There was an error adding the player!', error);
-          this.errMessage = 'There was an error adding the player. Please try again.';
+          this.errMessage = this.buildApiErrorMessage(error, 'There was an error adding the player. Please try again.');
           this.display = true;
         }
       });
@@ -183,13 +201,16 @@ export class RosterComponent implements OnInit {
       lastName: row.lastName || '',
       position: row.position || '',
       number: row.number || '',
+      draftYear: row.draftYear || '',
+      seasonYear: row.seasonYear || '',
       height: inchesToFeetInches(row.height || ''),
       weight: row.weight || '',
       bats: this.normalizeBatsForForm(row.bats),
       throws: this.normalizeThrowsForForm(row.throws),
       dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
       birthCountry: row.birthCountry || '',
-      birthPlace: row.birthPlace || '',
+      birthCityState: row.birthCityState || '',
+      college: row.college || '',
       playerId: row.playerId || '',
       battingAverage: row.battingAverage || '',
       homeRuns: row.homeRuns || '',
@@ -204,9 +225,9 @@ export class RosterComponent implements OnInit {
     };
   }
 
-  private buildRosterPayload(source: any, playerId: string | number): MLBRosterDto {
+  private buildRosterPayload(source: any, playerId: number): MLBRosterDto {
     return {
-      playerId: playerId || -1,
+      playerId: playerId > 0 ? playerId : 0,
       teamCode: String(source.teamCode || '').trim().toUpperCase(),
       teamName: source.teamName || this.lookupTeamShortName(String(source.teamCode || '').trim().toUpperCase()),
       firstName: source.firstName || '',
@@ -214,11 +235,14 @@ export class RosterComponent implements OnInit {
       league: String(source.league || ''),
       position: source.position || '',
       number: String(source.number ?? ''),
+      draftYear: this.normalizeOptionalNumber(source.draftYear),
+      seasonYear: this.normalizeOptionalNumber(source.seasonYear),
       height: feetInchesToInches(source.height || ''),
       weight: String(source.weight ?? ''),
       dateOfBirth: source.dateOfBirth ? new Date(source.dateOfBirth) : null,
       birthCountry: source.birthCountry || '',
-      birthPlace: source.birthPlace || '',
+      birthCityState: source.birthCityState || '',
+      college: source.college || '',
       bats: this.normalizeBatsForPayload(source.bats),
       throws: this.normalizeThrowsForPayload(source.throws),
       battingAverage: this.normalizeOptionalNumber(source.battingAverage),

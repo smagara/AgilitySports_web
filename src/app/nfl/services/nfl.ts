@@ -16,7 +16,10 @@ export interface NFLRosterDto {
     dateOfBirth?: Date | null;
     age?: number | null;
     college: string;
+    birthCityState?: string;
+    birthCountry?: string;
     draftYear?: number | null;
+    seasonYear?: number | null;
     sacks?: number | null;
     touchdowns?: number | null;
 }

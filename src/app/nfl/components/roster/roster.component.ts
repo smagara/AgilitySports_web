@@ -5,6 +5,7 @@ import { formatDateMMDDYYYY } from 'src/app/common/formatters/date-formatter';
 import { feetInchesToInches, inchesToFeetInches } from 'src/app/common/formatters/height-formatter';
 import { noXssValidator } from 'src/app/common/validators/no-xss';
 import { nonEmptyStringValidator } from 'src/app/common/validators/not-empty';
+import { yearRangeValidator } from 'src/app/common/validators/year-range';
 import { NFLRosterDto } from '../../services/nfl';
 import { NflService } from '../../services/nfl.service';
 
@@ -36,6 +37,7 @@ export class RosterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currentYear = new Date().getFullYear();
     this.nflForm = new FormGroup({
       team: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       league: new FormControl({ value: '', disabled: true }),
@@ -43,9 +45,13 @@ export class RosterComponent implements OnInit {
       lastName: new FormControl('', [Validators.required, noXssValidator(), nonEmptyStringValidator()]),
       position: new FormControl('', [Validators.required, nonEmptyStringValidator()]),
       number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]), // numbers only
+      draftYear: new FormControl('', [yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
+      seasonYear: new FormControl(currentYear, [Validators.required, yearRangeValidator(1900, currentYear + 1), Validators.pattern('^[0-9]{4}$')]),
       height: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]+\'?[0-9]{1,2}"$')]), // feet and inches (e.g. 6'9")
       weight: new FormControl(null, [Validators.required, Validators.min(98), Validators.max(500), Validators.pattern('^[0-9]+$')]),
       dateOfBirth: new FormControl('', [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]),
+      birthCountry: new FormControl('', [noXssValidator()]),
+      birthCityState: new FormControl('', [noXssValidator()]),
       college: new FormControl('', [noXssValidator()]),
       playerId: new FormControl({ value: '', disabled: true }),
       sacks: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]),
@@ -86,6 +92,7 @@ export class RosterComponent implements OnInit {
   addRow() {
     this.resetAction();
     this.isAdding = true;
+    this.nflForm.patchValue({ seasonYear: new Date().getFullYear() });
     this.display = true;
   }
 
@@ -110,9 +117,13 @@ export class RosterComponent implements OnInit {
         lastName: this.selectedRow.lastName || '',
         position: this.selectedRow.position || '',
         number: this.selectedRow.number || '',
+        draftYear: this.normalizeOptionalNumber(this.selectedRow.draftYear),
+        seasonYear: this.normalizeOptionalNumber(this.selectedRow.seasonYear),
         height: feetInchesToInches(this.selectedRow.height || ''),
         weight: this.selectedRow.weight || '',
         dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
+        birthCountry: this.selectedRow.birthCountry || '',
+        birthCityState: this.selectedRow.birthCityState || '',
         college: this.selectedRow.college || '',
         sacks: this.normalizeOptionalNumber(this.selectedRow.sacks),
         touchdowns: this.normalizeOptionalNumber(this.selectedRow.touchdowns)
@@ -152,9 +163,13 @@ export class RosterComponent implements OnInit {
         lastName: this.nflForm.get('lastName')?.value || '',
         position: this.nflForm.get('position')?.value || '',
         number: this.nflForm.get('number')?.value || '',
+        draftYear: this.normalizeOptionalNumber(this.nflForm.get('draftYear')?.value),
+        seasonYear: this.normalizeOptionalNumber(this.nflForm.get('seasonYear')?.value),
         height: feetInchesToInches(this.nflForm.get('height')?.value || ''),
         weight: this.nflForm.get('weight')?.value || '',
         dateOfBirth: this.nflForm.get('dateOfBirth')?.value ? new Date(this.nflForm.get('dateOfBirth')?.value) : null,
+        birthCountry: this.nflForm.get('birthCountry')?.value || '',
+        birthCityState: this.nflForm.get('birthCityState')?.value || '',
         college: this.nflForm.get('college')?.value || '',
         sacks: this.normalizeOptionalNumber(this.nflForm.get('sacks')?.value),
         touchdowns: this.normalizeOptionalNumber(this.nflForm.get('touchdowns')?.value),
@@ -224,9 +239,13 @@ export class RosterComponent implements OnInit {
       lastName: row.lastName || '',
       position: row.position || '',
       number: row.number || '',
+      draftYear: row.draftYear || '',
+      seasonYear: row.seasonYear || '',
       height: inchesToFeetInches(row.height || ''),
       weight: row.weight || '',
       dateOfBirth: this.toDateInputString(rawDob),
+      birthCountry: row.birthCountry || '',
+      birthCityState: row.birthCityState || '',
       college: row.college || '',
       playerId: row.playerId || '',
       sacks: row.sacks || '',

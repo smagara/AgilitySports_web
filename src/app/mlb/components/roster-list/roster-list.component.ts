@@ -10,7 +10,7 @@ export class RosterListComponent implements OnInit {
   @Input() isLoading: boolean = false;
   @Output() addRow = new EventEmitter<void>();
   @Output() editRow = new EventEmitter<MLBRosterDto>();
-  @Output() deleteRow = new EventEmitter<string>();
+  @Output() deleteRow = new EventEmitter<number>();
 
   constructor() { }
 
@@ -24,7 +24,7 @@ export class RosterListComponent implements OnInit {
     this.editRow.emit(row);
   }
 
-  onDeleteRow(playerId: string) {
+  onDeleteRow(playerId: number) {
     this.deleteRow.emit(playerId);
   }
 

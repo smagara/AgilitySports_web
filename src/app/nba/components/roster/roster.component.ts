@@ -76,6 +76,7 @@ export class RosterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currentYear = new Date().getFullYear();
     this.nbaForm = new FormGroup({
       team: new FormControl('', [noXssValidator()]),
       league: new FormControl({ value: '', disabled: true }),
@@ -91,11 +92,15 @@ export class RosterComponent implements OnInit {
         Validators.min(98),
         Validators.max(500),
         Validators.pattern('^[0-9]+$')]),
+      draftYear: new FormControl(null, [Validators.required, yearRangeValidator(1900, currentYear), Validators.pattern('^[0-9]{4}$')]),
+      seasonYear: new FormControl(currentYear, [Validators.required, yearRangeValidator(1900, currentYear + 1), Validators.pattern('^[0-9]{4}$')]),
       dateOfBirth: new FormControl(null,
         [Validators.required,
           yearRangeValidator(1900, new Date().getFullYear()), // Use the custom validator
           Validators.pattern('^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2}$')]
       ),
+      birthCountry: new FormControl('', [noXssValidator()]),
+      birthCityState: new FormControl('', [noXssValidator()]),
       college: new FormControl('', [noXssValidator()]),
       playerId: new FormControl({ value: '', disabled: true }),
       pointsPerGame: new FormControl('', [Validators.pattern('^[0-9]+(\\.[0-9]+)?$')]), // numbers/decimals
@@ -134,6 +139,7 @@ export class RosterComponent implements OnInit {
   addRow() {
     this.resetAction();
     this.isAdding = true;
+    this.nbaForm.patchValue({ seasonYear: new Date().getFullYear() });
     this.display = true;
   }
 
@@ -169,6 +175,8 @@ export class RosterComponent implements OnInit {
         height: feetInchesToInches(this.selectedRow.height || ''),
         weight: this.selectedRow.weight || '',
         dateOfBirth: this.selectedRow.dateOfBirth ? new Date(this.selectedRow.dateOfBirth) : null,
+        birthCountry: this.selectedRow.birthCountry || '',
+        birthCityState: this.selectedRow.birthCityState || '',
         college: this.selectedRow.college || '',
         draftYear: this.normalizeOptionalNumber(this.selectedRow.draftYear),
         seasonYear: this.normalizeOptionalNumber(this.selectedRow.seasonYear),
@@ -212,11 +220,14 @@ export class RosterComponent implements OnInit {
         league: this.nbaForm.get('league')?.value || '',
         position: this.normalizeNbaPositionCode(this.nbaForm.get('position')?.value),
         number: this.nbaForm.get('number')?.value || '',
+        draftYear: this.nbaForm.get('draftYear')?.value || '',
+        seasonYear: this.normalizeOptionalNumber(this.nbaForm.get('seasonYear')?.value),
         height: feetInchesToInches(this.nbaForm.get('height')?.value || ''),
         weight: this.nbaForm.get('weight')?.value || '',
         dateOfBirth: this.nbaForm.get('dateOfBirth')?.value ? new Date(this.nbaForm.get('dateOfBirth')?.value) : null,
+        birthCountry: this.nbaForm.get('birthCountry')?.value || '',
+        birthCityState: this.nbaForm.get('birthCityState')?.value || '',
         college: this.nbaForm.get('college')?.value || '',
-        seasonYear: new Date().getFullYear(),
         pointsPerGame: this.normalizeOptionalNumber(this.nbaForm.get('pointsPerGame')?.value),
         reboundsPerGame: this.normalizeOptionalNumber(this.nbaForm.get('reboundsPerGame')?.value),
         assistsPerGame: this.normalizeOptionalNumber(this.nbaForm.get('assistsPerGame')?.value),
@@ -285,9 +296,13 @@ export class RosterComponent implements OnInit {
       lastName: row.lastName || '',
       position: this.normalizeNbaPositionCode(row.position || ''),
       number: row.number || '',
+      draftYear: row.draftYear || '',
+      seasonYear: row.seasonYear || '',
       height: inchesToFeetInches(row.height || ''),
       weight: row.weight || '',
       dateOfBirth: row.dateOfBirth ? formatDateMMDDYYYY(new Date(row.dateOfBirth)) : '',
+      birthCountry: row.birthCountry || '',
+      birthCityState: row.birthCityState || '',
       college: row.college || '',
       playerId: row.playerId || '',
       pointsPerGame: row.pointsPerGame ?? '',

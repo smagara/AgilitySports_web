@@ -40,7 +40,7 @@ describe('RosterComponent', () => {
   it('should keep league blank when API league is blank', () => {
     const mockRoster: MLBRosterDto[] = [
       {
-        playerId: '100001',
+        playerId: 100001,
         teamName: 'Arizona Diamondbacks',
         firstName: 'Test',
         lastName: 'Player',
@@ -52,7 +52,7 @@ describe('RosterComponent', () => {
         throws: 'R',
         dateOfBirth: null,
         birthCountry: 'US',
-        birthPlace: 'Phoenix'
+        birthCityState: 'Phoenix'
       }
     ];
 
@@ -66,7 +66,7 @@ describe('RosterComponent', () => {
   it('should keep league blank when team is unknown and API league is blank', () => {
     const mockRoster: MLBRosterDto[] = [
       {
-        playerId: '100999',
+        playerId: 100999,
         teamName: 'Unknown Team',
         firstName: 'Test',
         lastName: 'Player',
@@ -78,7 +78,7 @@ describe('RosterComponent', () => {
         throws: 'R',
         dateOfBirth: null,
         birthCountry: 'US',
-        birthPlace: 'Anywhere'
+        birthCityState: 'Anywhere'
       }
     ];
 
@@ -92,7 +92,7 @@ describe('RosterComponent', () => {
   it('should preserve invalid league when API returns a non-empty value', () => {
     const mockRoster: MLBRosterDto[] = [
       {
-        playerId: '100010',
+        playerId: 100010,
         teamName: 'New York Yankees',
         firstName: 'Test',
         lastName: 'Player',
@@ -104,7 +104,7 @@ describe('RosterComponent', () => {
         throws: 'R',
         dateOfBirth: null,
         birthCountry: 'US',
-        birthPlace: 'New York'
+        birthCityState: 'New York'
       }
     ];
 

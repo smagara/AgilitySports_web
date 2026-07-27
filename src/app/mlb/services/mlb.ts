@@ -2,7 +2,7 @@ export interface mlb {
 }
 
 export interface MLBRosterDto {
-    playerId: string | number;
+  playerId: number;
     teamCode?: string;
     teamName: string;
     firstName: string;
@@ -14,8 +14,10 @@ export interface MLBRosterDto {
     weight: string;
     dateOfBirth: Date | null;
     birthCountry: string;
-    birthPlace: string;
+    birthCityState: string;
+    college?: string;
     draftYear?: number | null;
+    seasonYear?: number | null;
     bats: string;
     throws: string;
     battingAverage?: number | null;
