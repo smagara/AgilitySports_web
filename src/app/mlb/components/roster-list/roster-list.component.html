@@ -7,10 +7,11 @@
 
 <div *ngIf="!isLoading && roster.length">
   <div class="pageActions">
-    <button title="Add" pButton type="button" icon="pi pi-create" (click)="onAddRow()">Add</button>
-    <div class="instruction">Add a new player to the roster</div>
+    <button title="Add a new player" pButton type="button" icon="pi pi-plus" (click)="onAddRow()">Add</button>
+    &nbsp;&nbsp;
+    <button title="Filter the grid" pButton type="button" icon="pi pi-filter" (click)="onFilterRow()">Filter</button>
   </div>
-  <p-table [value]="roster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="playerId" [rows]="10"
+  <p-table [value]="filteredRoster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="playerId" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
     <ng-template pTemplate="header">
@@ -35,7 +36,7 @@
         <td class="actions">
           <button title="Edit" pButton type="button" icon="pi pi-pencil" (click)="onEditRow(roster)">Edit</button>
           &nbsp;
-          <button title="Delete" pButton type="button" icon="pi pi-delete" (click)="onDeleteRow(roster.playerId)">Delete</button>
+          <button title="Delete" pButton type="button" icon="pi pi-trash" (click)="onDeleteRow(roster.playerId)">Delete</button>
         </td>
         <td>{{ roster.team || roster.teamName || '' }}</td>
         <td>{{ roster.league }}</td>
@@ -52,4 +53,14 @@
       </tr>
     </ng-template>
   </p-table>
+
+  <app-roster-filter-dialog
+    [(visible)]="filterDialogVisible"
+    [filterDraft]="filterDraft"
+    [teamOptions]="teamOptions"
+    idPrefix="mlb"
+    (apply)="applyFilter()"
+    (clear)="clearFilterDraft()"
+    (reset)="resetAllFilters()"
+  ></app-roster-filter-dialog>
 </div>

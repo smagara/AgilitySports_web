@@ -148,10 +148,10 @@
         </div>
       </div>
       <div class="detailButton">
-        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-add" label="Add">Add</button>
-        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save">Save</button>
-        <button title="Cancel" pButton type="button" icon="pi pi-cancel" (click)="onHideDialog()"
-          label="Cancel">Cancel</button>
+        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-plus" label="Add"></button>
+        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save"></button>
+        <button title="Cancel" pButton type="button" icon="pi pi-times" (click)="onHideDialog()"
+          label="Cancel"></button>
       </div>
     </div>
     <div *ngIf="errMessage.length" class="errMessage">

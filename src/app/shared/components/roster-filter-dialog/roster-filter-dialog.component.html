@@ -1,0 +1,40 @@
+<p-dialog
+  header="Filter Roster"
+  [visible]="visible"
+  (visibleChange)="onVisibleChange($event)"
+  [modal]="true"
+  [style]="{ width: '34rem', maxWidth: '95vw' }"
+>
+  <hr class="divider" />
+
+  <div class="detailField">
+    <label [for]="idPrefix + '-filter-player-id'">Player ID (Exact)</label>
+    <input [id]="idPrefix + '-filter-player-id'" type="text" pInputText [(ngModel)]="filterDraft.playerId" />
+  </div>
+
+  <div class="detailField">
+    <label [for]="idPrefix + '-filter-team'">Team</label>
+    <select [id]="idPrefix + '-filter-team'" [(ngModel)]="filterDraft.team">
+      <option value="">All Teams</option>
+      <option *ngFor="let team of teamOptions" [value]="team">{{ team }}</option>
+    </select>
+  </div>
+
+  <div class="detailField">
+    <label [for]="idPrefix + '-filter-first-name'">First Name (Starts With)</label>
+    <input [id]="idPrefix + '-filter-first-name'" type="text" pInputText [(ngModel)]="filterDraft.firstName" />
+  </div>
+
+  <div class="detailField">
+    <label [for]="idPrefix + '-filter-last-name'">Last Name (Starts With)</label>
+    <input [id]="idPrefix + '-filter-last-name'" type="text" pInputText [(ngModel)]="filterDraft.lastName" />
+  </div>
+
+  <div class="filterActions">
+    <button pButton type="button" icon="pi pi-check" (click)="apply.emit()">Apply</button>
+    &nbsp;
+    <button pButton type="button" icon="pi pi-eraser" (click)="clear.emit()">Clear Filter</button>
+    &nbsp;
+    <button pButton type="button" icon="pi pi-refresh" (click)="reset.emit()">Reset Grid</button>
+  </div>
+</p-dialog>
