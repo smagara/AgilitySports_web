@@ -96,6 +96,7 @@ export class RosterListComponent implements OnInit, OnChanges {
 
   private applyFilters() {
     const filter = this.normalizeFilter(this.activeFilter);
+    const normalizedTeam = String(filter.team || '').trim().toUpperCase();
     this.filteredRoster = (this.roster || []).filter((row) => {
       const playerId = String(row?.playerId ?? '').trim().toUpperCase();
       const team = this.getTeamValue(row).toUpperCase();
@@ -103,7 +104,7 @@ export class RosterListComponent implements OnInit, OnChanges {
       const lastName = String(row?.lastName ?? '').trim().toUpperCase();
 
       const playerMatch = !filter.playerId || playerId === filter.playerId;
-      const teamMatch = !filter.team || team === filter.team;
+      const teamMatch = !normalizedTeam || team === normalizedTeam;
       const firstMatch = !filter.firstName || firstName.startsWith(filter.firstName);
       const lastMatch = !filter.lastName || lastName.startsWith(filter.lastName);
 
@@ -123,7 +124,7 @@ export class RosterListComponent implements OnInit, OnChanges {
   private normalizeFilter(filter: RosterFilter): RosterFilter {
     return {
       playerId: String(filter.playerId || '').trim().toUpperCase(),
-      team: String(filter.team || '').trim().toUpperCase(),
+      team: String(filter.team || '').trim(),
       firstName: String(filter.firstName || '').trim().toUpperCase(),
       lastName: String(filter.lastName || '').trim().toUpperCase(),
     };

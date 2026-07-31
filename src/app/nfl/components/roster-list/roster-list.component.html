@@ -6,10 +6,9 @@
 
 <div *ngIf="!isLoading && roster.length">
     <div class="pageActions">
-        <button title="Add" pButton type="button" icon="pi pi-create" (click)="onAddRow()">Add</button>
-        &nbsp;
-        <button title="Filter" pButton type="button" icon="pi pi-filter" (click)="onFilterRow()">Filter</button>
-        <div class="instruction">Add a new player to the roster</div>
+        <button title="Add a new player" pButton type="button" icon="pi pi-plus" (click)="onAddRow()">Add</button>
+        &nbsp;&nbsp;
+        <button title="Filter the grid" pButton type="button" icon="pi pi-filter" (click)="onFilterRow()">Filter</button>
     </div>
     <p-table [value]="filteredRoster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="name" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
@@ -37,7 +36,7 @@
                     <button title="Edit" pButton type="button" icon="pi pi-pencil"
                         (click)="editRow.emit(roster)">Edit</button>
                     &nbsp;
-                    <button title="Delete" pButton type="button" icon="pi pi-delete"
+                    <button title="Delete" pButton type="button" icon="pi pi-trash"
                         (click)="onDeleteRow(roster.playerId)">Delete</button>
                 </td>
                 <td>{{ roster.teamName || roster.team }}</td>
@@ -56,36 +55,13 @@
         </ng-template>
     </p-table>
 
-    <p-dialog header="Filter Roster" [(visible)]="filterDialogVisible" [modal]="true" [style]="{ width: '34rem', maxWidth: '95vw' }">
-        <div class="detailField">
-            <label for="nfl-filter-player-id">Player ID (Exact)</label>
-            <input id="nfl-filter-player-id" type="text" pInputText [(ngModel)]="filterDraft.playerId" />
-        </div>
-
-        <div class="detailField">
-            <label for="nfl-filter-team">Team</label>
-            <select id="nfl-filter-team" [(ngModel)]="filterDraft.team">
-                <option value="">All Teams</option>
-                <option *ngFor="let team of teamOptions" [value]="team">{{ team }}</option>
-            </select>
-        </div>
-
-        <div class="detailField">
-            <label for="nfl-filter-first-name">First Name (Starts With)</label>
-            <input id="nfl-filter-first-name" type="text" pInputText [(ngModel)]="filterDraft.firstName" />
-        </div>
-
-        <div class="detailField">
-            <label for="nfl-filter-last-name">Last Name (Starts With)</label>
-            <input id="nfl-filter-last-name" type="text" pInputText [(ngModel)]="filterDraft.lastName" />
-        </div>
-
-        <div class="pageActions">
-            <button pButton type="button" icon="pi pi-check" (click)="applyFilter()">Apply</button>
-            &nbsp;
-            <button pButton type="button" icon="pi pi-eraser" (click)="clearFilterDraft()">Clear Fields</button>
-            &nbsp;
-            <button pButton type="button" icon="pi pi-refresh" (click)="resetAllFilters()">Reset Grid</button>
-        </div>
-    </p-dialog>
+    <app-roster-filter-dialog
+        [(visible)]="filterDialogVisible"
+        [filterDraft]="filterDraft"
+        [teamOptions]="teamOptions"
+        idPrefix="nfl"
+        (apply)="applyFilter()"
+        (clear)="clearFilterDraft()"
+        (reset)="resetAllFilters()"
+    ></app-roster-filter-dialog>
 </div>

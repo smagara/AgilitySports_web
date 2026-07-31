@@ -227,15 +227,45 @@ td.actions {
 .pageActions {
   margin-top: 2px;
   margin-bottom: 2px;
-  padding: 10px;
+  padding: 8px;
   border: 2px solid #ccc;
   border-radius: 3px;
   background-color: #f9f9f9;
-  box-shadow: inset -3px -3px 5px #ffffff, /* Light from top right */
-              inset 3px 3px 5px #000000; /* Internal shadow */
+  box-shadow: inset -2px -2px 4px #ffffff, /* Light from top right */
+              inset 2px 2px 4px #000000; /* Internal shadow */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.filterActions {
+  margin-top: 20px;
+  margin-bottom: 1px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+  background-color: #f9f9f9;
+  box-shadow: inset -1px -2px 1px #ffffff, /* Light from top right */
+              inset 1px 1px 1px #000000; /* Internal shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageActions .p-button,
+.filterActions .p-button,
+td.actions .p-button {
+  min-height: 30px;
+  height: 30px;
+  padding: 0.12rem 0.25rem;
+  font-size: 0.85rem;
+  line-height: 1.1;
+}
+
+.pageActions .p-button .pi,
+.filterActions .p-button .pi,
+td.actions .p-button .pi {
+  font-size: 0.8rem;
 }
 
 /* Styling for field-specific errors */
