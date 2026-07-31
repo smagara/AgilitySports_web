@@ -13,6 +13,7 @@ import { NbaModule } from './nba/nba.module';
 import { NhlModule } from './nhl/nhl.module';
 import { MlbModule } from './mlb/mlb.module';
 import { PgaModule } from './pga/pga.module';
+import { FifModule } from './fif/fif.module';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -36,6 +37,7 @@ import { DialogModule } from 'primeng/dialog';
     NbaModule,
     NhlModule,
     MlbModule,
+    FifModule,
     PgaModule
   ],
   providers: [],

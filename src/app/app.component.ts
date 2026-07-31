@@ -93,6 +93,16 @@ export class AppComponent implements OnInit {
       },
 
       {
+        label: 'Soccer',
+        items: [
+          {
+            label: 'FIFA Roster',
+            routerLink: 'fif/roster',
+          }
+        ]
+      },
+
+      {
         label: 'PGA',
         items: [
           {

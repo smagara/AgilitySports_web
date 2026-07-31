@@ -1,0 +1,150 @@
+<p-dialog id="detailPopup" header="FIF Player Detail" [(visible)]="display" [modal]="true"
+  [style]="{width: '90vw', maxWidth: '600px'}" [responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
+  <form [formGroup]="fifForm" (ngSubmit)="isAdding ? onAdd() : onSave()">
+    <div class="p-fluid">
+      <hr class="divider" />
+      <div class="detailField">
+        <label for="team">Team</label>
+        <app-team-dropdown id="team" [sport]="'fif'" formControlName="team"></app-team-dropdown>
+        <div *ngIf="fifForm.get('team')?.invalid && (fifForm.get('team')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('team')?.errors?.['required']">Team is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="league">League</label>
+        <input id="league" pInputText formControlName="league" readonly />
+      </div>
+      <div class="detailField">
+        <label for="firstName">First Name</label>
+        <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First ..." appTrim />
+        <div *ngIf="fifForm.get('firstName')?.invalid && (fifForm.get('firstName')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('firstName')?.errors?.['required']">Player First Name is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('firstName')?.errors?.['xss']">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last ..." appTrim />
+        <div *ngIf="fifForm.get('lastName')?.invalid && (fifForm.get('lastName')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('lastName')?.errors?.['required']">Player Last Name is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('lastName')?.errors?.['xss']">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="position">Position</label>
+        <app-position-dropdown id="position" [sport]="'fif'" formControlName="position" />
+        <div *ngIf="fifForm.get('position')?.invalid && (fifForm.get('position')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('position')?.errors?.['required']">Position is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('position')?.errors?.['nonEmptyString']">Position cannot be empty.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="number">Number</label>
+        <input id="number" pInputText formControlName="number" maxlength="5" appTrim />
+        <div *ngIf="fifForm.get('number')?.invalid && (fifForm.get('number')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('number')?.errors?.['required']">Player Number is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('number')?.errors?.['pattern']">Player Number must be numeric up to 5 digits.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="draftYear">Drafted Year</label>
+        <input id="draftYear" pInputText formControlName="draftYear" maxlength="4" placeholder="YYYY..." appTrim />
+        <div *ngIf="fifForm.get('draftYear')?.invalid && (fifForm.get('draftYear')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('draftYear')?.errors?.['pattern']">Drafted Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="fifForm.get('draftYear')?.errors?.['yearRange']">Drafted Year must be between 1900 - Current Year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="height">Height</label>
+        <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
+        <div *ngIf="fifForm.get('height')?.invalid && (fifForm.get('height')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('height')?.errors?.['required']">Height is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('height')?.errors?.['pattern']">Height must be in the format of Feet-Inches.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="weight">Weight</label>
+        <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
+        <div *ngIf="fifForm.get('weight')?.invalid && (fifForm.get('weight')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('weight')?.errors?.['required']">Weight is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('weight')?.errors?.['min']">Weight must be at least 98.</div>
+          <div class="field-error" *ngIf="fifForm.get('weight')?.errors?.['max']">Weight cannot exceed 500.</div>
+          <div class="field-error" *ngIf="fifForm.get('weight')?.errors?.['pattern']">Weight must be numeric up to 3 digits.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
+        <div *ngIf="fifForm.get('dateOfBirth')?.invalid && (fifForm.get('dateOfBirth')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('dateOfBirth')?.errors?.['pattern']">Date of Birth must be in the format MM/dd/yyyy.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="birthCountry">Birth Country</label>
+        <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" appTrim />
+        <div *ngIf="fifForm.get('birthCountry')?.hasError('xss') && (fifForm.get('birthCountry')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="birthCityState">Birth Place</label>
+        <input id="birthCityState" pInputText formControlName="birthCityState" maxlength="50" appTrim />
+        <div *ngIf="fifForm.get('birthCityState')?.hasError('xss') && (fifForm.get('birthCityState')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="college">College</label>
+        <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
+        <div *ngIf="fifForm.get('college')?.hasError('xss') && (fifForm.get('college')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="seasonYear">Season Year</label>
+        <input id="seasonYear" pInputText formControlName="seasonYear" maxlength="4" placeholder="YYYY..." appTrim />
+        <div *ngIf="fifForm.get('seasonYear')?.invalid && (fifForm.get('seasonYear')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('seasonYear')?.errors?.['required']">Season Year is required.</div>
+          <div class="field-error" *ngIf="fifForm.get('seasonYear')?.errors?.['pattern']">Season Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="fifForm.get('seasonYear')?.errors?.['yearRange']">Season Year must be between 1900 - next year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="playerId">Player ID</label>
+        <input id="playerId" readonly pInputText formControlName="playerId" />
+      </div>
+      <hr />
+      <div class="detailField">
+        <label for="totalGoals">Total Goals</label>
+        <input id="totalGoals" pInputText formControlName="totalGoals" maxlength="5" appTrim />
+        <div *ngIf="fifForm.get('totalGoals')?.invalid && (fifForm.get('totalGoals')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('totalGoals')?.errors?.['pattern']">Total Goals must be a valid whole number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="assists">Assists</label>
+        <input id="assists" pInputText formControlName="assists" maxlength="5" appTrim />
+        <div *ngIf="fifForm.get('assists')?.invalid && (fifForm.get('assists')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('assists')?.errors?.['pattern']">Assists must be a valid whole number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="saves">Saves</label>
+        <input id="saves" pInputText formControlName="saves" maxlength="5" appTrim />
+        <div *ngIf="fifForm.get('saves')?.invalid && (fifForm.get('saves')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="fifForm.get('saves')?.errors?.['pattern']">Saves must be a valid whole number.</div>
+        </div>
+      </div>
+      <div class="detailButton">
+        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-plus" label="Add"></button>
+        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save"></button>
+        <button title="Cancel" pButton type="button" icon="pi pi-times" (click)="onHideDialog()" label="Cancel"></button>
+      </div>
+    </div>
+    <div *ngIf="errMessage.length" class="errMessage">
+      {{errMessage}}
+    </div>
+  </form>
+</p-dialog>

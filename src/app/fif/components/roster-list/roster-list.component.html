@@ -1,0 +1,65 @@
+<h2 class="FIF">FIFA - Team Rosters</h2>
+<div *ngIf="isLoading">Loading...</div>
+<div *ngIf="!isLoading && !roster.length">
+  No data available.
+</div>
+
+<div *ngIf="!isLoading && roster.length">
+  <div class="pageActions">
+    <button title="Add a new player" pButton type="button" icon="pi pi-plus" (click)="onAddRow()">Add</button>
+    &nbsp;&nbsp;
+    <button title="Filter the grid" pButton type="button" icon="pi pi-filter" (click)="onFilterRow()">Filter</button>
+  </div>
+  <p-table [value]="filteredRoster" [tableStyle]="{ 'min-width': '50rem' }" dataKey="name" [rows]="10"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Actions</th>
+        <th pSortableColumn="team">Team <p-sortIcon field="team"></p-sortIcon></th>
+        <th pSortableColumn="league">League <p-sortIcon field="league"></p-sortIcon></th>
+        <th pSortableColumn="firstName">FName <p-sortIcon field="firstName"></p-sortIcon></th>
+        <th pSortableColumn="lastName">Lname <p-sortIcon field="lastName"></p-sortIcon></th>
+        <th pSortableColumn="position">Pos <p-sortIcon field="position"></p-sortIcon></th>
+        <th pSortableColumn="number">Number <p-sortIcon field="number"></p-sortIcon></th>
+        <th pSortableColumn="height">Height <p-sortIcon field="height"></p-sortIcon></th>
+        <th pSortableColumn="weight">Weight <p-sortIcon field="weight"></p-sortIcon></th>
+        <th pSortableColumn="age">Age <p-sortIcon field="age"></p-sortIcon></th>
+        <th pSortableColumn="college">College <p-sortIcon field="college"></p-sortIcon></th>
+        <th pSortableColumn="draftYear">Draft Year <p-sortIcon field="draftYear"></p-sortIcon></th>
+        <th pSortableColumn="playerId">PlayerID <p-sortIcon field="playerId"></p-sortIcon></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-roster>
+      <tr>
+        <td class="actions">
+          <button title="Edit" pButton type="button" icon="pi pi-pencil" (click)="editRow.emit(roster)">Edit</button>
+          &nbsp;
+          <button title="Delete" pButton type="button" icon="pi pi-trash" (click)="onDeleteRow(roster.playerId)">Delete</button>
+        </td>
+        <td>{{ roster.teamName || roster.team }}</td>
+        <td>{{ roster.league }}</td>
+        <td>{{ roster.firstName }}</td>
+        <td>{{ roster.lastName }}</td>
+        <td>{{ roster.position }}</td>
+        <td>{{ roster.number }}</td>
+        <td>{{ roster.height | heightDisplay }}</td>
+        <td>{{ roster.weight }}</td>
+        <td>{{ roster.age ?? computeAge(roster.dateOfBirth) }}</td>
+        <td>{{ roster.college }}</td>
+        <td>{{ roster.draftYear ?? '' }}</td>
+        <td>{{ roster.playerId }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <app-roster-filter-dialog
+    [(visible)]="filterDialogVisible"
+    [filterDraft]="filterDraft"
+    [teamOptions]="teamOptions"
+    idPrefix="fif"
+    (apply)="applyFilter()"
+    (clear)="clearFilterDraft()"
+    (reset)="resetAllFilters()"
+  ></app-roster-filter-dialog>
+</div>

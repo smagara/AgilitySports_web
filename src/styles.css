@@ -48,6 +48,12 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   padding: .5em;
 }
 
+.FIF {
+  background-color: #00695C;
+  color: #ffffff;
+  padding: .5em;
+}
+
 .inputs {
   padding: 5px 0 0 5px;
   margin-bottom: 25px;
