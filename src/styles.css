@@ -127,7 +127,7 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
     gap: 0.5em;
   }
   
-  .detailButton button {
+  .detailButton button:not(.p-button) {
     width: 100%;
     min-width: auto;
     white-space: nowrap; /* Prevent text wrapping on mobile too */
@@ -145,7 +145,7 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
     transition: all 0.2s ease;
   }
   
-  .detailButton button:hover {
+  .detailButton button:not(.p-button):hover {
     background: linear-gradient(to bottom, #e8e8e8 0%, #d8d8d8 100%) !important;
     box-shadow: 
       0 3px 6px rgba(0, 0, 0, 0.25),
@@ -154,7 +154,7 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
     transform: translateY(-1px);
   }
   
-  .detailButton button:active {
+  .detailButton button:not(.p-button):active {
     background: linear-gradient(to bottom, #d8d8d8 0%, #c8c8c8 100%) !important;
     box-shadow: 
       0 1px 2px rgba(0, 0, 0, 0.3),
@@ -254,6 +254,7 @@ td.actions {
 
 .pageActions .p-button,
 .filterActions .p-button,
+ .detailButton .p-button,
 td.actions .p-button {
   min-height: 30px;
   height: 30px;
@@ -264,6 +265,7 @@ td.actions .p-button {
 
 .pageActions .p-button .pi,
 .filterActions .p-button .pi,
+ .detailButton .p-button .pi,
 td.actions .p-button .pi {
   font-size: 0.8rem;
 }
@@ -442,7 +444,7 @@ td.actions .p-button .pi {
   margin-top: 2em;
 }
 
-.detailButton button {
+.detailButton button:not(.p-button) {
   width: 5em;
   min-width: 5em;
   text-align: center;
@@ -458,7 +460,7 @@ td.actions .p-button .pi {
   font-weight: 500;
 }
 
-.detailButton button:hover {
+.detailButton button:not(.p-button):hover {
   background: linear-gradient(to bottom, #e8e8e8 0%, #d8d8d8 100%);
   box-shadow: 
     0 3px 6px rgba(0, 0, 0, 0.25),
@@ -467,7 +469,7 @@ td.actions .p-button .pi {
   transform: translateY(-1px);
 }
 
-.detailButton button:active {
+.detailButton button:not(.p-button):active {
   background: linear-gradient(to bottom, #d8d8d8 0%, #c8c8c8 100%);
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.3),
@@ -482,7 +484,7 @@ td.actions .p-button .pi {
     gap: 0.75em; /* Tighter button spacing */
   }
   
-  .detailButton button {
+  .detailButton button:not(.p-button) {
     width: auto; /* Allow buttons to size based on content */
     min-width: 5em; /* Ensure minimum width for text */
     padding: 0.5rem 1.2rem; /* Increased horizontal padding */
@@ -496,5 +498,20 @@ td.actions .p-button .pi {
       0 2px 4px rgba(0, 0, 0, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.8),
       inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .detailButton .p-button {
+    width: auto;
+    min-width: 5em;
+    padding: 0.25rem 0.8rem;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 767px) {
+  .detailButton .p-button {
+    width: 100%;
+    min-width: auto;
+    justify-content: center;
   }
 }
