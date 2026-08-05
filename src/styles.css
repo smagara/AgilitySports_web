@@ -54,6 +54,12 @@ ui-dropdown-panel .ui-dropdown-items-wrapper {
   padding: .5em;
 }
 
+.PGA {
+  background-color: #1B5E20;
+  color: #ffffff;
+  padding: .5em;
+}
+
 .inputs {
   padding: 5px 0 0 5px;
   margin-bottom: 25px;

@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         label: 'Baseball',
         items: [
           {
-            label: 'Roster',
+            label: 'MLB Roster',
             routerLink: 'mlb/roster',
             disabled: false
           },
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
         items:
           [
             {
-              label: 'Roster',
+              label: 'NFL Roster',
               routerLink: 'nfl/roster',
               disabled: false
             },
@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
         label: 'Basketball',
         items: [
           {
-            label: 'Roster',
+            label: 'NBA Roster',
             routerLink: 'nba/roster',
           }
         ]
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
         label: 'Hockey',
         items: [
           {
-            label: 'Roster',
+            label: 'NHL Roster',
             routerLink: 'nhl/roster',
           }
         ]
@@ -103,22 +103,11 @@ export class AppComponent implements OnInit {
       },
 
       {
-        label: 'PGA',
+        label: 'Golf',
         items: [
           {
-            label: 'Professional Golf',
-            items: [
-              {
-                label: 'Season',
-                routerLink: 'pga/season',
-                disabled: true
-              },
-              {
-                label: 'Tournament',
-                routerLink: 'pga/tournament',
-                disabled: true
-              }
-            ]
+            label: 'PGA Roster',
+            routerLink: 'pga/roster',
           }
         ]
       },
