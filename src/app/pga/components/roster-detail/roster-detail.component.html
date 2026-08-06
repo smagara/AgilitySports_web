@@ -1,0 +1,170 @@
+<p-dialog id="detailPopup" header="PGA Player Detail" [(visible)]="display" [modal]="true"
+  [style]="{width: '90vw', maxWidth: '600px'}" [responsive]="true" class="custom-dialog" (onHide)="onHideDialog()">
+  <form [formGroup]="pgaForm" (ngSubmit)="isAdding ? onAdd() : onSave()">
+    <div class="p-fluid">
+      <hr class="divider" />
+      <div class="detailField">
+        <label for="team">Team</label>
+        <app-team-dropdown id="team" [sport]="'pga'" formControlName="team"></app-team-dropdown>
+        <div *ngIf="pgaForm.get('team')?.invalid && (pgaForm.get('team')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('team')?.errors?.['required']">Team is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('team')?.errors?.['invalidTeam']">Please select a valid team.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="league">League</label>
+        <input id="league" pInputText formControlName="league" readonly />
+      </div>
+      <div class="detailField">
+        <label for="firstName">First Name</label>
+        <input id="firstName" pInputText formControlName="firstName" maxlength="50" placeholder="First ..." appTrim />
+        <div *ngIf="pgaForm.get('firstName')?.invalid && (pgaForm.get('firstName')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('firstName')?.errors?.['required']">Player First Name is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('firstName')?.errors?.['xss']">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" pInputText formControlName="lastName" maxlength="50" placeholder="Last ..." appTrim />
+        <div *ngIf="pgaForm.get('lastName')?.invalid && (pgaForm.get('lastName')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('lastName')?.errors?.['required']">Player Last Name is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('lastName')?.errors?.['xss']">Input cannot contain &lt; or &gt; characters.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="position">Position</label>
+        <app-position-dropdown id="position" [sport]="'pga'" formControlName="position" />
+        <div *ngIf="pgaForm.get('position')?.invalid && (pgaForm.get('position')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('position')?.errors?.['required']">Position is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('position')?.errors?.['nonEmptyString']">Position cannot be empty.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="number">Number</label>
+        <input id="number" pInputText formControlName="number" maxlength="5" appTrim />
+        <div *ngIf="pgaForm.get('number')?.invalid && (pgaForm.get('number')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('number')?.errors?.['pattern']">Player Number must be numeric up to 5 digits.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="draftYear">Drafted Year</label>
+        <input id="draftYear" pInputText formControlName="draftYear" maxlength="4" placeholder="YYYY..." appTrim />
+        <div *ngIf="pgaForm.get('draftYear')?.invalid && (pgaForm.get('draftYear')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('draftYear')?.errors?.['pattern']">Drafted Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="pgaForm.get('draftYear')?.errors?.['yearRange']">Drafted Year must be between 1900 - Current Year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="height">Height</label>
+        <input id="height" pInputText formControlName="height" maxlength="10" placeholder="Feet-Inches" appTrim />
+        <div *ngIf="pgaForm.get('height')?.invalid && (pgaForm.get('height')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('height')?.errors?.['required']">Height is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('height')?.errors?.['pattern']">Height must be in the format of Feet-Inches.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="weight">Weight</label>
+        <input id="weight" pInputText formControlName="weight" maxlength="3" placeholder="lbs" appTrim />
+        <div *ngIf="pgaForm.get('weight')?.invalid && (pgaForm.get('weight')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('weight')?.errors?.['required']">Weight is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('weight')?.errors?.['min']">Weight must be at least 98.</div>
+          <div class="field-error" *ngIf="pgaForm.get('weight')?.errors?.['max']">Weight cannot exceed 500.</div>
+          <div class="field-error" *ngIf="pgaForm.get('weight')?.errors?.['pattern']">Weight must be numeric up to 3 digits.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input id="dateOfBirth" pInputText formControlName="dateOfBirth" maxlength="10" placeholder="MM/dd/yyyy" />
+        <div *ngIf="pgaForm.get('dateOfBirth')?.invalid && (pgaForm.get('dateOfBirth')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('dateOfBirth')?.errors?.['pattern']">Date of Birth must be in the format MM/dd/yyyy.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="birthCountry">Birth Country</label>
+        <input id="birthCountry" pInputText formControlName="birthCountry" maxlength="50" appTrim />
+        <div *ngIf="pgaForm.get('birthCountry')?.hasError('xss') && (pgaForm.get('birthCountry')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="birthCityState">Birth Place</label>
+        <input id="birthCityState" pInputText formControlName="birthCityState" maxlength="50" appTrim />
+        <div *ngIf="pgaForm.get('birthCityState')?.hasError('xss') && (pgaForm.get('birthCityState')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="college">College</label>
+        <input id="college" pInputText formControlName="college" maxlength="50" appTrim />
+        <div *ngIf="pgaForm.get('college')?.hasError('xss') && (pgaForm.get('college')?.touched || isSubmitted)" class="field-error">
+          Input cannot contain &lt; or &gt; characters.
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="seasonYear">Season Year</label>
+        <input id="seasonYear" pInputText formControlName="seasonYear" maxlength="4" placeholder="YYYY..." appTrim />
+        <div *ngIf="pgaForm.get('seasonYear')?.invalid && (pgaForm.get('seasonYear')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('seasonYear')?.errors?.['required']">Season Year is required.</div>
+          <div class="field-error" *ngIf="pgaForm.get('seasonYear')?.errors?.['pattern']">Season Year must be a 4-digit year.</div>
+          <div class="field-error" *ngIf="pgaForm.get('seasonYear')?.errors?.['yearRange']">Season Year must be between 1900 - next year.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="playerId">Player ID</label>
+        <input id="playerId" readonly pInputText formControlName="playerId" />
+      </div>
+      <hr />
+      <div class="detailField">
+        <label for="wins">Wins</label>
+        <input id="wins" pInputText formControlName="wins" maxlength="5" appTrim />
+        <div *ngIf="pgaForm.get('wins')?.invalid && (pgaForm.get('wins')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('wins')?.errors?.['pattern']">Wins must be a valid whole number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="majors">Majors</label>
+        <input id="majors" pInputText formControlName="majors" maxlength="5" appTrim />
+        <div *ngIf="pgaForm.get('majors')?.invalid && (pgaForm.get('majors')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('majors')?.errors?.['pattern']">Majors must be a valid whole number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="drivingDistance">Driving Distance</label>
+        <input id="drivingDistance" pInputText formControlName="drivingDistance" maxlength="8" appTrim />
+        <div *ngIf="pgaForm.get('drivingDistance')?.invalid && (pgaForm.get('drivingDistance')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('drivingDistance')?.errors?.['pattern']">Driving Distance must be a valid number (decimals allowed).</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="scoringAverage">Scoring Average</label>
+        <input id="scoringAverage" pInputText formControlName="scoringAverage" maxlength="8" appTrim />
+        <div *ngIf="pgaForm.get('scoringAverage')?.invalid && (pgaForm.get('scoringAverage')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('scoringAverage')?.errors?.['pattern']">Scoring Average must be a valid number (decimals allowed).</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="eventsPlayed">Events Played</label>
+        <input id="eventsPlayed" pInputText formControlName="eventsPlayed" maxlength="5" appTrim />
+        <div *ngIf="pgaForm.get('eventsPlayed')?.invalid && (pgaForm.get('eventsPlayed')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('eventsPlayed')?.errors?.['pattern']">Events Played must be a valid whole number.</div>
+        </div>
+      </div>
+      <div class="detailField">
+        <label for="cutsMade">Cuts Made</label>
+        <input id="cutsMade" pInputText formControlName="cutsMade" maxlength="5" appTrim />
+        <div *ngIf="pgaForm.get('cutsMade')?.invalid && (pgaForm.get('cutsMade')?.touched || isSubmitted)">
+          <div class="field-error" *ngIf="pgaForm.get('cutsMade')?.errors?.['pattern']">Cuts Made must be a valid whole number.</div>
+        </div>
+      </div>
+      <div class="detailButton">
+        <button *ngIf="isAdding" title="Add" pButton type="submit" icon="pi pi-plus" label="Add"></button>
+        <button *ngIf="!isAdding" title="Save" pButton type="submit" icon="pi pi-save" label="Save"></button>
+        <button title="Cancel" pButton type="button" icon="pi pi-times" (click)="onHideDialog()" label="Cancel"></button>
+      </div>
+    </div>
+    <div *ngIf="errMessage.length" class="errMessage">
+      {{errMessage}}
+    </div>
+  </form>
+</p-dialog>

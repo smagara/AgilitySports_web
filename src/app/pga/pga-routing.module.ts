@@ -1,27 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PgaComponent } from './components/pga.component';
-import { SeasonComponent } from './components/season/season.component';
-import { TournamentComponent } from './components/tournament/tournament.component';
+import { RosterComponent } from './components/roster/roster.component';
 
-const routes: Routes = [{
-  path: "pga",
-  children: [
-    {
-      path: 'season',
-      component: SeasonComponent
-    },
-    {
-      path: 'tournament',
-      component: TournamentComponent
-    },
-    {
-      path: '',
-      component: PgaComponent,
-      pathMatch: 'full',
-    },
-  ]
-}
+const routes: Routes = [
+  {
+    path: 'pga',
+    children: [
+      {
+        path: 'roster',
+        component: RosterComponent
+      },
+      {
+        path: '',
+        component: PgaComponent,
+        pathMatch: 'full'
+      }
+    ]
+  }
 ];
 
 @NgModule({

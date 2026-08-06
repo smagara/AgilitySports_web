@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-pga',
-  template: '<router-outlet></router-outlet>'
+  selector: 'sports-pga',
+  templateUrl: './pga.component.html'
 })
-export class PgaComponent {} 
+export class PgaComponent {}

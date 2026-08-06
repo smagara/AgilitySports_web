@@ -1,0 +1,16 @@
+<sports-roster-list [roster]="roster"
+  [isLoading]="isLoading"
+  (addRow)="addRow()"
+  (editRow)="editRow($event)"
+  (deleteRow)="deleteRow($event.toString())">
+</sports-roster-list>
+
+<sports-roster-detail [pgaForm]="pgaForm"
+  [display]="display"
+  [isAdding]="isAdding"
+  [isSubmitted]="isSubmitted"
+  [errMessage]="errMessage"
+  (hideDialog)="hideDialog()"
+  (save)="save()"
+  (add)="add()">
+</sports-roster-detail>
